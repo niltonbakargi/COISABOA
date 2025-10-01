@@ -1,0 +1,52 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// Por enquanto, vamos criar a estrutura básica
+// A funcionalidade completa depende de como as compras são registradas
+?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desfazer Compra - COISABOA</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: white; padding: 20px; border-radius: 10px; }
+        .btn { background: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; }
+        .btn:hover { background: #2980b9; }
+        .btn-warning { background: #f39c12; }
+        .btn-warning:hover { background: #d35400; }
+        
+        .info-box { background: white; padding: 30px; border-radius: 10px; text-align: center; }
+        .info-box h2 { color: #2c3e50; margin-bottom: 15px; }
+        .info-box p { color: #7f8c8d; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Desfazer Compra</h1>
+            <div>
+                <a href="gerenciar.php" class="btn">← Voltar</a>
+                <a href="dashboard.php" class="btn" style="background: #7f8c8d;">Dashboard</a>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h2>🚧 Funcionalidade em Desenvolvimento</h2>
+            <p>O sistema de desfazer compras será implementado após a criação do módulo de compras.</p>
+            <p>Esta funcionalidade permitirá reverter entradas no estoque e ajustar os registros de compras.</p>
+            <br>
+            <a href="gerenciar.php" class="btn btn-warning">Voltar ao Gerenciamento</a>
+        </div>
+    </div>
+</body>
+</html>
