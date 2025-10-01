@@ -1,0 +1,8 @@
+# COISABOA - Configurações Apache
+RewriteEngine On
+Options -Indexes
+
+# Segurança
+<Files ~ "\.(env|config|log)$">
+    Deny from all
+</Files>

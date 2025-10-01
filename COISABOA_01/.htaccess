@@ -1,0 +1,19 @@
+# COISABOA - Configurações Apache
+Options -Indexes
+
+# Ativa reescrita e define a base do app
+RewriteEngine On
+RewriteBase /COISABOA/COISABOA/
+
+# Entrega arquivos/diretórios reais (imagens, css, js, etc.) sem redirecionar
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Se você tiver um front controller (opcional), descomente:
+# RewriteRule ^ index.php [L]
+
+# Segurança (Apache 2.4): bloqueia arquivos sensíveis
+<FilesMatch "\.(env|config|log|ini|sql|sh|bat)$">
+    Require all denied
+</FilesMatch>

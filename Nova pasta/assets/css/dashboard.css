@@ -1,0 +1,98 @@
+/*!
+ * COISABOA - Stylesheet do Dashboard
+ * Componentes específicos para a página inicial
+ */
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--espaco-5);
+    margin-bottom: var(--espaco-8);
+}
+
+.stat-card {
+    background: var(--cor-branco);
+    padding: var(--espaco-5);
+    border-radius: var(--raio-borda);
+    box-shadow: var(--sombra);
+    text-align: center;
+    transition: var(--transicao-normal);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-lg);
+}
+
+.stat-icon {
+    font-size: var(--texto-3xl);
+    margin-bottom: var(--espaco-3);
+    opacity: 0.8;
+}
+
+.stat-number {
+    font-size: var(--texto-3xl);
+    font-weight: 700;
+    color: var(--cor-primaria);
+    margin-bottom: var(--espaco-1);
+}
+
+.stat-label {
+    color: var(--cor-cinza-600);
+    font-size: var(--texto-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.recent-activity {
+    background: var(--cor-branco);
+    border-radius: var(--raio-borda);
+    padding: var(--espaco-5);
+    box-shadow: var(--sombra);
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-3);
+    padding: var(--espaco-3) 0;
+    border-bottom: 1px solid var(--cor-cinza-200);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--texto-lg);
+}
+
+.activity-icon-compra {
+    background: var(--cor-sucesso);
+    color: var(--cor-branco);
+}
+
+.activity-icon-venda {
+    background: var(--cor-info);
+    color: var(--cor-branco);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 500;
+    margin-bottom: var(--espaco-1);
+}
+
+.activity-time {
+    font-size: var(--texto-sm);
+    color: var(--cor-cinza-500);
+}

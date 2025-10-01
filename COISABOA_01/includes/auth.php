@@ -1,0 +1,3 @@
+<?php
+// COISABOA - Auth
+?>

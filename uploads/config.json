@@ -1,0 +1,21 @@
+{
+    "upload_settings": {
+        "max_file_size": 10485760,
+        "allowed_types": ["jpg", "jpeg", "png", "gif", "webp"],
+        "max_width": 1920,
+        "max_height": 1080,
+        "image_quality": 85,
+        "thumbnail_width": 150,
+        "thumbnail_height": 150
+    },
+    "security": {
+        "allow_direct_access": false,
+        "prevent_hotlinking": true,
+        "scan_for_malware": false
+    },
+    "storage": {
+        "auto_cleanup": true,
+        "temp_files_max_age": 24,
+        "backup_enabled": true
+    }
+}

@@ -1,0 +1,22 @@
+# COISABOA - Proteção da Pasta Includes
+# Bloqueia acesso direto aos arquivos PHP
+
+Order Deny,Allow
+Deny from all
+
+# Bloquear acesso a todos os arquivos PHP
+<Files ~ "\.php$">
+    Deny from all
+</Files>
+
+# Permitir acesso apenas de localhost (desenvolvimento)
+SetEnvIf Host "^localhost$" allowed
+SetEnvIf Host "^127.0.0.1$" allowed
+
+Allow from env=allowed
+
+ErrorDocument 403 "<h1>Acesso Negado</h1><p>Arquivos do sistema não podem ser acessados diretamente.</p>"
+
+# Headers de segurança
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY

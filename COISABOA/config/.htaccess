@@ -1,0 +1,28 @@
+# COISABOA - Proteção da Pasta Config
+# Bloqueia acesso direto aos arquivos de configuração
+
+Order Deny,Allow
+Deny from all
+
+# Permitir acesso apenas de localhost (desenvolvimento)
+SetEnvIf Host "^localhost$" allowed
+SetEnvIf Host "^127.0.0.1$" allowed
+
+Allow from env=allowed
+
+# Bloquear acesso a arquivos sensíveis
+<Files ~ "\.(php|env|config|ini)$">
+    Deny from all
+</Files>
+
+# Arquivos específicos que podem ser acessados (se necessário)
+<Files "config.json">
+    Allow from all
+</Files>
+
+ErrorDocument 403 "<h1>Acesso Negado</h1><p>Configurações do sistema não podem ser acessadas diretamente.</p>"
+
+# Headers de segurança
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
