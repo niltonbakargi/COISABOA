@@ -10,7 +10,7 @@ require_once 'config/database.php';
 $mensagem = '';
 $imagens_produto = [];
 
-if ($_POST['action'] ?? '' === 'vender') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'vender') {
     try {
         $pdo = getDB();
         
@@ -18,7 +18,10 @@ if ($_POST['action'] ?? '' === 'vender') {
         $quantidade = $_POST['quantidade'];
         $valor_venda = $_POST['valor_venda'];
         
-        // Buscar produto
+        if (empty($produto_id) || empty($quantidade) || empty($valor_venda)) {
+            throw new Exception("Todos os campos são obrigatórios!");
+        }
+        
         $stmt = $pdo->prepare("SELECT * FROM estoque WHERE id = ?");
         $stmt->execute([$produto_id]);
         $produto = $stmt->fetch();
@@ -26,11 +29,9 @@ if ($_POST['action'] ?? '' === 'vender') {
         if (!$produto) throw new Exception("Produto não encontrado!");
         if ($produto['quantidade'] < $quantidade) throw new Exception("Estoque insuficiente!");
         
-        // Registrar venda
         $stmt = $pdo->prepare("INSERT INTO vendas (produto, quantidade, valor_vendido, data_venda) VALUES (?, ?, ?, NOW())");
         $stmt->execute([$produto['produto'], $quantidade, $valor_venda]);
         
-        // Atualizar estoque
         $nova_quantidade = $produto['quantidade'] - $quantidade;
         if ($nova_quantidade > 0) {
             $stmt = $pdo->prepare("UPDATE estoque SET quantidade = ? WHERE id = ?");
@@ -41,6 +42,7 @@ if ($_POST['action'] ?? '' === 'vender') {
         }
         
         $mensagem = "✅ Venda registrada!";
+        $_POST = [];
         
     } catch (Exception $e) {
         $mensagem = "❌ " . $e->getMessage();
@@ -56,10 +58,17 @@ try {
     $produtos = [];
 }
 
-// Se um produto foi selecionado, buscar suas imagens
-if ($_POST['produto_id'] ?? '') {
-    $produto_id = $_POST['produto_id'];
-    $pasta_produto = "uploads/produtos/$produto_id";
+// CORREÇÃO AQUI: Buscar a pasta correta
+$produto_selecionado = $_POST['produto_id'] ?? '';
+if ($produto_selecionado) {
+    // Tenta primeiro a pasta com o número correto (ID - 1)
+    $pasta_corrigida = intval($produto_selecionado) - 1;
+    $pasta_produto = "uploads/produtos/$pasta_corrigida";
+    
+    // Se não encontrar, tenta com o ID original
+    if (!file_exists($pasta_produto)) {
+        $pasta_produto = "uploads/produtos/$produto_selecionado";
+    }
     
     if (file_exists($pasta_produto)) {
         $arquivos = scandir($pasta_produto);
@@ -94,6 +103,22 @@ if ($_POST['produto_id'] ?? '') {
         .miniatura { width: 80px; height: 80px; object-fit: cover; margin: 5px; border-radius: 5px; cursor: pointer; border: 2px solid #ddd; }
         .miniatura:hover { border-color: #3498db; }
     </style>
+    <script>
+        function selecionarProduto(produtoId) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.style.display = 'none';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'produto_id';
+            input.value = produtoId;
+            
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
 </head>
 <body>
     <h1>💰 Vender Produto</h1>
@@ -109,10 +134,10 @@ if ($_POST['produto_id'] ?? '') {
         
         <div class="form-group">
             <label>Produto</label>
-            <select name="produto_id" onchange="this.form.submit()" required>
+            <select name="produto_id" onchange="selecionarProduto(this.value)" required>
                 <option value="">Selecione um produto</option>
                 <?php foreach ($produtos as $produto): ?>
-                    <option value="<?= $produto['id'] ?>" <?= ($_POST['produto_id'] ?? '') == $produto['id'] ? 'selected' : '' ?>>
+                    <option value="<?= $produto['id'] ?>" <?= $produto_selecionado == $produto['id'] ? 'selected' : '' ?>>
                         <?= $produto['produto'] ?> - Estoque: <?= $produto['quantidade'] ?>
                     </option>
                 <?php endforeach; ?>
@@ -127,9 +152,9 @@ if ($_POST['produto_id'] ?? '') {
                     <img src="<?= $imagem ?>" class="miniatura" onclick="window.open('<?= $imagem ?>', '_blank')">
                 <?php endforeach; ?>
             </div>
-        <?php elseif ($_POST['produto_id'] ?? ''): ?>
+        <?php elseif ($produto_selecionado): ?>
             <div class="imagens">
-                <em>Nenhuma imagem encontrada na pasta: uploads/produtos/<?= $_POST['produto_id'] ?></em>
+                <em>Nenhuma imagem encontrada para este produto</em>
             </div>
         <?php endif; ?>
         
