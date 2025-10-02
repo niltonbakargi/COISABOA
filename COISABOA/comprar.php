@@ -86,56 +86,55 @@ if ($_POST['action'] ?? '' === 'comprar') {
         $stmt = $pdo->prepare("UPDATE compras SET imagem_produto = ?, imagem_vendedor = ? WHERE id = ?");
         $stmt->execute([$caminho_imagens_produto, $caminho_imagem_vendedor, $compra_id]);
         
-        // 2. Atualizar/Inserir na tabela ESTOQUE
-        $stmt = $pdo->prepare("SELECT * FROM estoque WHERE produto = ?");
-        $stmt->execute([$produto]);
-        $produto_existente = $stmt->fetch();
+        // 2. Inserir produtos INDIVIDUALMENTE no estoque
+        $produtos_inseridos = 0;
         
-        if ($produto_existente) {
-            // Atualizar estoque existente
-            $nova_quantidade = $produto_existente['quantidade'] + $quantidade;
-            $stmt = $pdo->prepare("
-                UPDATE estoque SET 
-                quantidade = ?, 
-                valor_unitario = ?,
-                valor_revenda = ?,
-                imagem_produto = ?,
-                data_atualizacao = NOW()
-                WHERE produto = ?
-            ");
-            $stmt->execute([
-                $nova_quantidade,
-                $valor_unitario,
-                $valor_revenda,
-                $caminho_imagens_produto,
-                $produto
-            ]);
-            $estoque_id = $produto_existente['id'];
-        } else {
-            // Inserir novo produto no estoque
-            $stmt = $pdo->prepare("
-                INSERT INTO estoque 
-                (produto, quantidade, valor_unitario, valor_revenda, imagem_produto) 
-                VALUES (?, ?, ?, ?, ?)
-            ");
-            $stmt->execute([
-                $produto,
-                $quantidade,
-                $valor_unitario,
-                $valor_revenda,
-                $caminho_imagens_produto
-            ]);
-            $estoque_id = $pdo->lastInsertId();
+        for ($i = 1; $i <= $quantidade; $i++) {
+            // Criar identificador único para cada item
+            $produto_individual = $quantidade > 1 ? "{$produto} #{$i}" : $produto;
+            
+            // Verificar se já existe um produto com esse nome exato
+            $stmt = $pdo->prepare("SELECT id FROM estoque WHERE produto = ?");
+            $stmt->execute([$produto_individual]);
+            $existente = $stmt->fetch();
+            
+            if (!$existente) {
+                // Inserir novo produto individual no estoque
+                $stmt = $pdo->prepare("
+                    INSERT INTO estoque 
+                    (produto, quantidade, valor_unitario, valor_revenda, imagem_produto, compra_origem_id) 
+                    VALUES (?, 1, ?, ?, ?, ?)
+                ");
+                $stmt->execute([
+                    $produto_individual,
+                    $valor_unitario,
+                    $valor_revenda,
+                    $caminho_imagens_produto,
+                    $compra_id
+                ]);
+                $produtos_inseridos++;
+            } else {
+                // Se já existe, atualizar a quantidade para 1 (garantir que está disponível)
+                $stmt = $pdo->prepare("UPDATE estoque SET quantidade = 1 WHERE id = ?");
+                $stmt->execute([$existente['id']]);
+                $produtos_inseridos++;
+            }
         }
         
         $mensagem = "✅ Compra registrada com sucesso!";
         $mensagem .= "<br><strong>ID da Compra:</strong> $compra_id";
         $mensagem .= "<br><strong>Produto:</strong> $produto";
         $mensagem .= "<br><strong>Quantidade:</strong> $quantidade";
+        $mensagem .= "<br><strong>Itens criados no estoque:</strong> $produtos_inseridos";
         $mensagem .= "<br><strong>Valor Unitário:</strong> R$ " . number_format($valor_unitario, 2, ',', '.');
         $mensagem .= "<br><strong>Valor Total:</strong> R$ " . number_format($valor_total, 2, ',', '.');
         $mensagem .= "<br><strong>Valor Revenda:</strong> R$ " . number_format($valor_revenda, 2, ',', '.');
         $mensagem .= "<br><strong>Forma de Pagamento:</strong> " . ($forma_pagamento ?: 'Não informada');
+        
+        if ($quantidade > 1) {
+            $mensagem .= "<br><strong>💡 Observação:</strong> $quantidade itens individuais criados no estoque";
+        }
+        
         if ($imagens_salvas) {
             $mensagem .= "<br><strong>Fotos do produto:</strong> " . count($imagens_salvas) . " imagem(ns) salvas";
         }
@@ -171,6 +170,7 @@ if ($_POST['action'] ?? '' === 'comprar') {
         .preview-container { margin: 10px 0; }
         .preview-img { max-width: 100px; max-height: 100px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
         .campo-destaque { border: 2px solid #27ae60; background-color: #f8fff8; }
+        .info-individual { background: #e8f4fd; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 4px solid #3498db; }
     </style>
 </head>
 <body>
@@ -187,13 +187,14 @@ if ($_POST['action'] ?? '' === 'comprar') {
         
         <div class="form-group">
             <label>Nome do Produto *</label>
-            <input type="text" name="produto" required>
+            <input type="text" name="produto" id="produto" required>
+            <div class="valor-info">Ex: iPhone 14, Tênis Nike, etc.</div>
         </div>
         
         <div class="form-row">
             <div class="form-group">
                 <label>Quantidade *</label>
-                <input type="number" name="quantidade" value="1" min="1" required>
+                <input type="number" name="quantidade" id="quantidade" value="1" min="1" required>
             </div>
             
             <div class="form-group">
@@ -202,16 +203,23 @@ if ($_POST['action'] ?? '' === 'comprar') {
             </div>
         </div>
         
+        <div id="infoIndividual" class="info-individual" style="display: none;">
+            <strong>💡 Sistema de Itens Individuais:</strong><br>
+            Cada unidade será cadastrada separadamente no estoque com numeração automática.
+            Exemplo: "iPhone 14 #1", "iPhone 14 #2", etc.
+        </div>
+        
         <div class="form-row">
             <div class="form-group">
                 <label>Valor Unitário (R$) *</label>
                 <input type="number" name="valor_unitario" step="0.01" min="0" required id="valorUnitario">
+                <div class="valor-info">Valor pago por cada unidade</div>
             </div>
             
             <div class="form-group">
                 <label>Valor Revenda (R$) *</label>
                 <input type="number" name="valor_revenda" step="0.01" min="0" required class="campo-destaque">
-                <div class="valor-info">Valor que você pretende vender o produto</div>
+                <div class="valor-info">Valor que você pretende vender cada unidade</div>
             </div>
         </div>
         
@@ -244,7 +252,7 @@ if ($_POST['action'] ?? '' === 'comprar') {
             <label>Fotos do Produto (múltiplas)</label>
             <input type="file" name="imagens[]" multiple accept="image/*" capture="camera" id="imagensProduto">
             <div class="arquivo-info">Selecione várias fotos do produto (Ctrl+Click)</div>
-            <div class="info-pasta">As fotos serão salvas em uma pasta com o ID da compra</div>
+            <div class="info-pasta">As fotos serão aplicadas a todos os itens do estoque</div>
             <div class="preview-container" id="previewProduto"></div>
         </div>
         
@@ -268,11 +276,19 @@ if ($_POST['action'] ?? '' === 'comprar') {
             const valorUnitario = document.querySelector('input[name="valor_unitario"]');
             const valorTotalDisplay = document.getElementById('valorTotalDisplay');
             const infoValorTotal = document.getElementById('infoValorTotal');
+            const infoIndividual = document.getElementById('infoIndividual');
             
             function calcularValorTotal() {
                 const qtd = parseFloat(quantidade.value) || 0;
                 const valor = parseFloat(valorUnitario.value) || 0;
                 const total = qtd * valor;
+                
+                // Mostrar/ocultar info de itens individuais
+                if (qtd > 1) {
+                    infoIndividual.style.display = 'block';
+                } else {
+                    infoIndividual.style.display = 'none';
+                }
                 
                 if (total > 0) {
                     valorTotalDisplay.value = 'R$ ' + total.toFixed(2).replace('.', ',');
