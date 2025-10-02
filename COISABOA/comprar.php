@@ -20,7 +20,7 @@ if ($_POST['action'] ?? '' === 'comprar') {
         $valor_revenda = $_POST['valor_revenda'];
         $observacoes = $_POST['observacoes'] ?? '';
         
-        // 1. Primeiro inserir na tabela COMPRAS (sem imagem ainda)
+        // 1. Primeiro inserir na tabela COMPRAS (sem imagens ainda)
         $stmt = $pdo->prepare("
             INSERT INTO compras 
             (produto, quantidade, valor_unitario, valor_total, valor_revenda, observacoes, data_compra) 
@@ -43,7 +43,8 @@ if ($_POST['action'] ?? '' === 'comprar') {
             mkdir($pasta_produto, 0755, true);
         }
         
-        // Upload das imagens (múltiplas)
+        // Upload das imagens do produto (múltiplas)
+        $caminho_imagens_produto = '';
         if (!empty($_FILES['imagens']['name'][0])) {
             foreach ($_FILES['imagens']['tmp_name'] as $key => $tmp_name) {
                 if ($_FILES['imagens']['error'][$key] === 0) {
@@ -54,11 +55,28 @@ if ($_POST['action'] ?? '' === 'comprar') {
                     move_uploaded_file($tmp_name, $destino);
                 }
             }
+            $caminho_imagens_produto = $pasta_produto;
         }
         
-        // Atualizar a compra com o caminho da pasta
-        $stmt = $pdo->prepare("UPDATE compras SET imagem_produto = ? WHERE id = ?");
-        $stmt->execute([$pasta_produto, $compra_id]);
+        // Upload da imagem do vendedor
+        $caminho_imagem_vendedor = '';
+        if (!empty($_FILES['imagem_vendedor']['name']) && $_FILES['imagem_vendedor']['error'] === 0) {
+            $pasta_vendedor = "uploads/vendedores/$compra_id";
+            if (!file_exists($pasta_vendedor)) {
+                mkdir($pasta_vendedor, 0755, true);
+            }
+            
+            $extensao_vendedor = pathinfo($_FILES['imagem_vendedor']['name'], PATHINFO_EXTENSION);
+            $nome_arquivo_vendedor = "vendedor." . $extensao_vendedor;
+            $destino_vendedor = "$pasta_vendedor/$nome_arquivo_vendedor";
+            
+            move_uploaded_file($_FILES['imagem_vendedor']['tmp_name'], $destino_vendedor);
+            $caminho_imagem_vendedor = $pasta_vendedor;
+        }
+        
+        // Atualizar a compra com os caminhos das imagens
+        $stmt = $pdo->prepare("UPDATE compras SET imagem_produto = ?, imagem_vendedor = ? WHERE id = ?");
+        $stmt->execute([$caminho_imagens_produto, $caminho_imagem_vendedor, $compra_id]);
         
         // 2. Atualizar/Inserir na tabela ESTOQUE
         $stmt = $pdo->prepare("SELECT * FROM estoque WHERE produto = ?");
@@ -81,7 +99,7 @@ if ($_POST['action'] ?? '' === 'comprar') {
                 $nova_quantidade,
                 $valor_unitario,
                 $valor_revenda,
-                $pasta_produto,
+                $caminho_imagens_produto,
                 $produto
             ]);
             $estoque_id = $produto_existente['id'];
@@ -97,12 +115,18 @@ if ($_POST['action'] ?? '' === 'comprar') {
                 $quantidade,
                 $valor_unitario,
                 $valor_revenda,
-                $pasta_produto
+                $caminho_imagens_produto
             ]);
             $estoque_id = $pdo->lastInsertId();
         }
         
-        $mensagem = "✅ Compra registrada! ID: $compra_id - Pasta: $pasta_produto";
+        $mensagem = "✅ Compra registrada! ID: $compra_id";
+        if ($caminho_imagens_produto) {
+            $mensagem .= " - Pasta Produto: $caminho_imagens_produto";
+        }
+        if ($caminho_imagem_vendedor) {
+            $mensagem .= " - Pasta Vendedor: $caminho_imagem_vendedor";
+        }
         
     } catch (Exception $e) {
         $mensagem = "❌ Erro: " . $e->getMessage();
@@ -124,6 +148,7 @@ if ($_POST['action'] ?? '' === 'comprar') {
         .mensagem { padding: 10px; margin-bottom: 15px; border-radius: 5px; }
         .sucesso { background: #d4edda; color: #155724; }
         .erro { background: #f8d7da; color: #721c24; }
+        .arquivo-info { font-size: 12px; color: #666; margin-top: -8px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -166,6 +191,13 @@ if ($_POST['action'] ?? '' === 'comprar') {
         <div class="form-group">
             <label>Fotos do Produto (múltiplas)</label>
             <input type="file" name="imagens[]" multiple accept="image/*" capture="camera">
+            <div class="arquivo-info">Selecione várias fotos do produto (Ctrl+Click)</div>
+        </div>
+        
+        <div class="form-group">
+            <label>Foto do Vendedor</label>
+            <input type="file" name="imagem_vendedor" accept="image/*" capture="camera">
+            <div class="arquivo-info">Foto do vendedor ou comprovante</div>
         </div>
         
         <button type="submit">💾 Salvar Compra</button>
