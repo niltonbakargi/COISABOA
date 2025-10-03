@@ -192,235 +192,466 @@ try {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Estoque - COISABOA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Gerenciar - COISABOA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 30px; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --border: #e5e7eb;
         }
         
-        .btn { 
-            background: #3498db; 
-            color: white; 
-            padding: 10px 20px; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            text-decoration: none; 
-            display: inline-block; 
-            font-size: 14px;
-        }
-        .btn:hover { background: #2980b9; }
-        .btn-success { background: #27ae60; }
-        .btn-success:hover { background: #219a52; }
-        .btn-warning { background: #f39c12; }
-        .btn-warning:hover { background: #e67e22; }
-        .btn-danger { background: #e74c3c; }
-        .btn-danger:hover { background: #c0392b; }
-        
-        .card { 
-            background: white; 
-            padding: 25px; 
-            border-radius: 8px; 
-            margin-bottom: 30px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
         }
         
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50; }
-        input, select, textarea { 
-            padding: 10px 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            width: 100%; 
-            font-size: 14px;
+        body { 
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px 15px 80px 15px;
         }
         
-        .mensagem { 
-            padding: 15px; 
-            margin-bottom: 20px; 
-            border-radius: 5px; 
-            line-height: 1.6; 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .sucesso { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .erro { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         
-        .tabela { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 20px; 
-            background: white; 
-            border-radius: 8px; 
-            overflow: hidden; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-            font-size: 14px;
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .tabela th, .tabela td { 
-            padding: 12px; 
-            text-align: left; 
-            border-bottom: 1px solid #ecf0f1; 
-        }
-        .tabela th { 
-            background: #34495e; 
-            color: white; 
-            font-weight: 600; 
-        }
-        .tabela tr:hover { background: #f8f9fa; }
         
-        .abas { display: flex; gap: 10px; margin-bottom: 20px; }
-        .aba { 
-            padding: 15px 25px; 
-            background: #ecf0f1; 
-            border-radius: 5px; 
-            cursor: pointer; 
+        .header h1 {
+            color: var(--dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header h1 i {
+            color: var(--primary);
+        }
+        
+        .btn-voltar {
+            background: var(--gray);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .btn-voltar:active {
+            transform: translateY(-2px);
+        }
+        
+        /* Mensagens */
+        .mensagem {
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        .sucesso {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .erro {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        .required::after {
+            content: " *";
+            color: var(--danger);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             border: 2px solid transparent;
-        }
-        .aba.ativa { 
-            background: #3498db; 
-            color: white; 
-            border-color: #2980b9;
-        }
-        
-        .conteudo-aba { display: none; }
-        .conteudo-aba.ativa { display: block; }
-        
-        .info-produto { 
-            background: #e8f4fd; 
-            padding: 15px; 
-            border-radius: 5px; 
-            margin-bottom: 20px; 
-            border-left: 4px solid #3498db;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
         }
         
-        .badge { 
-            display: inline-block; 
-            padding: 3px 8px; 
-            border-radius: 12px; 
-            font-size: 11px; 
-            font-weight: bold; 
-            margin-left: 5px; 
-        }
-        .badge-ajuste { background: #3498db; color: white; }
-        .badge-exclusao { background: #e74c3c; color: white; }
-        .badge-correcao { background: #f39c12; color: white; }
-        
-        .alerta { 
-            background: #fff3cd; 
-            border: 1px solid #ffeaa7; 
-            border-radius: 8px; 
-            padding: 15px; 
-            margin: 15px 0; 
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
         }
         
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--info);
+            font-size: 0.9rem;
+        }
+        
+        .alerta {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--warning);
+            font-size: 0.9rem;
+        }
+        
+        .alerta.perigo {
+            background: #fee2e2;
+            border-left: 4px solid var(--danger);
+        }
+        
+        /* Buttons */
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .btn:active {
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .table th {
+            background: var(--dark);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .table tr:hover {
+            background: #f8fafc;
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-ajuste {
+            background: var(--info);
+            color: white;
+        }
+        
+        .badge-exclusao {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .badge-correcao {
+            background: var(--warning);
+            color: white;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            flex: 1;
+            padding: 8px 0;
+        }
+        
+        .nav-item.ativo {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .abas { flex-direction: column; }
-            .header { flex-direction: column; gap: 15px; text-align: center; }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                min-width: auto;
+                justify-content: flex-start;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table {
+                font-size: 0.8rem;
+            }
+            
+            .table th, .table td {
+                padding: 12px 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px 80px 10px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
         }
     </style>
-    <script>
-        function mostrarAba(abaId) {
-            // Esconder todas as abas
-            document.querySelectorAll('.aba').forEach(aba => {
-                aba.classList.remove('ativa');
-            });
-            document.querySelectorAll('.conteudo-aba').forEach(conteudo => {
-                conteudo.classList.remove('ativa');
-            });
-            
-            // Mostrar aba selecionada
-            document.getElementById('aba-' + abaId).classList.add('ativa');
-            document.getElementById('conteudo-' + abaId).classList.add('ativa');
-        }
-        
-        function carregarProduto(produtoId) {
-            if (!produtoId) return;
-            
-            // Buscar informações do produto via AJAX
-            fetch('ajax_produto.php?id=' + produtoId)
-                .then(response => response.json())
-                .then(produto => {
-                    document.getElementById('info-produto').innerHTML = `
-                        <strong>Produto:</strong> ${produto.produto}<br>
-                        <strong>Estoque atual:</strong> ${produto.quantidade} unidades<br>
-                        <strong>Valor unitário:</strong> R$ ${parseFloat(produto.valor_unitario).toFixed(2)}<br>
-                        <strong>Valor revenda:</strong> R$ ${parseFloat(produto.valor_revenda).toFixed(2)}
-                    `;
-                    
-                    // Preencher campos com valores atuais
-                    document.getElementById('nova_quantidade').value = produto.quantidade;
-                    document.getElementById('novo_valor_unitario').value = produto.valor_unitario;
-                    document.getElementById('novo_valor_revenda').value = produto.valor_revenda;
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                });
-        }
-        
-        function confirmarExclusao() {
-            const produtoSelect = document.getElementById('produto_id');
-            const produtoNome = produtoSelect.options[produtoSelect.selectedIndex].text;
-            return confirm(`ATENÇÃO! Você está prestes a excluir o produto "${produtoNome}" do estoque.\n\nEsta ação não pode ser desfeita! Digite CONFIRMAR no campo abaixo para prosseguir.`);
-        }
-        
-        // Mostrar primeira aba ao carregar
-        document.addEventListener('DOMContentLoaded', function() {
-            mostrarAba('ajustar');
-        });
-    </script>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>⚙️ Gerenciar Estoque - COISABOA</h1>
-            <div style="display: flex; gap: 10px;">
-                <a href="relatorios.php" class="btn">📊 Relatórios</a>
-                <a href="dashboard.php" class="btn" style="background: #7f8c8d;">🏠 Dashboard</a>
-            </div>
+        <!-- Header -->
+        <div class="header fade-in">
+            <h1>
+                <i class="fas fa-cogs"></i>
+                Gerenciar Estoque
+            </h1>
+            <a href="dashboard.php" class="btn-voltar">
+                <i class="fas fa-arrow-left"></i>
+                Voltar
+            </a>
         </div>
 
         <?php if (isset($erro)): ?>
-            <div class="mensagem erro">
+            <div class="mensagem erro fade-in">
                 <?= $erro ?>
             </div>
         <?php endif; ?>
 
         <?php if ($mensagem): ?>
-            <div class="mensagem <?= strpos($mensagem, '✅') !== false ? 'sucesso' : 'erro' ?>">
+            <div class="mensagem <?= strpos($mensagem, '✅') !== false ? 'sucesso' : 'erro' ?> fade-in">
                 <?= $mensagem ?>
             </div>
         <?php endif; ?>
 
-        <!-- Abas de Navegação -->
-        <div class="abas">
-            <div class="aba ativa" id="aba-ajustar" onclick="mostrarAba('ajustar')">
-                📦 Ajustar Estoque
-            </div>
-            <div class="aba" id="aba-precos" onclick="mostrarAba('precos')">
-                💰 Corrigir Preços
-            </div>
-            <div class="aba" id="aba-excluir" onclick="mostrarAba('excluir')">
-                🗑️ Excluir Produto
-            </div>
-            <div class="aba" id="aba-historico" onclick="mostrarAba('historico')">
-                📋 Histórico
-            </div>
-        </div>
-
         <!-- Seleção de Produto -->
-        <div class="card">
+        <div class="card fade-in">
             <div class="form-group">
-                <label>Selecione o Produto</label>
+                <label class="required">Selecione o Produto</label>
                 <select id="produto_id" name="produto_id" onchange="carregarProduto(this.value)" required>
                     <option value="">Selecione um produto...</option>
                     <?php foreach ($produtos as $produto): ?>
@@ -430,28 +661,49 @@ try {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div id="info-produto" class="info-produto">
+            <div id="info-produto" class="info-box">
+                <i class="fas fa-info-circle"></i>
                 Selecione um produto para ver as informações atuais
             </div>
         </div>
 
-        <!-- Conteúdo das Abas -->
+        <!-- Tabs de Navegação -->
+        <div class="tabs fade-in">
+            <div class="tab active" onclick="mostrarTab('ajustar')">
+                <i class="fas fa-boxes"></i>
+                Ajustar Estoque
+            </div>
+            <div class="tab" onclick="mostrarTab('precos')">
+                <i class="fas fa-money-bill-wave"></i>
+                Corrigir Preços
+            </div>
+            <div class="tab" onclick="mostrarTab('excluir')">
+                <i class="fas fa-trash"></i>
+                Excluir Produto
+            </div>
+            <div class="tab" onclick="mostrarTab('historico')">
+                <i class="fas fa-history"></i>
+                Histórico
+            </div>
+        </div>
 
-        <!-- ABA: Ajustar Estoque -->
-        <div id="conteudo-ajustar" class="conteudo-aba ativa">
+        <!-- Conteúdo das Tabs -->
+
+        <!-- TAB: Ajustar Estoque -->
+        <div id="tab-ajustar" class="tab-content active fade-in">
             <div class="card">
-                <h2>📦 Ajuste de Estoque</h2>
-                <p class="alerta">
-                    <strong>⚠️ Atenção:</strong> Use esta função para corrigir divergências de estoque. 
-                    O histórico ficará registrado para auditoria.
-                </p>
+                <h2><i class="fas fa-boxes"></i> Ajuste de Estoque</h2>
+                <div class="alerta">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Atenção:</strong> 
+                    Use esta função para corrigir divergências de estoque. O histórico ficará registrado para auditoria.
+                </div>
                 
                 <form method="POST">
                     <input type="hidden" name="acao" value="ajustar_estoque">
                     <input type="hidden" name="produto_id" id="produto_id_ajustar">
                     
                     <div class="form-group">
-                        <label>Nova Quantidade em Estoque</label>
+                        <label class="required">Nova Quantidade em Estoque</label>
                         <input type="number" name="nova_quantidade" id="nova_quantidade" min="0" required>
                     </div>
                     
@@ -460,31 +712,35 @@ try {
                         <textarea name="observacoes" rows="3" placeholder="Ex: Inventário físico, perda, divergência..."></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-warning">📝 Aplicar Ajuste</button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-edit"></i>
+                        Aplicar Ajuste
+                    </button>
                 </form>
             </div>
         </div>
 
-        <!-- ABA: Corrigir Preços -->
-        <div id="conteudo-precos" class="conteudo-aba">
+        <!-- TAB: Corrigir Preços -->
+        <div id="tab-precos" class="tab-content fade-in">
             <div class="card">
-                <h2>💰 Correção de Preços</h2>
-                <p class="alerta">
-                    <strong>💡 Informação:</strong> Altere os valores de custo e revenda do produto.
-                </p>
+                <h2><i class="fas fa-money-bill-wave"></i> Correção de Preços</h2>
+                <div class="alerta">
+                    <strong><i class="fas fa-info-circle"></i> Informação:</strong> 
+                    Altere os valores de custo e revenda do produto.
+                </div>
                 
                 <form method="POST">
                     <input type="hidden" name="acao" value="corrigir_precos">
                     <input type="hidden" name="produto_id" id="produto_id_precos">
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label>Novo Valor Unitário (Custo)</label>
+                            <label class="required">Novo Valor Unitário (Custo)</label>
                             <input type="number" name="novo_valor_unitario" id="novo_valor_unitario" step="0.01" min="0" required>
                         </div>
                         
                         <div class="form-group">
-                            <label>Novo Valor de Revenda</label>
+                            <label class="required">Novo Valor de Revenda</label>
                             <input type="number" name="novo_valor_revenda" id="novo_valor_revenda" step="0.01" min="0" required>
                         </div>
                     </div>
@@ -494,17 +750,20 @@ try {
                         <textarea name="observacoes" rows="3" placeholder="Ex: Reajuste de preço, promoção..."></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-warning">💸 Atualizar Preços</button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-sync-alt"></i>
+                        Atualizar Preços
+                    </button>
                 </form>
             </div>
         </div>
 
-        <!-- ABA: Excluir Produto -->
-        <div id="conteudo-excluir" class="conteudo-aba">
+        <!-- TAB: Excluir Produto -->
+        <div id="tab-excluir" class="tab-content fade-in">
             <div class="card">
-                <h2>🗑️ Exclusão de Produto</h2>
-                <div class="alerta" style="background: #f8d7da; border-color: #f5c6cb;">
-                    <strong>🚨 ATENÇÃO CRÍTICA:</strong><br>
+                <h2><i class="fas fa-trash"></i> Exclusão de Produto</h2>
+                <div class="alerta perigo">
+                    <strong><i class="fas fa-exclamation-triangle"></i> ATENÇÃO CRÍTICA:</strong><br>
                     • O produto será removido APENAS do estoque atual<br>
                     • Todas as vendas e compras anteriores serão mantidas<br>
                     • O produto não aparecerá mais para novas vendas<br>
@@ -517,10 +776,10 @@ try {
                     <input type="hidden" name="produto_id" id="produto_id_excluir">
                     
                     <div class="form-group">
-                        <label>Digite CONFIRMAR para prosseguir</label>
+                        <label class="required">Digite CONFIRMAR para prosseguir</label>
                         <input type="text" name="confirmacao" required 
                                placeholder="Digite CONFIRMAR aqui..." 
-                               style="text-transform: uppercase; font-weight: bold;">
+                               style="text-transform: uppercase; font-weight: bold; text-align: center;">
                     </div>
                     
                     <div class="form-group">
@@ -528,60 +787,73 @@ try {
                         <textarea name="observacoes" rows="3" placeholder="Ex: Produto descontinuado, erro de cadastro..."></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-danger">🗑️ Excluir do Estoque</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                        Excluir do Estoque
+                    </button>
                 </form>
             </div>
         </div>
 
-        <!-- ABA: Histórico -->
-        <div id="conteudo-historico" class="conteudo-aba">
+        <!-- TAB: Histórico -->
+        <div id="tab-historico" class="tab-content fade-in">
             <div class="card">
-                <h2>📋 Histórico de Operações</h2>
+                <h2><i class="fas fa-history"></i> Histórico de Operações</h2>
                 <p>Últimas 15 operações de gerenciamento</p>
                 
                 <?php if (!empty($historico)): ?>
-                <table class="tabela">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Tipo</th>
-                            <th>Produto</th>
-                            <th>Detalhes</th>
-                            <th>Observações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($historico as $operacao): 
-                            $badge_class = '';
-                            $detalhes = '';
-                            
-                            switch ($operacao['tipo']) {
-                                case 'ajuste':
-                                    $badge_class = 'badge-ajuste';
-                                    $detalhes = "De {$operacao['quantidade_anterior']} para {$operacao['quantidade_nova']} unidades";
-                                    break;
-                                case 'exclusao':
-                                    $badge_class = 'badge-exclusao';
-                                    $detalhes = "Estoque final: {$operacao['quantidade_final']} unidades";
-                                    break;
-                                case 'correcao':
-                                    $badge_class = 'badge-correcao';
-                                    $detalhes = "Custo: R$ {$operacao['valor_unitario_anterior']} → R$ {$operacao['valor_unitario_novo']} | Revenda: R$ {$operacao['valor_revenda_anterior']} → R$ {$operacao['valor_revenda_novo']}";
-                                    break;
-                            }
-                        ?>
-                        <tr>
-                            <td><?= date('d/m/Y H:i', strtotime($operacao['data'])) ?></td>
-                            <td><span class="badge <?= $badge_class ?>"><?= strtoupper($operacao['tipo']) ?></span></td>
-                            <td><?= htmlspecialchars($operacao['produto_nome']) ?></td>
-                            <td><?= $detalhes ?></td>
-                            <td><?= htmlspecialchars($operacao['observacoes'] ?? '') ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Produto</th>
+                                <th>Detalhes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($historico as $operacao): 
+                                $badge_class = '';
+                                $detalhes = '';
+                                $icone = '';
+                                
+                                switch ($operacao['tipo']) {
+                                    case 'ajuste':
+                                        $badge_class = 'badge-ajuste';
+                                        $detalhes = "De {$operacao['quantidade_anterior']} para {$operacao['quantidade_nova']} unidades";
+                                        $icone = 'fas fa-boxes';
+                                        break;
+                                    case 'exclusao':
+                                        $badge_class = 'badge-exclusao';
+                                        $detalhes = "Estoque final: {$operacao['quantidade_final']} unidades";
+                                        $icone = 'fas fa-trash';
+                                        break;
+                                    case 'correcao':
+                                        $badge_class = 'badge-correcao';
+                                        $detalhes = "Custo: R$ {$operacao['valor_unitario_anterior']} → R$ {$operacao['valor_unitario_novo']}";
+                                        $icone = 'fas fa-money-bill-wave';
+                                        break;
+                                }
+                            ?>
+                            <tr>
+                                <td><?= date('d/m/Y H:i', strtotime($operacao['data'])) ?></td>
+                                <td>
+                                    <span class="badge <?= $badge_class ?>">
+                                        <i class="<?= $icone ?>"></i>
+                                        <?= strtoupper($operacao['tipo']) ?>
+                                    </span>
+                                </td>
+                                <td><?= htmlspecialchars($operacao['produto_nome']) ?></td>
+                                <td><?= $detalhes ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
                 <?php else: ?>
-                <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+                <div style="text-align: center; padding: 40px; color: var(--gray);">
+                    <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
                     <h3>Nenhuma operação registrada</h3>
                 </div>
                 <?php endif; ?>
@@ -589,15 +861,85 @@ try {
         </div>
     </div>
 
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.php" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="compras.php" class="nav-item">
+            <span class="nav-icon">🛒</span>
+            <span class="nav-label">Compras</span>
+        </a>
+        <a href="vendas.php" class="nav-item">
+            <span class="nav-icon">🏷️</span>
+            <span class="nav-label">Vendas</span>
+        </a>
+        <a href="gerenciar.php" class="nav-item ativo">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Gerenciar</span>
+        </a>
+    </nav>
+
     <script>
-        // Sincronizar seleção de produto entre abas
-        const produtoSelect = document.getElementById('produto_id');
-        produtoSelect.addEventListener('change', function() {
-            const produtoId = this.value;
+        function mostrarTab(tabId) {
+            // Esconder todas as tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(conteudo => {
+                conteudo.classList.remove('active');
+            });
+            
+            // Mostrar tab selecionada
+            document.querySelector(`.tab[onclick="mostrarTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+        
+        function carregarProduto(produtoId) {
+            if (!produtoId) return;
+            
+            // Simular carregamento de dados do produto
+            const produtoSelect = document.getElementById('produto_id');
+            const produtoTexto = produtoSelect.options[produtoSelect.selectedIndex].text;
+            
+            // Em uma implementação real, você faria uma requisição AJAX aqui
+            document.getElementById('info-produto').innerHTML = `
+                <i class="fas fa-info-circle"></i>
+                <strong>Produto selecionado:</strong> ${produtoTexto}
+            `;
+            
+            // Sincronizar entre formulários
             document.getElementById('produto_id_ajustar').value = produtoId;
             document.getElementById('produto_id_precos').value = produtoId;
             document.getElementById('produto_id_excluir').value = produtoId;
-            carregarProduto(produtoId);
+        }
+        
+        function confirmarExclusao() {
+            const produtoSelect = document.getElementById('produto_id');
+            if (!produtoSelect.value) {
+                alert('Selecione um produto primeiro!');
+                return false;
+            }
+            
+            const produtoNome = produtoSelect.options[produtoSelect.selectedIndex].text;
+            return confirm(`🚨 ATENÇÃO!\n\nVocê está prestes a excluir o produto:\n"${produtoNome}"\n\nEsta ação NÃO PODE ser desfeita!\n\nDigite CONFIRMAR no campo abaixo para prosseguir.`);
+        }
+        
+        // Melhorias para mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Feedback tátil para elementos interativos
+            const interactiveElements = document.querySelectorAll('.tab, .btn, input, select, textarea');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
         });
     </script>
 </body>

@@ -1,272 +1,550 @@
 <?php
 /**
- * COISABOA - Página Inicial e Dashboard
- * Arquivo: index.php
- * Local: C:\xampp\htdocs\COISABOA\COISABOA\index.php
- * @version 1.0.0
+ * COISABOA - Sistema de Gestão Pessoal
+ * Dashboard Principal - Otimizado para Mobile
  */
 
-// ==================== CONFIGURAÇÃO DE CAMINHOS ====================
-
-// Definir o base path corretamente para a estrutura atual
-define('BASE_PATH', __DIR__);
-define('ROOT_PATH', dirname(__DIR__));
-
-// ==================== VERIFICAÇÃO DE INSTALAÇÃO ====================
-
-// Verificar se o sistema está instalado
-$config_file = __DIR__ . '/config/database.php';
-$installed_file = __DIR__ . '/config/installed.json';
-
-if (!file_exists($config_file) || !file_exists($installed_file)) {
-    // Redirecionar para o instalador se não estiver instalado
-    if (file_exists('install.php')) {
-        header('Location: install.php');
-        exit;
-    } else {
-        echo '<!DOCTYPE html>
-        <html lang="pt-BR">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>COISABOA - Instalação</title>
-            <style>
-                body { 
-                    font-family: Arial, sans-serif; 
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    min-height: 100vh; 
-                    display: flex; 
-                    align-items: center; 
-                    justify-content: center; 
-                    margin: 0; 
-                    padding: 20px;
-                }
-                .container { 
-                    background: white; 
-                    padding: 3rem; 
-                    border-radius: 15px; 
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
-                    text-align: center; 
-                    max-width: 500px;
-                }
-                h1 { color: #333; margin-bottom: 1rem; }
-                p { color: #666; margin-bottom: 2rem; }
-                .btn { 
-                    display: inline-block; 
-                    padding: 12px 30px; 
-                    background: #667eea; 
-                    color: white; 
-                    text-decoration: none; 
-                    border-radius: 8px; 
-                    font-weight: bold;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>📱 COISABOA</h1>
-                <p>Sistema de Controle Comercial</p>
-                <p>O sistema não está instalado. Clique no botão abaixo para iniciar a instalação.</p>
-                <a href="install.php" class="btn">🚀 Instalar Sistema</a>
-                <p style="margin-top: 2rem; font-size: 0.9em; color: #999;">
-                    Caminho atual: ' . htmlspecialchars(__DIR__) . '
-                </p>
-            </div>
-        </body>
-        </html>';
-        exit;
-    }
+// Verificar se o usuário está logado
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: login.php');
+    exit;
 }
 
-// ==================== INICIALIZAÇÃO DO SISTEMA ====================
+// Configuração do banco de dados
+require_once 'config/database.php';
 
-// Carregar configurações e funções
-require_once __DIR__ . '/includes/init.php';
+// Buscar dados do usuário
+$pdo = getDB();
+$usuario_stmt = $pdo->prepare("SELECT nome, email FROM usuarios WHERE id = ?");
+$usuario_stmt->execute([$_SESSION['usuario_id']]);
+$usuario = $usuario_stmt->fetch();
 
-// Configurações da página
-$page_title = 'Dashboard - COISABOA';
-$current_page = 'dashboard';
-
-// ==================== DADOS DO DASHBOARD ====================
-
+// Buscar estatísticas
 try {
-    // Estatísticas principais
-    $estatisticas = [
-        'total_produtos' => dbFind("SELECT COUNT(DISTINCT produto) as total FROM compras")['total'] ?? 0,
-        'total_compras' => dbFind("SELECT COUNT(*) as total FROM compras")['total'] ?? 0,
-        'total_vendas' => dbFind("SELECT COUNT(*) as total FROM vendas")['total'] ?? 0,
-        'valor_total_vendas' => dbFind("SELECT COALESCE(SUM(valor_total), 0) as total FROM vendas")['total'] ?? 0,
-        'lucro_estimado' => dbFind("
-            SELECT COALESCE(SUM(v.valor_total - (v.quantidade * c.valor_pago)), 0) as lucro
-            FROM vendas v
-            INNER JOIN compras c ON v.produto = c.produto
-        ")['lucro'] ?? 0
-    ];
-
-    // Últimas movimentações
-    $ultimas_movimentacoes = dbFindAll("
-        (SELECT 'compra' as tipo, produto, quantidade, valor_pago as valor, data_compra as data, NULL as forma_pagamento
-         FROM compras ORDER BY data_compra DESC LIMIT 5)
-        UNION ALL
-        (SELECT 'venda' as tipo, produto, quantidade, valor_vendido as valor, data_venda as data, forma_pagamento
-         FROM vendas ORDER BY data_venda DESC LIMIT 5)
-        ORDER BY data DESC LIMIT 8
-    ");
-
-    // Produtos com estoque baixo
-    $estoque_baixo = dbFindAll("
-        SELECT produto, 
-               (COALESCE(SUM(c.quantidade), 0) - COALESCE(SUM(v.quantidade), 0)) as estoque_atual
-        FROM (SELECT produto, quantidade FROM compras) c
-        LEFT JOIN (SELECT produto, quantidade FROM vendas) v ON c.produto = v.produto
-        GROUP BY c.produto
-        HAVING estoque_atual <= ? AND estoque_atual > 0
-        ORDER BY estoque_atual ASC LIMIT 6
-    ", [5]);
-
-} catch (Exception $e) {
-    $error_message = "Erro ao carregar dados: " . $e->getMessage();
-    error_log($error_message);
+    // Total de compras
+    $compras_stmt = $pdo->query("SELECT COUNT(*) as total, COALESCE(SUM(valor_total), 0) as valor_total FROM compras");
+    $compras_stats = $compras_stmt->fetch();
+    
+    // Total de vendas
+    $vendas_stmt = $pdo->query("SELECT COUNT(*) as total, COALESCE(SUM(valor_vendido), 0) as valor_total FROM vendas");
+    $vendas_stats = $vendas_stmt->fetch();
+    
+    // Total em estoque
+    $estoque_stmt = $pdo->query("SELECT COUNT(*) as total, COALESCE(SUM(quantidade), 0) as itens FROM estoque");
+    $estoque_stats = $estoque_stmt->fetch();
+    
+    // Lucro total
+    $lucro_total = $vendas_stats['valor_total'] - $compras_stats['valor_total'];
+    
+} catch (PDOException $e) {
+    error_log("Erro ao buscar estatísticas: " . $e->getMessage());
+    $compras_stats = $vendas_stats = $estoque_stats = ['total' => 0, 'valor_total' => 0, 'itens' => 0];
+    $lucro_total = 0;
 }
 
-// ==================== INTERFACE ====================
+// Últimas compras
+$ultimas_compras_stmt = $pdo->query("
+    SELECT produto, quantidade, valor_total, data_compra 
+    FROM compras 
+    ORDER BY data_compra DESC 
+    LIMIT 5
+");
+$ultimas_compras = $ultimas_compras_stmt->fetchAll();
 
-// Incluir cabeçalho
-include __DIR__ . '/templates/header.php';
+// Últimas vendas
+$ultimas_vendas_stmt = $pdo->query("
+    SELECT produto, quantidade, valor_vendido, data_venda 
+    FROM vendas 
+    ORDER BY data_venda DESC 
+    LIMIT 5
+");
+$ultimas_vendas = $ultimas_vendas_stmt->fetchAll();
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>COISABOA - Dashboard</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #34495e;
+            --text-light: #7f8c8d;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --radius-sm: 12px;
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+            padding-bottom: 80px; /* Espaço para a bottom nav */
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 15px;
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-details h1 {
+            font-size: 20px;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+        
+        .user-details p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Container Principal */
+        .container {
+            padding: 0 15px;
+        }
+        
+        /* Cards de Estatísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:active {
+            transform: scale(0.98);
+        }
+        
+        .stat-card.grande {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary), #2980b9);
+            color: white;
+        }
+        
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Seções */
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            padding: 15px 20px;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .section-action {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .section-content {
+            padding: 0;
+        }
+        
+        /* Listas */
+        .lista-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lista-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-info h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+        
+        .item-info p {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        .item-valor {
+            font-weight: 700;
+            color: var(--success);
+        }
+        
+        .item-valor.negativo {
+            color: var(--danger);
+        }
+        
+        .sem-dados {
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-light);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid #ecf0f1;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .nav-item.ativo {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Loading States */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsividade */
+        @media (max-width: 360px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 15px 12px;
+            }
+            
+            .container {
+                padding: 0 12px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        /* Status Colors */
+        .status-success { color: var(--success); }
+        .status-warning { color: var(--warning); }
+        .status-danger { color: var(--danger); }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header fade-in">
+        <div class="user-info">
+            <div class="user-details">
+                <h1>Olá, <?= htmlspecialchars(explode(' ', $usuario['nome'])[0]) ?>! 👋</h1>
+                <p>Bem-vindo ao COISABOA</p>
+            </div>
+            <form method="POST" action="logout.php" style="display: inline;">
+                <button type="submit" class="logout-btn" onclick="return confirm('Deseja sair?')">
+                    Sair
+                </button>
+            </form>
+        </div>
+    </header>
 
-<div class="container">
-    <!-- Cabeçalho -->
-    <div class="page-header text-center" style="margin-bottom: 3rem;">
-        <h1 class="fade-in">📊 Dashboard COISABOA</h1>
-        <p class="text-muted">Sistema funcionando em: <?= $_SERVER['HTTP_HOST'] ?>/COISABOA/COISABOA/</p>
-    </div>
-
-    <!-- Cards de Estatísticas -->
-    <div class="dashboard-stats">
-        <div class="stat-card">
-            <div class="stat-icon">📦</div>
-            <div class="stat-number"><?= $estatisticas['total_produtos'] ?></div>
-            <div class="stat-label">Produtos</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon">🛒</div>
-            <div class="stat-number"><?= $estatisticas['total_compras'] ?></div>
-            <div class="stat-label">Compras</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon">💰</div>
-            <div class="stat-number"><?= $estatisticas['total_vendas'] ?></div>
-            <div class="stat-label">Vendas</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon">💵</div>
-            <div class="stat-number"><?= formatarMoeda($estatisticas['valor_total_vendas']) ?></div>
-            <div class="stat-label">Faturamento</div>
-        </div>
-    </div>
-
-    <!-- Grid Principal -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
-        
-        <!-- Últimas Movimentações -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon">🔄</div>
-                <h3 class="card-title">Últimas Movimentações</h3>
+    <!-- Conteúdo Principal -->
+    <main class="container">
+        <!-- Estatísticas -->
+        <div class="stats-grid fade-in">
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value">R$ <?= number_format($compras_stats['valor_total'], 2, ',', '.') ?></div>
+                <div class="stat-label">Total Comprado</div>
             </div>
             
-            <div class="recent-activity">
-                <?php if (empty($ultimas_movimentacoes)): ?>
-                    <div class="text-center" style="padding: 2rem;">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
-                        <p style="color: var(--cor-cinza-500);">Nenhuma movimentação</p>
-                        <a href="modules/purchases/comprei.php" class="btn btn-primary btn-sm">Primeira Compra</a>
+            <div class="stat-card">
+                <div class="stat-icon">💸</div>
+                <div class="stat-value">R$ <?= number_format($vendas_stats['valor_total'], 2, ',', '.') ?></div>
+                <div class="stat-label">Total Vendido</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-value"><?= $estoque_stats['itens'] ?></div>
+                <div class="stat-label">Itens Estoque</div>
+            </div>
+            
+            <div class="stat-card grande">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value">R$ <?= number_format($lucro_total, 2, ',', '.') ?></div>
+                <div class="stat-label">Lucro Total</div>
+            </div>
+        </div>
+
+        <!-- Últimas Compras -->
+        <section class="section fade-in">
+            <div class="section-header">
+                <h3 class="section-title">🛒 Últimas Compras</h3>
+                <a href="compras.php" class="section-action">Ver Todas</a>
+            </div>
+            <div class="section-content">
+                <?php if (empty($ultimas_compras)): ?>
+                    <div class="sem-dados">
+                        Nenhuma compra registrada
                     </div>
                 <?php else: ?>
-                    <?php foreach ($ultimas_movimentacoes as $movimento): ?>
-                        <div class="activity-item">
-                            <div class="activity-icon <?= $movimento['tipo'] === 'compra' ? 'activity-icon-compra' : 'activity-icon-venda' ?>">
-                                <?= $movimento['tipo'] === 'compra' ? '🛒' : '💰' ?>
+                    <?php foreach ($ultimas_compras as $compra): ?>
+                        <div class="lista-item">
+                            <div class="item-info">
+                                <h4><?= htmlspecialchars($compra['produto']) ?></h4>
+                                <p><?= $compra['quantidade'] ?> un • <?= date('d/m', strtotime($compra['data_compra'])) ?></p>
                             </div>
-                            <div class="activity-content">
-                                <div class="activity-title">
-                                    <strong><?= $movimento['produto'] ?></strong>
-                                    <small class="text-muted">
-                                        (<?= $movimento['quantidade'] ?> un - <?= formatarMoeda($movimento['valor']) ?>)
-                                    </small>
-                                </div>
-                                <div class="activity-time">
-                                    <?= formatarData($movimento['data']) ?>
-                                </div>
+                            <div class="item-valor">
+                                R$ <?= number_format($compra['valor_total'], 2, ',', '.') ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
-        </div>
+        </section>
 
-        <!-- Ações Rápidas -->
-        <div style="display: flex; flex-direction: column; gap: 2rem;">
-            
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">⚡</div>
-                    <h3 class="card-title">Ações Rápidas</h3>
-                </div>
-                
-                <div style="padding: 1.5rem;">
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <a href="modules/purchases/comprei.php" class="btn btn-primary btn-lg" style="text-align: center;">
-                            🛒 Nova Compra
-                        </a>
-                        
-                        <a href="modules/sales/vendi.php" class="btn btn-success btn-lg" style="text-align: center;">
-                            💰 Nova Venda
-                        </a>
-                        
-                        <a href="modules/inventory/estoque.php" class="btn btn-outline btn-lg" style="text-align: center;">
-                            📊 Ver Estoque
-                        </a>
-                    </div>
-                </div>
+        <!-- Últimas Vendas -->
+        <section class="section fade-in">
+            <div class="section-header">
+                <h3 class="section-title">🏷️ Últimas Vendas</h3>
+                <a href="vendas.php" class="section-action">Ver Todas</a>
             </div>
-
-            <!-- Alertas -->
-            <?php if (!empty($estoque_baixo)): ?>
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">⚠️</div>
-                    <h3 class="card-title">Estoque Baixo</h3>
-                </div>
-                
-                <div class="recent-activity">
-                    <?php foreach ($estoque_baixo as $produto): ?>
-                        <div class="activity-item">
-                            <div class="activity-icon" style="background: var(--cor-alerta);">📦</div>
-                            <div class="activity-content">
-                                <div class="activity-title">
-                                    <strong><?= $produto['produto'] ?></strong>
-                                    <small class="text-alerta">
-                                        (<?= $produto['estoque_atual'] ?> unidades)
-                                    </small>
-                                </div>
+            <div class="section-content">
+                <?php if (empty($ultimas_vendas)): ?>
+                    <div class="sem-dados">
+                        Nenhuma venda registrada
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($ultimas_vendas as $venda): ?>
+                        <div class="lista-item">
+                            <div class="item-info">
+                                <h4><?= htmlspecialchars($venda['produto']) ?></h4>
+                                <p><?= $venda['quantidade'] ?> un • <?= date('d/m', strtotime($venda['data_venda'])) ?></p>
+                            </div>
+                            <div class="item-valor status-success">
+                                R$ <?= number_format($venda['valor_vendido'], 2, ',', '.') ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
-                </div>
+                <?php endif; ?>
             </div>
-            <?php endif; ?>
+        </section>
+    </main>
 
-        </div>
-    </div>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.php" class="nav-item ativo">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="compras.php" class="nav-item">
+            <span class="nav-icon">🛒</span>
+            <span class="nav-label">Compras</span>
+        </a>
+        <a href="vendas.php" class="nav-item">
+            <span class="nav-icon">🏷️</span>
+            <span class="nav-label">Vendas</span>
+        </a>
+        <a href="estoque.php" class="nav-item">
+            <span class="nav-icon">📦</span>
+            <span class="nav-label">Estoque</span>
+        </a>
+    </nav>
 
-</div>
-
-<?php
-// Incluir rodapé
-include __DIR__ . '/templates/footer.php';
-?>
+    <script>
+        // Melhorias para mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Feedback tátil para todos os elementos clicáveis
+            const clickableElements = document.querySelectorAll('.stat-card, .lista-item, .nav-item, .logout-btn');
+            
+            clickableElements.forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.opacity = '0.7';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.opacity = '1';
+                });
+            });
+            
+            // Prevenir zoom duplo
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // Loading states para navegação
+            const navLinks = document.querySelectorAll('.nav-item, .section-action');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') && !this.classList.contains('ativo')) {
+                        this.style.opacity = '0.5';
+                    }
+                });
+            });
+            
+            // Atualizar dados periodicamente (opcional)
+            setTimeout(() => {
+                // Aqui poderia ter uma atualização AJAX dos dados
+                console.log('Dashboard carregado com sucesso!');
+            }, 1000);
+        });
+        
+        // Detectar se está em modo PWA/standalone
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone === true) {
+            document.body.classList.add('pwa-mode');
+        }
+    </script>
+</body>
+</html>

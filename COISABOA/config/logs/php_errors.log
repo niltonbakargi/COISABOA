@@ -1,0 +1,12 @@
+[03-Oct-2025 09:17:02 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:22:04 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:22:42 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:23:09 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:24:15 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:25:24 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:25:29 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:25:36 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:25:40 America/Sao_Paulo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\COISABOA\COISABOA\config\database.php on line 114
+[03-Oct-2025 09:33:50 America/Sao_Paulo] PHP Warning:  Undefined variable $total_vendas_qtd in C:\xampp\htdocs\COISABOA\COISABOA\relatorio_financeiro.php on line 87
+[03-Oct-2025 09:34:29 America/Sao_Paulo] PHP Warning:  Undefined variable $total_vendas_qtd in C:\xampp\htdocs\COISABOA\COISABOA\relatorio_financeiro.php on line 87
+[03-Oct-2025 09:36:07 America/Sao_Paulo] PHP Warning:  Undefined variable $total_vendas_qtd in C:\xampp\htdocs\COISABOA\COISABOA\relatorio_financeiro.php on line 87

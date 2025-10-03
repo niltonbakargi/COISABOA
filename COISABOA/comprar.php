@@ -149,125 +149,468 @@ if ($_POST['action'] ?? '' === 'comprar') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Comprar - COISABOA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial; padding: 20px; max-width: 600px; margin: 0 auto; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, textarea, select, button { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background: #27ae60; color: white; border: none; cursor: pointer; font-size: 16px; }
-        .mensagem { padding: 15px; margin-bottom: 20px; border-radius: 5px; line-height: 1.6; }
-        .sucesso { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .erro { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .arquivo-info { font-size: 12px; color: #666; margin-top: -8px; margin-bottom: 10px; }
-        .info-pasta { font-size: 11px; color: #888; margin-top: 5px; }
-        .valor-info { font-size: 12px; color: #3498db; margin-top: -5px; margin-bottom: 10px; }
-        .form-row { display: flex; gap: 15px; }
-        .form-row .form-group { flex: 1; }
-        .preview-container { margin: 10px 0; }
-        .preview-img { max-width: 100px; max-height: 100px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
-        .campo-destaque { border: 2px solid #27ae60; background-color: #f8fff8; }
-        .info-individual { background: #e8f4fd; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 4px solid #3498db; }
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --border: #e5e7eb;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body { 
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px 15px 80px 15px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header h1 {
+            color: var(--dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header h1 i {
+            color: var(--primary);
+        }
+        
+        .btn-voltar {
+            background: var(--gray);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .btn-voltar:active {
+            transform: translateY(-2px);
+        }
+        
+        /* Form Container */
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        /* Mensagens */
+        .mensagem {
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        .sucesso {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .erro {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        .required::after {
+            content: " *";
+            color: var(--danger);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        input[type="file"] {
+            padding: 12px;
+            background: #f8fafc;
+        }
+        
+        .campo-destaque {
+            border-color: var(--secondary);
+            background-color: #f0fdf9;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        /* Info Texts */
+        .info-text {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        
+        .info-text.primario {
+            color: var(--primary);
+        }
+        
+        .info-text.sucesso {
+            color: var(--secondary);
+        }
+        
+        /* Preview Images */
+        .preview-container {
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .preview-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid var(--info);
+            font-size: 0.9rem;
+        }
+        
+        /* Button */
+        .btn-submit {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+            color: white;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-submit:active {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            flex: 1;
+            padding: 8px 0;
+        }
+        
+        .nav-item.ativo {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            input, textarea, select {
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px 80px 10px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .preview-img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
     </style>
 </head>
 <body>
-    <h1>🛒 Comprar Produto</h1>
-    
-    <?php if ($mensagem): ?>
-        <div class="mensagem <?= strpos($mensagem, '✅') !== false ? 'sucesso' : 'erro' ?>">
-            <?= $mensagem ?>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <h1>
+                <i class="fas fa-shopping-bag"></i>
+                Nova Compra
+            </h1>
+            <a href="dashboard.php" class="btn-voltar">
+                <i class="fas fa-arrow-left"></i>
+                Voltar
+            </a>
         </div>
-    <?php endif; ?>
-    
-    <form method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="action" value="comprar">
-        
-        <div class="form-group">
-            <label>Nome do Produto *</label>
-            <input type="text" name="produto" id="produto" required>
-            <div class="valor-info">Ex: iPhone 14, Tênis Nike, etc.</div>
-        </div>
-        
-        <div class="form-row">
-            <div class="form-group">
-                <label>Quantidade *</label>
-                <input type="number" name="quantidade" id="quantidade" value="1" min="1" required>
+
+        <?php if ($mensagem): ?>
+            <div class="mensagem <?= strpos($mensagem, '✅') !== false ? 'sucesso' : 'erro' ?> fade-in">
+                <?= $mensagem ?>
             </div>
-            
-            <div class="form-group">
-                <label>Data da Compra</label>
-                <input type="datetime-local" name="data_compra" value="<?= date('Y-m-d\TH:i') ?>">
-            </div>
+        <?php endif; ?>
+
+        <!-- Form Container -->
+        <div class="form-container fade-in">
+            <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="comprar">
+                
+                <div class="form-group">
+                    <label class="required">Nome do Produto</label>
+                    <input type="text" name="produto" id="produto" placeholder="Ex: iPhone 14, Tênis Nike, etc." required>
+                    <div class="info-text">Digite o nome completo do produto</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">Quantidade</label>
+                        <input type="number" name="quantidade" id="quantidade" value="1" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Data da Compra</label>
+                        <input type="datetime-local" name="data_compra" value="<?= date('Y-m-d\TH:i') ?>">
+                        <div class="info-text">Data e hora da compra</div>
+                    </div>
+                </div>
+                
+                <div id="infoIndividual" class="info-box" style="display: none;">
+                    <strong>💡 Sistema de Itens Individuais</strong><br>
+                    Cada unidade será cadastrada separadamente no estoque com numeração automática.
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">Valor Unitário (R$)</label>
+                        <input type="number" name="valor_unitario" step="0.01" min="0" placeholder="0.00" required id="valorUnitario">
+                        <div class="info-text">Valor pago por cada unidade</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Valor Revenda (R$)</label>
+                        <input type="number" name="valor_revenda" step="0.01" min="0" placeholder="0.00" required class="campo-destaque">
+                        <div class="info-text primario">Valor que você pretende vender</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Valor Total Calculado</label>
+                    <input type="text" id="valorTotalDisplay" disabled style="background: #f8fafc; font-weight: bold; color: var(--dark);">
+                    <div class="info-text sucesso" id="infoValorTotal">O valor total será calculado automaticamente</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Forma de Pagamento</label>
+                    <select name="forma_pagamento">
+                        <option value="">Selecione a forma de pagamento...</option>
+                        <option value="dinheiro">💵 Dinheiro</option>
+                        <option value="cartao_credito">💳 Cartão de Crédito</option>
+                        <option value="cartao_debito">🏦 Cartão de Débito</option>
+                        <option value="pix">📱 PIX</option>
+                        <option value="transferencia">🔁 Transferência</option>
+                        <option value="boleto">📄 Boleto</option>
+                        <option value="outro">❓ Outro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Observações</label>
+                    <textarea name="observacoes" rows="4" placeholder="Observações adicionais sobre a compra..."></textarea>
+                    <div class="info-text">Opcional: informações extras sobre a compra</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Fotos do Produto</label>
+                    <input type="file" name="imagens[]" multiple accept="image/*" capture="camera" id="imagensProduto">
+                    <div class="info-text">Selecione várias fotos do produto</div>
+                    <div class="info-text">💡 Segure para selecionar múltiplas imagens</div>
+                    <div class="preview-container" id="previewProduto"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Foto do Vendedor/Comprovante</label>
+                    <input type="file" name="imagem_vendedor" accept="image/*" capture="camera" id="imagemVendedor">
+                    <div class="info-text">Foto do vendedor ou comprovante de pagamento</div>
+                    <div class="preview-container" id="previewVendedor"></div>
+                </div>
+                
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-save"></i>
+                    Salvar Compra
+                </button>
+            </form>
         </div>
-        
-        <div id="infoIndividual" class="info-individual" style="display: none;">
-            <strong>💡 Sistema de Itens Individuais:</strong><br>
-            Cada unidade será cadastrada separadamente no estoque com numeração automática.
-            Exemplo: "iPhone 14 #1", "iPhone 14 #2", etc.
-        </div>
-        
-        <div class="form-row">
-            <div class="form-group">
-                <label>Valor Unitário (R$) *</label>
-                <input type="number" name="valor_unitario" step="0.01" min="0" required id="valorUnitario">
-                <div class="valor-info">Valor pago por cada unidade</div>
-            </div>
-            
-            <div class="form-group">
-                <label>Valor Revenda (R$) *</label>
-                <input type="number" name="valor_revenda" step="0.01" min="0" required class="campo-destaque">
-                <div class="valor-info">Valor que você pretende vender cada unidade</div>
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <label>Valor Total Calculado</label>
-            <input type="text" id="valorTotalDisplay" disabled style="background: #f5f5f5; font-weight: bold;">
-            <div class="valor-info" id="infoValorTotal">O valor total será calculado automaticamente</div>
-        </div>
-        
-        <div class="form-group">
-            <label>Forma de Pagamento</label>
-            <select name="forma_pagamento">
-                <option value="">Selecione...</option>
-                <option value="dinheiro">Dinheiro</option>
-                <option value="cartao_credito">Cartão de Crédito</option>
-                <option value="cartao_debito">Cartão de Débito</option>
-                <option value="pix">PIX</option>
-                <option value="transferencia">Transferência</option>
-                <option value="boleto">Boleto</option>
-                <option value="outro">Outro</option>
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label>Observações</label>
-            <textarea name="observacoes" rows="4" placeholder="Observações adicionais sobre a compra..."></textarea>
-        </div>
-        
-        <div class="form-group">
-            <label>Fotos do Produto (múltiplas)</label>
-            <input type="file" name="imagens[]" multiple accept="image/*" capture="camera" id="imagensProduto">
-            <div class="arquivo-info">Selecione várias fotos do produto (Ctrl+Click)</div>
-            <div class="info-pasta">As fotos serão aplicadas a todos os itens do estoque</div>
-            <div class="preview-container" id="previewProduto"></div>
-        </div>
-        
-        <div class="form-group">
-            <label>Foto do Vendedor/Comprovante</label>
-            <input type="file" name="imagem_vendedor" accept="image/*" capture="camera" id="imagemVendedor">
-            <div class="arquivo-info">Foto do vendedor ou comprovante de pagamento</div>
-            <div class="info-pasta">A foto será salva em uma pasta com o ID da compra</div>
-            <div class="preview-container" id="previewVendedor"></div>
-        </div>
-        
-        <button type="submit">💾 Salvar Compra</button>
-    </form>
-    
-    <a href="dashboard.php">← Voltar para Dashboard</a>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.php" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="compras.php" class="nav-item ativo">
+            <span class="nav-icon">🛒</span>
+            <span class="nav-label">Compras</span>
+        </a>
+        <a href="vendas.php" class="nav-item">
+            <span class="nav-icon">🏷️</span>
+            <span class="nav-label">Vendas</span>
+        </a>
+        <a href="estoque.php" class="nav-item">
+            <span class="nav-icon">📦</span>
+            <span class="nav-label">Estoque</span>
+        </a>
+    </nav>
 
     <script>
         // Cálculo automático do valor total
@@ -292,12 +635,12 @@ if ($_POST['action'] ?? '' === 'comprar') {
                 
                 if (total > 0) {
                     valorTotalDisplay.value = 'R$ ' + total.toFixed(2).replace('.', ',');
-                    infoValorTotal.textContent = 'Quantidade: ' + qtd + ' × Valor Unitário: R$ ' + valor.toFixed(2).replace('.', ',') + ' = Total: R$ ' + total.toFixed(2).replace('.', ',');
-                    infoValorTotal.style.color = '#27ae60';
+                    infoValorTotal.innerHTML = '<strong>Quantidade:</strong> ' + qtd + ' × <strong>Valor Unitário:</strong> R$ ' + valor.toFixed(2).replace('.', ',') + ' = <strong>Total: R$ ' + total.toFixed(2).replace('.', ',') + '</strong>';
+                    infoValorTotal.style.color = 'var(--secondary)';
                 } else {
                     valorTotalDisplay.value = '';
                     infoValorTotal.textContent = 'O valor total será calculado automaticamente';
-                    infoValorTotal.style.color = '#3498db';
+                    infoValorTotal.style.color = 'var(--primary)';
                 }
             }
             
@@ -347,6 +690,19 @@ if ($_POST['action'] ?? '' === 'comprar') {
             
             // Calcular inicialmente
             calcularValorTotal();
+            
+            // Feedback tátil para elementos interativos
+            const interactiveElements = document.querySelectorAll('input, select, textarea, button');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
         });
     </script>
 </body>

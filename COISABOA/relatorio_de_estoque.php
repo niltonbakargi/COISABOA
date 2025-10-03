@@ -123,218 +123,528 @@ try {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Relatório de Estoque - COISABOA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 30px; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --border: #e5e7eb;
         }
         
-        .btn { 
-            background: #3498db; 
-            color: white; 
-            padding: 10px 20px; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            text-decoration: none; 
-            display: inline-block; 
-            font-size: 14px;
-        }
-        .btn:hover { background: #2980b9; }
-        .btn-success { background: #27ae60; }
-        .btn-success:hover { background: #219a52; }
-        .btn-warning { background: #f39c12; }
-        .btn-warning:hover { background: #e67e22; }
-        .btn-danger { background: #e74c3c; }
-        .btn-danger:hover { background: #c0392b; }
-        
-        .filtros { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 8px; 
-            margin-bottom: 30px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
         }
         
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50; }
-        input, select { 
-            padding: 10px 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            width: 100%; 
-            font-size: 14px;
+        body { 
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px 15px 80px 15px;
         }
         
-        .cards { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 20px; 
-            margin-bottom: 30px; 
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
-        .card { 
-            background: white; 
-            padding: 25px; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-            border-left: 4px solid #3498db; 
-        }
-        .card.total { border-left-color: #3498db; }
-        .card.valor { border-left-color: #27ae60; }
-        .card.lucro { border-left-color: #f39c12; }
-        .card.alerta { border-left-color: #e74c3c; }
-        .card h3 { color: #2c3e50; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; }
-        .card .valor { font-size: 28px; font-weight: bold; color: #2c3e50; margin-bottom: 5px; }
-        .card .valor.total { color: #3498db; }
-        .card .valor.positivo { color: #27ae60; }
-        .card .valor.alerta { color: #e74c3c; }
-        .card .desc { font-size: 12px; color: #7f8c8d; }
-        
-        .tabela { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 20px; 
-            background: white; 
-            border-radius: 8px; 
-            overflow: hidden; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-            font-size: 14px;
-        }
-        .tabela th, .tabela td { 
-            padding: 12px; 
-            text-align: left; 
-            border-bottom: 1px solid #ecf0f1; 
-        }
-        .tabela th { 
-            background: #34495e; 
-            color: white; 
-            font-weight: 600; 
-            position: sticky;
-            top: 0;
-        }
-        .tabela tr:hover { background: #f8f9fa; }
-        .tabela .estoque-alto { background: #d5f4e6; }
-        .tabela .estoque-medio { background: #fffacd; }
-        .tabela .estoque-baixo { background: #ffcccb; }
-        .tabela .estoque-zero { background: #ffb3b3; color: #721c24; }
-        .tabela .positivo { color: #27ae60; font-weight: bold; }
-        .tabela .negativo { color: #e74c3c; font-weight: bold; }
-        .tabela .acao { text-align: center; }
-        
-        .sem-dados { 
-            text-align: center; 
-            padding: 40px; 
-            color: #7f8c8d; 
-            background: white; 
-            border-radius: 8px; 
-            margin: 20px 0; 
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .secao { 
-            background: white; 
-            padding: 25px; 
-            border-radius: 10px; 
-            margin-bottom: 30px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-        }
-        .secao h2 { 
-            color: #2c3e50; 
-            margin-bottom: 20px; 
-            padding-bottom: 10px; 
-            border-bottom: 2px solid #ecf0f1; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
+        .header h1 {
+            color: var(--dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
-        .charts { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 20px; 
-            margin-bottom: 30px; 
-        }
-        .chart-container { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        .header h1 i {
+            color: var(--primary);
         }
         
-        .alertas { 
-            background: #fff3cd; 
-            border: 1px solid #ffeaa7; 
-            border-radius: 8px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-        }
-        .alerta-item { 
-            background: white; 
-            padding: 15px; 
-            margin: 10px 0; 
-            border-radius: 5px; 
-            border-left: 4px solid #e74c3c; 
+        .btn-voltar {
+            background: var(--gray);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .btn-voltar:active {
+            transform: translateY(-2px);
+        }
         
+        /* Mensagens */
+        .mensagem {
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        .erro {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            border-left: 4px solid var(--card-color);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--card-color);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        /* Card Colors */
+        .card-total { --card-color: var(--primary); }
+        .card-valor { --card-color: var(--secondary); }
+        .card-revenda { --card-color: var(--info); }
+        .card-lucro { --card-color: var(--warning); }
+        
+        /* Filtros */
+        .filtros-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 25px;
+        }
+        
+        .filtros-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .form-group {
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            height: 48px;
+        }
+        
+        .btn:active {
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+        }
+        
+        /* Alertas */
+        .alertas-card {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .alerta-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Gráficos */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .chart-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Seções */
+        .secao {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 25px;
+        }
+        
+        .secao h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .table th {
+            background: var(--dark);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .table tr:hover {
+            background: #f8fafc;
+        }
+        
+        /* Status Classes */
+        .estoque-alto { background: #d5f4e6; }
+        .estoque-medio { background: #fffacd; }
+        .estoque-baixo { background: #ffcccb; }
+        .estoque-zero { background: #ffb3b3; color: #721c24; }
+        
+        .positivo { color: var(--secondary); font-weight: bold; }
+        .negativo { color: var(--danger); font-weight: bold; }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-success { background: var(--secondary); color: white; }
+        .badge-warning { background: var(--warning); color: white; }
+        .badge-danger { background: var(--danger); color: white; }
+        .badge-info { background: var(--info); color: white; }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            flex: 1;
+            padding: 8px 0;
+        }
+        
+        .nav-item.ativo {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .charts, .grid-2 { grid-template-columns: 1fr; }
-            .cards { grid-template-columns: 1fr; }
-            .header { flex-direction: column; gap: 15px; text-align: center; }
-            .tabela { font-size: 12px; }
-            .tabela th, .tabela td { padding: 8px; }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .filtros-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .table {
+                font-size: 0.8rem;
+            }
+            
+            .table th, .table td {
+                padding: 12px 8px;
+            }
+            
+            /* Hide some columns on mobile */
+            .table th:nth-child(5),
+            .table td:nth-child(5),
+            .table th:nth-child(6),
+            .table td:nth-child(6),
+            .table th:nth-child(8),
+            .table td:nth-child(8),
+            .table th:nth-child(9),
+            .table td:nth-child(9) {
+                display: none;
+            }
         }
         
-        .badge { 
-            display: inline-block; 
-            padding: 3px 8px; 
-            border-radius: 12px; 
-            font-size: 11px; 
-            font-weight: bold; 
-            margin-left: 5px; 
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px 80px 10px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .secao, .chart-card, .filtros-card {
+                padding: 20px;
+            }
+            
+            .stat-value {
+                font-size: 1.8rem;
+            }
         }
-        .badge-success { background: #27ae60; color: white; }
-        .badge-warning { background: #f39c12; color: white; }
-        .badge-danger { background: #e74c3c; color: white; }
-        .badge-info { background: #3498db; color: white; }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📦 Relatório de Estoque - COISABOA</h1>
-            <div style="display: flex; gap: 10px;">
-                <a href="relatorios.php" class="btn">📊 Relatórios</a>
-                <a href="dashboard.php" class="btn" style="background: #7f8c8d;">🏠 Dashboard</a>
-                <button onclick="window.print()" class="btn btn-success">🖨️ Imprimir</button>
+        <!-- Header -->
+        <div class="header fade-in">
+            <h1>
+                <i class="fas fa-boxes"></i>
+                Relatório de Estoque
+            </h1>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <a href="relatorios.php" class="btn-voltar">
+                    <i class="fas fa-arrow-left"></i>
+                    Voltar
+                </a>
+                <button onclick="window.print()" class="btn btn-success">
+                    <i class="fas fa-print"></i>
+                    Imprimir
+                </button>
             </div>
         </div>
 
+        <?php if (isset($erro)): ?>
+            <div class="mensagem erro fade-in">
+                <?= $erro ?>
+            </div>
+        <?php endif; ?>
+
         <!-- Filtros -->
-        <div class="filtros">
+        <div class="filtros-card fade-in">
             <form method="POST">
-                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 15px; align-items: end;">
+                <div class="filtros-grid">
                     <div class="form-group">
-                        <label>🔍 Buscar Produto</label>
+                        <label><i class="fas fa-search"></i> Buscar Produto</label>
                         <input type="text" name="filtro_produto" value="<?= htmlspecialchars($filtro_produto) ?>" 
                                placeholder="Digite o nome do produto...">
                     </div>
                     <div class="form-group">
-                        <label>📊 Filtro Estoque</label>
+                        <label><i class="fas fa-filter"></i> Filtro Estoque</label>
                         <select name="filtro_estoque_baixo">
                             <option value="">Todos os produtos</option>
                             <option value="baixo" <?= $filtro_estoque_baixo === 'baixo' ? 'selected' : '' ?>>Estoque Baixo (≤ 5)</option>
@@ -342,7 +652,7 @@ try {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>📈 Ordenar por</label>
+                        <label><i class="fas fa-sort"></i> Ordenar por</label>
                         <select name="ordenacao">
                             <option value="produto" <?= $ordenacao === 'produto' ? 'selected' : '' ?>>Nome do Produto</option>
                             <option value="quantidade" <?= $ordenacao === 'quantidade' ? 'selected' : '' ?>>Quantidade</option>
@@ -354,146 +664,162 @@ try {
                         </select>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-danger" style="height: 42px;">🔍 Aplicar Filtros</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-filter"></i>
+                            Aplicar
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
 
-        <?php if (isset($erro)): ?>
-            <div style="background: #e74c3c; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <?= $erro ?>
-            </div>
-        <?php endif; ?>
-
         <!-- Alertas de Estoque -->
         <?php if ($produtos_estoque_baixo > 0 || $produtos_sem_estoque > 0): ?>
-        <div class="alertas">
-            <h3>⚠️ Alertas de Estoque</h3>
+        <div class="alertas-card fade-in">
+            <h3><i class="fas fa-exclamation-triangle"></i> Alertas de Estoque</h3>
             <?php if ($produtos_estoque_baixo > 0): ?>
                 <div class="alerta-item">
-                    <strong>📉 Estoque Baixo:</strong> <?= $produtos_estoque_baixo ?> produto(s) com estoque ≤ 5 unidades
+                    <i class="fas fa-arrow-down" style="color: var(--warning);"></i>
+                    <div>
+                        <strong>Estoque Baixo:</strong> <?= $produtos_estoque_baixo ?> produto(s) com estoque ≤ 5 unidades
+                    </div>
                 </div>
             <?php endif; ?>
             <?php if ($produtos_sem_estoque > 0): ?>
                 <div class="alerta-item">
-                    <strong>❌ Estoque Zerado:</strong> <?= $produtos_sem_estoque ?> produto(s) sem estoque
+                    <i class="fas fa-times-circle" style="color: var(--danger);"></i>
+                    <div>
+                        <strong>Estoque Zerado:</strong> <?= $produtos_sem_estoque ?> produto(s) sem estoque
+                    </div>
                 </div>
             <?php endif; ?>
         </div>
         <?php endif; ?>
 
         <!-- Cards de Resumo -->
-        <div class="cards">
-            <div class="card total">
-                <h3>📦 Total em Estoque</h3>
-                <div class="valor total"><?= $total_estoque ?></div>
-                <div class="desc">Unidades disponíveis</div>
+        <div class="cards-grid fade-in">
+            <div class="stat-card card-total">
+                <div class="stat-icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="stat-value"><?= $total_estoque ?></div>
+                <div class="stat-label">Total em Estoque</div>
             </div>
-            <div class="card valor">
-                <h3>💰 Valor do Estoque</h3>
-                <div class="valor positivo">R$ <?= number_format($total_valor_estoque, 2, ',', '.') ?></div>
-                <div class="desc">Custo total do estoque</div>
+            <div class="stat-card card-valor">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-value">R$ <?= number_format($total_valor_estoque, 2, ',', '.') ?></div>
+                <div class="stat-label">Valor do Estoque</div>
             </div>
-            <div class="card lucro">
-                <h3>💸 Valor de Revenda</h3>
-                <div class="valor">R$ <?= number_format($total_valor_revenda, 2, ',', '.') ?></div>
-                <div class="desc">Valor potencial de venda</div>
+            <div class="stat-card card-revenda">
+                <div class="stat-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div class="stat-value">R$ <?= number_format($total_valor_revenda, 2, ',', '.') ?></div>
+                <div class="stat-label">Valor de Revenda</div>
             </div>
-            <div class="card alerta">
-                <h3>📊 Lucro Potencial</h3>
-                <div class="valor positivo">R$ <?= number_format($total_valor_revenda - $total_valor_estoque, 2, ',', '.') ?></div>
-                <div class="desc">Diferença entre revenda e custo</div>
+            <div class="stat-card card-lucro">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-value">R$ <?= number_format($total_valor_revenda - $total_valor_estoque, 2, ',', '.') ?></div>
+                <div class="stat-label">Lucro Potencial</div>
             </div>
         </div>
 
         <!-- Gráficos -->
-        <div class="charts">
-            <div class="chart-container">
-                <h3>📈 Distribuição por Categoria de Estoque</h3>
+        <div class="charts-grid fade-in">
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-pie"></i> Distribuição por Categoria de Estoque</h3>
                 <canvas id="estoqueChart" height="250"></canvas>
             </div>
-            <div class="chart-container">
-                <h3>💰 Valor por Produto (Top 10)</h3>
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-bar"></i> Valor por Produto (Top 10)</h3>
                 <canvas id="valorChart" height="250"></canvas>
             </div>
         </div>
 
         <!-- Produtos Mais Vendidos vs Não Vendidos -->
-        <div class="grid-2">
-            <div class="secao">
-                <h2>🏆 Produtos Mais Vendidos (30 dias)</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div class="secao fade-in">
+                <h2><i class="fas fa-trophy"></i> Produtos Mais Vendidos (30 dias)</h2>
                 <?php if (!empty($produtos_mais_vendidos)): ?>
-                <table class="tabela">
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Vendidos</th>
-                            <th>Vendas</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($produtos_mais_vendidos as $produto): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($produto['produto']) ?></td>
-                            <td><?= $produto['total_vendido'] ?></td>
-                            <td><?= $produto['qtd_vendas'] ?></td>
-                            <td class="acao">
-                                <a href="comprar.php?produto=<?= urlencode($produto['produto']) ?>" 
-                                   class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">
-                                    Repor
-                                </a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Vendidos</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($produtos_mais_vendidos as $produto): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($produto['produto']) ?></td>
+                                <td><strong><?= $produto['total_vendido'] ?></strong></td>
+                                <td>
+                                    <a href="comprar.php?produto=<?= urlencode($produto['produto']) ?>" 
+                                       class="btn btn-success" style="padding: 8px 12px; font-size: 0.8rem;">
+                                        <i class="fas fa-plus"></i>
+                                        Repor
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
                 <?php else: ?>
-                <div class="sem-dados">
-                    <h3>📭 Nenhuma venda nos últimos 30 dias</h3>
+                <div class="empty-state">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Nenhuma venda nos últimos 30 dias</h3>
                 </div>
                 <?php endif; ?>
             </div>
 
-            <div class="secao">
-                <h2>📭 Produtos Não Vendidos</h2>
+            <div class="secao fade-in">
+                <h2><i class="fas fa-clock"></i> Produtos Não Vendidos</h2>
                 <?php if (!empty($produtos_nao_vendidos)): ?>
-                <table class="tabela">
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Estoque</th>
-                            <th>Última Atualização</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($produtos_nao_vendidos as $produto): 
-                            $classe_estoque = '';
-                            if ($produto['quantidade'] == 0) $classe_estoque = 'estoque-zero';
-                            elseif ($produto['quantidade'] <= 5) $classe_estoque = 'estoque-baixo';
-                        ?>
-                        <tr class="<?= $classe_estoque ?>">
-                            <td><?= htmlspecialchars($produto['produto']) ?></td>
-                            <td><?= $produto['quantidade'] ?></td>
-                            <td><?= $produto['data_atualizacao'] ? date('d/m/Y', strtotime($produto['data_atualizacao'])) : 'Nunca' ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Estoque</th>
+                                <th>Atualização</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($produtos_nao_vendidos as $produto): 
+                                $classe_estoque = '';
+                                if ($produto['quantidade'] == 0) $classe_estoque = 'estoque-zero';
+                                elseif ($produto['quantidade'] <= 5) $classe_estoque = 'estoque-baixo';
+                            ?>
+                            <tr class="<?= $classe_estoque ?>">
+                                <td><?= htmlspecialchars($produto['produto']) ?></td>
+                                <td><strong><?= $produto['quantidade'] ?></strong></td>
+                                <td><?= $produto['data_atualizacao'] ? date('d/m/Y', strtotime($produto['data_atualizacao'])) : 'Nunca' ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
                 <?php else: ?>
-                <div class="sem-dados">
-                    <h3>✅ Todos os produtos já foram vendidos</h3>
+                <div class="empty-state">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Todos os produtos já foram vendidos</h3>
                 </div>
                 <?php endif; ?>
             </div>
         </div>
 
         <!-- Estoque Completo -->
-        <div class="secao">
-            <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
-                <h2>📋 Estoque Completo (<?= count($estoque) ?> produtos)</h2>
-                <div style="display: flex; gap: 10px; align-items: center;">
+        <div class="secao fade-in">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2><i class="fas fa-list"></i> Estoque Completo (<?= count($estoque) ?> produtos)</h2>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                     <span class="badge badge-success">Alto (> 10)</span>
                     <span class="badge badge-warning">Médio (6-10)</span>
                     <span class="badge badge-danger">Baixo (1-5)</span>
@@ -502,17 +828,16 @@ try {
             </div>
             
             <?php if (!empty($estoque)): ?>
-            <div style="overflow-x: auto;">
-                <table class="tabela">
+            <div class="table-container">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Produto</th>
                             <th>Estoque</th>
                             <th>Custo Unit.</th>
                             <th>Revenda Unit.</th>
-                            <th>Valor Total Estoque</th>
-                            <th>Valor Total Revenda</th>
-                            <th>Lucro Potencial</th>
+                            <th>Valor Total</th>
+                            <th>Lucro</th>
                             <th>Margem</th>
                             <th>Vendas (30d)</th>
                             <th>Ações</th>
@@ -547,7 +872,6 @@ try {
                             <td>R$ <?= number_format($item['valor_unitario'], 2, ',', '.') ?></td>
                             <td>R$ <?= number_format($item['valor_revenda'], 2, ',', '.') ?></td>
                             <td>R$ <?= number_format($item['valor_total_estoque'], 2, ',', '.') ?></td>
-                            <td>R$ <?= number_format($item['valor_total_revenda'], 2, ',', '.') ?></td>
                             <td class="<?= $item['lucro_potencial'] >= 0 ? 'positivo' : 'negativo' ?>">
                                 R$ <?= number_format($item['lucro_potencial'], 2, ',', '.') ?>
                             </td>
@@ -555,15 +879,15 @@ try {
                                 <?= number_format($margem_lucro, 1, ',', '.') ?>%
                             </td>
                             <td><?= $item['vendas_30_dias'] ?></td>
-                            <td class="acao">
-                                <div style="display: flex; gap: 5px;">
+                            <td>
+                                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
                                     <a href="comprar.php?produto=<?= urlencode($item['produto']) ?>" 
-                                       class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">
-                                        Comprar
+                                       class="btn btn-success" style="padding: 6px 10px; font-size: 0.75rem;">
+                                        <i class="fas fa-cart-plus"></i>
                                     </a>
-                                    <a href="vender.php?produto_id=<?= $item['id'] ?>" 
-                                       class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">
-                                        Vender
+                                    <a href="vender.php?produto=<?= urlencode($item['produto']) ?>" 
+                                       class="btn btn-warning" style="padding: 6px 10px; font-size: 0.75rem;">
+                                        <i class="fas fa-cash-register"></i>
                                     </a>
                                 </div>
                             </td>
@@ -573,12 +897,34 @@ try {
                 </table>
             </div>
             <?php else: ?>
-            <div class="sem-dados">
-                <h3>📭 Nenhum produto encontrado com os filtros aplicados</h3>
+            <div class="empty-state">
+                <i class="fas fa-search"></i>
+                <h3>Nenhum produto encontrado</h3>
+                <p>Tente ajustar os filtros de busca</p>
             </div>
             <?php endif; ?>
         </div>
     </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.php" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="compras.php" class="nav-item">
+            <span class="nav-icon">🛒</span>
+            <span class="nav-label">Compras</span>
+        </a>
+        <a href="vendas.php" class="nav-item">
+            <span class="nav-icon">🏷️</span>
+            <span class="nav-label">Vendas</span>
+        </a>
+        <a href="relatorios.php" class="nav-item ativo">
+            <span class="nav-icon">📈</span>
+            <span class="nav-label">Relatórios</span>
+        </a>
+    </nav>
 
     <script>
         // Dados para gráficos
@@ -596,7 +942,7 @@ try {
                 labels: Object.keys(categoriasEstoque),
                 datasets: [{
                     data: Object.values(categoriasEstoque),
-                    backgroundColor: ['#e74c3c', '#f39c12', '#3498db', '#27ae60']
+                    backgroundColor: ['#ef4444', '#f59e0b', '#06b6d4', '#10b981']
                 }]
             },
             options: {
@@ -618,11 +964,11 @@ try {
                 datasets: [{
                     label: 'Valor do Estoque (R$)',
                     data: topProdutos.map(p => p.valor_total_estoque),
-                    backgroundColor: '#3498db'
+                    backgroundColor: '#6366f1'
                 }, {
                     label: 'Valor de Revenda (R$)',
                     data: topProdutos.map(p => p.valor_total_revenda),
-                    backgroundColor: '#27ae60'
+                    backgroundColor: '#10b981'
                 }]
             },
             options: {
@@ -638,6 +984,22 @@ try {
                     }
                 }
             }
+        });
+
+        // Melhorias para mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Feedback tátil para elementos interativos
+            const interactiveElements = document.querySelectorAll('.btn, input, select');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
         });
     </script>
 </body>
