@@ -4,6 +4,30 @@
  * Versão otimizada para mobile
  */
 
+// ===== CÓDIGO DE REINSTALAÇÃO =====
+$reinstalar = isset($_GET['action']) && $_GET['action'] === 'reinstalar';
+
+if ($reinstalar && file_exists('config/database.php')) {
+    // Fazer backup do arquivo de configuração atual (opcional)
+    if (file_exists('config/database.php')) {
+        if (!is_dir('backups')) mkdir('backups');
+        copy('config/database.php', 'backups/database_backup_' . date('Y-m-d_H-i-s') . '.php');
+    }
+    
+    // Remover arquivo de configuração
+    unlink('config/database.php');
+    
+    // Limpar sessão
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_destroy();
+    }
+    
+    // Redirecionar para limpar a URL
+    header('Location: install.php');
+    exit;
+}
+// ===== FIM DO CÓDIGO DE REINSTALAÇÃO =====
+
 // Configurações fixas para uso pessoal
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
@@ -33,6 +57,9 @@ function criarPastas() {
     }
     return true;
 }
+
+// ... continue com o resto do seu código original do install.php
+// (função testarConexao, criarTabelas, criarUsuarioAdmin, etc.)
 
 function criarBancoDados() {
     try {
