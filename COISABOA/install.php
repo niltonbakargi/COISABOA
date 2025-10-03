@@ -258,7 +258,7 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#3498db">
+    <meta name="theme-color" content="#4a6572">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Instalar COISABOA</title>
@@ -272,53 +272,79 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #344955 0%, #232f34 100%);
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             line-height: 1.6;
+            color: #333;
         }
         
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
             padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             max-width: 500px;
             width: 100%;
             text-align: center;
             margin: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4a6572, #344955);
+            color: white;
+            padding: 25px;
+            margin: -25px -25px 25px -25px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
         }
         
         h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
+            color: white;
+            margin-bottom: 8px;
             font-size: 28px;
             font-weight: 700;
+            position: relative;
         }
         
         .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 5px;
             font-size: 16px;
+            position: relative;
         }
         
         .status {
             padding: 15px;
             margin: 20px 0;
-            border-radius: 12px;
+            border-radius: 10px;
             background: #e8f5e8;
-            border: 2px solid #4caf50;
+            border: 1px solid #4caf50;
             font-size: 14px;
             text-align: left;
+            color: #2e7d32;
         }
         
         .status.erro {
             background: #ffebee;
             border-color: #f44336;
+            color: #c62828;
         }
         
         .status.aviso {
@@ -328,11 +354,11 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
         }
         
         .btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #4a6572, #344955);
             color: white;
             padding: 16px 32px;
             border: none;
-            border-radius: 50px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -340,14 +366,32 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
             display: inline-block;
             margin: 8px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 15px rgba(74, 101, 114, 0.3);
             width: 90%;
             max-width: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before,
+        .btn:active::before {
+            left: 100%;
         }
         
         .btn:active {
             transform: scale(0.98);
-            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 2px 8px rgba(74, 101, 114, 0.4);
         }
         
         .btn.verde {
@@ -360,33 +404,38 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
             box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
         }
         
-        .info {
-            background: #e3f2fd;
+        .info-box {
+            background: #f8f9fa;
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 10px;
             margin: 20px 0;
             text-align: left;
-            border-left: 4px solid #2196f3;
+            border-left: 4px solid #4a6572;
+            border: 1px solid #e0e0e0;
         }
         
         .credenciais {
             background: #fff3cd;
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 10px;
             margin: 20px 0;
             border-left: 4px solid #ffc107;
+            border: 1px solid #ffeaa7;
         }
         
-        .info h3, .credenciais h3 {
-            margin-bottom: 10px;
+        .info-box h3, .credenciais h3 {
+            margin-bottom: 15px;
             color: #2c3e50;
             font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .info-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         
@@ -400,27 +449,38 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
         }
         
         .info-value {
-            color: #7f8c8d;
+            color: #4a6572;
+            font-family: 'Courier New', monospace;
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
         
         .dica {
-            background: rgba(255, 255, 255, 0.8);
+            background: #e3f2fd;
             padding: 15px;
             border-radius: 10px;
             margin: 20px 0;
             font-size: 14px;
-            color: #666;
+            color: #1976d2;
+            border-left: 4px solid #2196f3;
+            text-align: left;
         }
         
         .logo {
             font-size: 48px;
             margin-bottom: 15px;
+            display: block;
         }
         
         @media (max-width: 480px) {
             .container {
                 padding: 20px 15px;
                 margin: 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
             }
             
             h1 {
@@ -442,7 +502,7 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
             width: 30px;
             height: 30px;
             border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
+            border-top: 3px solid #4a6572;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto;
@@ -452,13 +512,35 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .step {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .step.ativo {
+            background: #4a6572;
+            transform: scale(1.2);
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">🚀</div>
-        <h1>COISABOA</h1>
-        <p class="subtitle">Sistema de Gestão Pessoal</p>
+        <div class="header">
+            <div class="logo">📦</div>
+            <h1>COISABOA</h1>
+            <p class="subtitle">Sistema de Gestão Pessoal</p>
+        </div>
         
         <?php if ($mensagem): ?>
             <div class="status <?= strpos($mensagem, '❌') !== false ? 'erro' : (strpos($mensagem, '🔄') !== false ? 'aviso' : '') ?>">
@@ -467,7 +549,13 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
         <?php endif; ?>
         
         <?php if ($step === 'inicio'): ?>
-            <div class="info">
+            <div class="step-indicator">
+                <div class="step ativo"></div>
+                <div class="step"></div>
+                <div class="step"></div>
+            </div>
+            
+            <div class="info-box">
                 <h3>📋 Configuração Automática</h3>
                 <div class="info-item">
                     <span class="info-label">Servidor:</span>
@@ -504,6 +592,12 @@ if ($_GET['action'] ?? '' === 'reinstalar') {
             </div>
             
         <?php elseif ($step === 'pronto'): ?>
+            <div class="step-indicator">
+                <div class="step"></div>
+                <div class="step"></div>
+                <div class="step ativo"></div>
+            </div>
+            
             <div class="status">
                 ✅ Sistema instalado com sucesso!
             </div>

@@ -10,3 +10,13 @@
 [03-Oct-2025 09:33:50 America/Sao_Paulo] PHP Warning:  Undefined variable $total_vendas_qtd in C:\xampp\htdocs\COISABOA\COISABOA\relatorio_financeiro.php on line 87
 [03-Oct-2025 09:34:29 America/Sao_Paulo] PHP Warning:  Undefined variable $total_vendas_qtd in C:\xampp\htdocs\COISABOA\COISABOA\relatorio_financeiro.php on line 87
 [03-Oct-2025 09:36:07 America/Sao_Paulo] PHP Warning:  Undefined variable $total_vendas_qtd in C:\xampp\htdocs\COISABOA\COISABOA\relatorio_financeiro.php on line 87
+[03-Oct-2025 10:02:10 America/Sao_Paulo] [2025-10-03 10:02:10] Erro de conexão: SQLSTATE[HY000] [1049] Unknown database 'coisaboa_app'
+[03-Oct-2025 10:02:16 America/Sao_Paulo] [2025-10-03 10:02:16] Erro de conexão: SQLSTATE[HY000] [1049] Unknown database 'coisaboa_app'
+[03-Oct-2025 10:02:27 America/Sao_Paulo] [2025-10-03 10:02:27] Erro de conexão: SQLSTATE[HY000] [1049] Unknown database 'coisaboa_app'
+[03-Oct-2025 10:02:38 America/Sao_Paulo] [2025-10-03 10:02:38] Erro de conexão: SQLSTATE[HY000] [1049] Unknown database 'coisaboa_app'
+[03-Oct-2025 10:10:14 America/Sao_Paulo] [2025-10-03 10:10:14] Erro de conexão: SQLSTATE[HY000] [1049] Unknown database 'coisaboa_app'
+[03-Oct-2025 10:11:42 America/Sao_Paulo] [2025-10-03 10:11:42] Erro de conexão: SQLSTATE[HY000] [1049] Unknown database 'coisaboa_app'
+[03-Oct-2025 10:15:38 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\COISABOA\COISABOA\login.php:51
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\COISABOA\COISABOA\login.php on line 51

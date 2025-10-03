@@ -1,7 +1,7 @@
 <?php
 /**
  * COISABOA - Configuração Simplificada
- * Gerado automaticamente em 03/10/2025 16:20:54
+ * Gerado automaticamente em 03/10/2025 16:07:56
  */
  
 // Configurações do Banco de Dados
