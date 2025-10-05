@@ -1,0 +1,1449 @@
+{
+    "info_geral": {
+        "nome_projeto": "COISABOA",
+        "data_analise": "2025-10-03 19:58:14",
+        "total_arquivos_php": 55,
+        "total_linhas_codigo": 15479,
+        "pastas_principais": [
+            {
+                "nome": "assets",
+                "tipo": "recursos",
+                "itens": 9
+            },
+            {
+                "nome": "backups",
+                "tipo": "dados",
+                "itens": 3
+            },
+            {
+                "nome": "config",
+                "tipo": "configuracao",
+                "itens": 12
+            },
+            {
+                "nome": "includes",
+                "tipo": "bibliotecas",
+                "itens": 6
+            },
+            {
+                "nome": "logs",
+                "tipo": "logs",
+                "itens": 1
+            },
+            {
+                "nome": "modules",
+                "tipo": "dados",
+                "itens": 5
+            },
+            {
+                "nome": "templates",
+                "tipo": "dados",
+                "itens": 7
+            },
+            {
+                "nome": "uploads",
+                "tipo": "arquivos",
+                "itens": 5
+            }
+        ]
+    },
+    "arquivos_php": [
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/ajax_produto.php",
+            "caminho_relativo": "ajax_produto.php",
+            "linhas": 36,
+            "tamanho_bytes": 974,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/assets\/assets_helper.php",
+            "caminho_relativo": "assets\/assets_helper.php",
+            "linhas": 22,
+            "tamanho_bytes": 473,
+            "funcoes": [
+                "css",
+                "js",
+                "image",
+                "icon"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/backup.php",
+            "caminho_relativo": "backup.php",
+            "linhas": 813,
+            "tamanho_bytes": 27248,
+            "funcoes": [
+                "criarBackupBancoDados",
+                "criarBackupImagens",
+                "folderSize",
+                "formatSize"
+            ],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "action"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/backup_mobile.php",
+            "caminho_relativo": "backup_mobile.php",
+            "linhas": 220,
+            "tamanho_bytes": 6474,
+            "funcoes": [
+                "fazerBackup"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/backup_simples.php",
+            "caminho_relativo": "backup_simples.php",
+            "linhas": 342,
+            "tamanho_bytes": 10747,
+            "funcoes": [
+                "backupDatabase",
+                "backupImagens"
+            ],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "action"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/backups\/database_backup_2025-10-03_19-43-09.php",
+            "caminho_relativo": "backups\/database_backup_2025-10-03_19-43-09.php",
+            "linhas": 55,
+            "tamanho_bytes": 1579,
+            "funcoes": [
+                "getDB",
+                "redirect",
+                "sanitize"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/backups\/database_backup_2025-10-03_19-46-47.php",
+            "caminho_relativo": "backups\/database_backup_2025-10-03_19-46-47.php",
+            "linhas": 55,
+            "tamanho_bytes": 1579,
+            "funcoes": [
+                "getDB",
+                "redirect",
+                "sanitize"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/backups\/database_backup_2025-10-03_19-46-54.php",
+            "caminho_relativo": "backups\/database_backup_2025-10-03_19-46-54.php",
+            "linhas": 55,
+            "tamanho_bytes": 1579,
+            "funcoes": [
+                "getDB",
+                "redirect",
+                "sanitize"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/comprar.php",
+            "caminho_relativo": "comprar.php",
+            "linhas": 709,
+            "tamanho_bytes": 26719,
+            "funcoes": [
+                "calcularValorTotal"
+            ],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "action",
+                "produto",
+                "quantidade",
+                "data_compra",
+                "valor_unitario",
+                "valor_revenda",
+                "imagens[]",
+                "imagem_vendedor",
+                "forma_pagamento",
+                "observacoes"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/config\/constants.php",
+            "caminho_relativo": "config\/constants.php",
+            "linhas": 148,
+            "tamanho_bytes": 4595,
+            "funcoes": [
+                "is_dev_environment"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/config\/database.php",
+            "caminho_relativo": "config\/database.php",
+            "linhas": 55,
+            "tamanho_bytes": 1579,
+            "funcoes": [
+                "getDB",
+                "redirect",
+                "sanitize"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/config\/database_backup_2025-10-03_10-16-51.php",
+            "caminho_relativo": "config\/database_backup_2025-10-03_10-16-51.php",
+            "linhas": 229,
+            "tamanho_bytes": 6634,
+            "funcoes": [
+                "getDB",
+                "redirect",
+                "sanitize",
+                "isLoggedIn",
+                "requireLogin",
+                "logout",
+                "hashPassword",
+                "verifyPassword",
+                "initUploadDir",
+                "logActivity",
+                "debug",
+                "initSystem"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/config\/database_backup_2025-10-03_16-11-18.php",
+            "caminho_relativo": "config\/database_backup_2025-10-03_16-11-18.php",
+            "linhas": 55,
+            "tamanho_bytes": 1579,
+            "funcoes": [
+                "getDB",
+                "redirect",
+                "sanitize"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/config\/environment.example.php",
+            "caminho_relativo": "config\/environment.example.php",
+            "linhas": 22,
+            "tamanho_bytes": 626,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/config\/environment.php",
+            "caminho_relativo": "config\/environment.php",
+            "linhas": 22,
+            "tamanho_bytes": 626,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/config\/routes.php",
+            "caminho_relativo": "config\/routes.php",
+            "linhas": 26,
+            "tamanho_bytes": 645,
+            "funcoes": [
+                "route"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/dashboard.php",
+            "caminho_relativo": "dashboard.php",
+            "linhas": 377,
+            "tamanho_bytes": 11743,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/desfazer_compra.php",
+            "caminho_relativo": "desfazer_compra.php",
+            "linhas": 690,
+            "tamanho_bytes": 23363,
+            "funcoes": [
+                "confirmarDesfazer"
+            ],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "action",
+                "compra_id",
+                "quantidade"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/desfazer_venda.php",
+            "caminho_relativo": "desfazer_venda.php",
+            "linhas": 716,
+            "tamanho_bytes": 25192,
+            "funcoes": [
+                "confirmarDesfazer"
+            ],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "action",
+                "venda_id",
+                "quantidade"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/excluirproduto.php",
+            "caminho_relativo": "excluirproduto.php",
+            "linhas": 137,
+            "tamanho_bytes": 5594,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "action",
+                "produto_id"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/gerenciar.php",
+            "caminho_relativo": "gerenciar.php",
+            "linhas": 946,
+            "tamanho_bytes": 33927,
+            "funcoes": [
+                "mostrarTab",
+                "carregarProduto",
+                "confirmarExclusao"
+            ],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": {
+                "0": "acao",
+                "1": "produto_id",
+                "2": "nova_quantidade",
+                "3": "observacoes",
+                "6": "novo_valor_unitario",
+                "7": "novo_valor_revenda",
+                "11": "confirmacao"
+            }
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/includes\/auth.php",
+            "caminho_relativo": "includes\/auth.php",
+            "linhas": 307,
+            "tamanho_bytes": 8431,
+            "funcoes": [
+                "iniciarSessaoSegura",
+                "verificarTimeoutSessao",
+                "destruirSessao",
+                "usuarioLogado",
+                "requererLogin",
+                "fazerLogin",
+                "fazerLogout",
+                "isAdmin",
+                "temPermissao",
+                "requererPermissao",
+                "requererAdmin",
+                "logAtividade",
+                "getUsuarioLogado",
+                "atualizarUsuarioSessao",
+                "getRedirectUrl"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/includes\/database_helpers.php",
+            "caminho_relativo": "includes\/database_helpers.php",
+            "linhas": 253,
+            "tamanho_bytes": 7663,
+            "funcoes": [
+                "dbQuery",
+                "dbFind",
+                "dbFindAll",
+                "dbInsert",
+                "dbUpdate",
+                "dbDelete",
+                "getEstoqueAtual",
+                "getRelatorioEstoque",
+                "dbTransaction",
+                "criarBackupBanco"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/includes\/functions.php",
+            "caminho_relativo": "includes\/functions.php",
+            "linhas": 441,
+            "tamanho_bytes": 11957,
+            "funcoes": [
+                "formatarMoeda",
+                "formatarData",
+                "formatarDataRelativa",
+                "formatarQuantidade",
+                "formatarTamanhoArquivo",
+                "sanitizar",
+                "sanitizarNomeArquivo",
+                "gerarTokenCSRF",
+                "validarTokenCSRF",
+                "criptografar",
+                "descriptografar",
+                "redirect",
+                "getFlashMessages",
+                "exibirFlashMessages",
+                "isEmail",
+                "isInteiroPositivo",
+                "isMonetario",
+                "isURL",
+                "array_get",
+                "array_only",
+                "array_sort_by_key",
+                "slugify",
+                "limitarTexto",
+                "camelToSnake",
+                "diferencaDatas",
+                "addDiasUteis",
+                "dd",
+                "logDebug"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/includes\/init.php",
+            "caminho_relativo": "includes\/init.php",
+            "linhas": 21,
+            "tamanho_bytes": 579,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/includes\/validations.php",
+            "caminho_relativo": "includes\/validations.php",
+            "linhas": 359,
+            "tamanho_bytes": 10691,
+            "funcoes": [
+                "validarProduto",
+                "validarCompra",
+                "validarVenda",
+                "validarImagem",
+                "validarCSRF",
+                "isPost",
+                "isAjax",
+                "validarMargemLucro",
+                "validarEstoqueMinimo",
+                "sanitizarMonetario",
+                "sanitizarInteiro",
+                "sanitizarNomeProduto"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/incluirproduto.php",
+            "caminho_relativo": "incluirproduto.php",
+            "linhas": 154,
+            "tamanho_bytes": 6696,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "action",
+                "produto",
+                "quantidade",
+                "valor_compra"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/index.php",
+            "caminho_relativo": "index.php",
+            "linhas": 550,
+            "tamanho_bytes": 17507,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/install.php",
+            "caminho_relativo": "install.php",
+            "linhas": 701,
+            "tamanho_bytes": 22760,
+            "funcoes": [
+                "criarPastas",
+                "criarBancoDados",
+                "criarArquivoConfig",
+                "getDB",
+                "redirect",
+                "sanitize",
+                "finalizarInstalacao",
+                "jaInstalado",
+                "testarConexao"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": [
+                "action"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/login.php",
+            "caminho_relativo": "login.php",
+            "linhas": 423,
+            "tamanho_bytes": 13000,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": {
+                "0": "action",
+                "1": "email",
+                "2": "senha",
+                "4": "nome"
+            }
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/logout.php",
+            "caminho_relativo": "logout.php",
+            "linhas": 9,
+            "tamanho_bytes": 118,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/modules\/inventory\/estoque.php",
+            "caminho_relativo": "modules\/inventory\/estoque.php",
+            "linhas": 208,
+            "tamanho_bytes": 7725,
+            "funcoes": [
+                "exportarEstoque",
+                "sortTable"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/modules\/inventory\/movimentacoes.php",
+            "caminho_relativo": "modules\/inventory\/movimentacoes.php",
+            "linhas": 100,
+            "tamanho_bytes": 4127,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/modules\/purchases\/comprei.php",
+            "caminho_relativo": "modules\/purchases\/comprei.php",
+            "linhas": 151,
+            "tamanho_bytes": 5810,
+            "funcoes": [
+                "formatarMoeda",
+                "previewImage"
+            ],
+            "classes": [],
+            "includes": [
+                "insert_compra.php"
+            ],
+            "formularios": [
+                "csrf_token",
+                "produto",
+                "quantidade",
+                "valor_pago",
+                "valor_proposto",
+                "foto_vendedor",
+                "observacoes"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/modules\/purchases\/insert_compra.php",
+            "caminho_relativo": "modules\/purchases\/insert_compra.php",
+            "linhas": 81,
+            "tamanho_bytes": 2547,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/modules\/purchases\/listar_compras.php",
+            "caminho_relativo": "modules\/purchases\/listar_compras.php",
+            "linhas": 186,
+            "tamanho_bytes": 6101,
+            "funcoes": [
+                "mostrarFoto",
+                "fecharModal",
+                "confirmarExclusao"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/modules\/reports\/dashboard.php",
+            "caminho_relativo": "modules\/reports\/dashboard.php",
+            "linhas": 195,
+            "tamanho_bytes": 8188,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/modules\/sales\/insert_venda.php",
+            "caminho_relativo": "modules\/sales\/insert_venda.php",
+            "linhas": 72,
+            "tamanho_bytes": 2231,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/modules\/sales\/vendi.php",
+            "caminho_relativo": "modules\/sales\/vendi.php",
+            "linhas": 130,
+            "tamanho_bytes": 4936,
+            "funcoes": [
+                "formatarMoeda"
+            ],
+            "classes": [],
+            "includes": [
+                "insert_venda.php"
+            ],
+            "formularios": [
+                "csrf_token",
+                "quantidade",
+                "valor_vendido",
+                "produto",
+                "forma_pagamento"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/php analyzer.php",
+            "caminho_relativo": "php analyzer.php",
+            "linhas": 353,
+            "tamanho_bytes": 12965,
+            "funcoes": [
+                "__construct",
+                "analisar",
+                "analisarInfoGeral",
+                "analisarArquivosPHP",
+                "analisarTelas",
+                "analisarBancoDados",
+                "analisarFluxos",
+                "scanRecursivo",
+                "scanPastas",
+                "extrairFuncoes",
+                "extrairClasses",
+                "extrairIncludes",
+                "extrairFormularios",
+                "isTela",
+                "detectarTipoTela",
+                "extrairAcoesTela",
+                "extrairRedirecionamentos",
+                "extrairConfigDB",
+                "extrairEntidades",
+                "detectarTipoPasta",
+                "gerarRelatorio"
+            ],
+            "classes": [
+                "ProjectAnalyzer"
+            ],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/relatorio_de_estoque.php",
+            "caminho_relativo": "relatorio_de_estoque.php",
+            "linhas": 1006,
+            "tamanho_bytes": 37095,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "filtro_produto",
+                "filtro_estoque_baixo",
+                "ordenacao"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/relatorio_de_vendas.php",
+            "caminho_relativo": "relatorio_de_vendas.php",
+            "linhas": 916,
+            "tamanho_bytes": 31428,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "data_inicio",
+                "data_fim"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/relatorio_financeiro.php",
+            "caminho_relativo": "relatorio_financeiro.php",
+            "linhas": 863,
+            "tamanho_bytes": 29071,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "data_inicio",
+                "data_fim"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/relatorios.php",
+            "caminho_relativo": "relatorios.php",
+            "linhas": 578,
+            "tamanho_bytes": 19089,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/templates\/404.php",
+            "caminho_relativo": "templates\/404.php",
+            "linhas": 63,
+            "tamanho_bytes": 1523,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "header.php",
+                "footer.php"
+            ],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/templates\/components\/button.php",
+            "caminho_relativo": "templates\/components\/button.php",
+            "linhas": 29,
+            "tamanho_bytes": 818,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/templates\/components\/card.php",
+            "caminho_relativo": "templates\/components\/card.php",
+            "linhas": 33,
+            "tamanho_bytes": 763,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/templates\/footer.php",
+            "caminho_relativo": "templates\/footer.php",
+            "linhas": 181,
+            "tamanho_bytes": 6293,
+            "funcoes": [
+                "showLoading",
+                "hideLoading"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/templates\/header.php",
+            "caminho_relativo": "templates\/header.php",
+            "linhas": 146,
+            "tamanho_bytes": 5285,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/templates\/login.php",
+            "caminho_relativo": "templates\/login.php",
+            "linhas": 89,
+            "tamanho_bytes": 2063,
+            "funcoes": [],
+            "classes": [],
+            "includes": [
+                "header.php",
+                "footer.php"
+            ],
+            "formularios": [
+                "email",
+                "senha"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/templates\/template_helper.php",
+            "caminho_relativo": "templates\/template_helper.php",
+            "linhas": 101,
+            "tamanho_bytes": 2203,
+            "funcoes": [
+                "renderTemplate",
+                "renderComponent",
+                "isActivePage",
+                "getActiveClass",
+                "icon",
+                "asset",
+                "url"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/testar_imagens.php",
+            "caminho_relativo": "testar_imagens.php",
+            "linhas": 210,
+            "tamanho_bytes": 7264,
+            "funcoes": [
+                "mostrarArquivo",
+                "proximaImagem",
+                "imagemAnterior"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/uninstall.php",
+            "caminho_relativo": "uninstall.php",
+            "linhas": 83,
+            "tamanho_bytes": 2947,
+            "funcoes": [],
+            "classes": [],
+            "includes": [],
+            "formularios": [
+                "confirm"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/vender.php",
+            "caminho_relativo": "vender.php",
+            "linhas": 696,
+            "tamanho_bytes": 25445,
+            "funcoes": [
+                "calcularValorTotal"
+            ],
+            "classes": [],
+            "includes": [
+                "config\/database.php"
+            ],
+            "formularios": [
+                "action",
+                "produto",
+                "quantidade",
+                "data_venda",
+                "valor_vendido",
+                "imagem_comprador",
+                "forma_pagamento",
+                "observacoes"
+            ]
+        },
+        {
+            "arquivo": "C:\\xampp\\htdocs\\COISABOA\\COISABOA\/visualizar.php",
+            "caminho_relativo": "visualizar.php",
+            "linhas": 61,
+            "tamanho_bytes": 2144,
+            "funcoes": [
+                "detectarTipoImagem"
+            ],
+            "classes": [],
+            "includes": [],
+            "formularios": []
+        }
+    ],
+    "telas": [
+        {
+            "nome": "ajax_produto",
+            "arquivo": "ajax_produto.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "backup",
+            "arquivo": "backup.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "action"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "backup_mobile",
+            "arquivo": "backup_mobile.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "backup_simples",
+            "arquivo": "backup_simples.php",
+            "tipo": "autenticada",
+            "acoes": [
+                "backup"
+            ],
+            "campos": [
+                "action"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "database_backup_2025-10-03_19-43-09",
+            "arquivo": "backups\/database_backup_2025-10-03_19-43-09.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "database_backup_2025-10-03_19-46-47",
+            "arquivo": "backups\/database_backup_2025-10-03_19-46-47.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "database_backup_2025-10-03_19-46-54",
+            "arquivo": "backups\/database_backup_2025-10-03_19-46-54.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "comprar",
+            "arquivo": "comprar.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "action",
+                "produto",
+                "quantidade",
+                "data_compra",
+                "valor_unitario",
+                "valor_revenda",
+                "imagens[]",
+                "imagem_vendedor",
+                "forma_pagamento",
+                "observacoes"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "database",
+            "arquivo": "config\/database.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "database_backup_2025-10-03_10-16-51",
+            "arquivo": "config\/database_backup_2025-10-03_10-16-51.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "database_backup_2025-10-03_16-11-18",
+            "arquivo": "config\/database_backup_2025-10-03_16-11-18.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "dashboard",
+            "arquivo": "dashboard.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "desfazer_compra",
+            "arquivo": "desfazer_compra.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "action",
+                "compra_id",
+                "quantidade"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "desfazer_venda",
+            "arquivo": "desfazer_venda.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "action",
+                "venda_id",
+                "quantidade"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "excluirproduto",
+            "arquivo": "excluirproduto.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "action",
+                "produto_id"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "gerenciar",
+            "arquivo": "gerenciar.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": {
+                "0": "acao",
+                "1": "produto_id",
+                "2": "nova_quantidade",
+                "3": "observacoes",
+                "6": "novo_valor_unitario",
+                "7": "novo_valor_revenda",
+                "11": "confirmacao"
+            },
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "functions",
+            "arquivo": "includes\/functions.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "incluirproduto",
+            "arquivo": "incluirproduto.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "action",
+                "produto",
+                "quantidade",
+                "valor_compra"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "index",
+            "arquivo": "index.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "install",
+            "arquivo": "install.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "action"
+            ],
+            "redirecionamentos": [
+                "l"
+            ]
+        },
+        {
+            "nome": "login",
+            "arquivo": "login.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": {
+                "0": "action",
+                "1": "email",
+                "2": "senha",
+                "4": "nome"
+            },
+            "redirecionamentos": [
+                "l",
+                "d",
+                "d"
+            ]
+        },
+        {
+            "nome": "logout",
+            "arquivo": "logout.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "dashboard",
+            "arquivo": "modules\/reports\/dashboard.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "php analyzer",
+            "arquivo": "php analyzer.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "relatorio_de_estoque",
+            "arquivo": "relatorio_de_estoque.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "filtro_produto",
+                "filtro_estoque_baixo",
+                "ordenacao"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "relatorio_de_vendas",
+            "arquivo": "relatorio_de_vendas.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "data_inicio",
+                "data_fim"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "relatorio_financeiro",
+            "arquivo": "relatorio_financeiro.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "data_inicio",
+                "data_fim"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "relatorios",
+            "arquivo": "relatorios.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "header",
+            "arquivo": "templates\/header.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "login",
+            "arquivo": "templates\/login.php",
+            "tipo": "formulario",
+            "acoes": [],
+            "campos": [
+                "email",
+                "senha"
+            ],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "testar_imagens",
+            "arquivo": "testar_imagens.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "uninstall",
+            "arquivo": "uninstall.php",
+            "tipo": "formulario",
+            "acoes": [],
+            "campos": [
+                "confirm"
+            ],
+            "redirecionamentos": []
+        },
+        {
+            "nome": "vender",
+            "arquivo": "vender.php",
+            "tipo": "autenticada",
+            "acoes": [],
+            "campos": [
+                "action",
+                "produto",
+                "quantidade",
+                "data_venda",
+                "valor_vendido",
+                "imagem_comprador",
+                "forma_pagamento",
+                "observacoes"
+            ],
+            "redirecionamentos": [
+                "n"
+            ]
+        },
+        {
+            "nome": "visualizar",
+            "arquivo": "visualizar.php",
+            "tipo": "informacao",
+            "acoes": [],
+            "campos": [],
+            "redirecionamentos": []
+        }
+    ],
+    "entidades": [],
+    "banco_dados": {
+        "config": {
+            "DB_HOST": "localhost",
+            "DB_NAME": "coisaboa_app",
+            "DB_USER": "root",
+            "DB_PASS": "",
+            "DB_PORT": "3306",
+            "SITE_NAME": "COISABOA App",
+            "UPLOAD_DIR": "uploads\/"
+        },
+        "entidades": [
+            "estoque",
+            "compras",
+            "all",
+            "desfazer_compras",
+            "vendas",
+            "desfazer_vendas",
+            "ajustes_estoque",
+            "exclusoes_estoque",
+            "correcoes_preco",
+            "usuarios",
+            "CURRENT_TIMESTAMP",
+            "IF"
+        ]
+    },
+    "fluxos": [
+        {
+            "origem": "backup",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "backup_mobile",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "backup_simples",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "backup_simples",
+            "acao": "backup",
+            "tipo": "processamento"
+        },
+        {
+            "origem": "comprar",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "dashboard",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "desfazer_compra",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "desfazer_venda",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "excluirproduto",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "gerenciar",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "incluirproduto",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "index",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "install",
+            "destino": "l",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "login",
+            "destino": "l",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "login",
+            "destino": "d",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "login",
+            "destino": "d",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "logout",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "relatorio_de_estoque",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "relatorio_de_vendas",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "relatorio_financeiro",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "relatorios",
+            "destino": "n",
+            "tipo": "navegacao"
+        },
+        {
+            "origem": "vender",
+            "destino": "n",
+            "tipo": "navegacao"
+        }
+    ],
+    "dependencias": []
+}

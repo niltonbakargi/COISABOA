@@ -1,4 +1,0 @@
-# Ignorar arquivos sensíveis
-environment.php
-*.env
-config.local.php

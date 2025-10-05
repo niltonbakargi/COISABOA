@@ -1,0 +1,1 @@
+# ProGuard rules (vazio por enquanto)
