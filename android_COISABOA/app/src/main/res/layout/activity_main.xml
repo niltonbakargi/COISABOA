@@ -1,97 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="24dp"
     android:background="#F8F9FA">
 
-    <LinearLayout
+    <!-- Saudação -->
+    <TextView
+    android:id="@+id/tvHello"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Olá, COISABOA!"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:textAlignment="center"
+    android:textColor="#2C3E50"
+    android:paddingBottom="24dp" />
+
+    <!-- Botão de Logout -->
+    <Button
+        android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:text="Sair do Sistema"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#D32F2F"
+        android:padding="12dp" />
 
-        <!-- Saudação -->
-        <TextView
-            android:id="@+id/tvHello"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Olá, COISABOA!"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#2C3E50"
-            android:paddingBottom="20dp" />
-
-        <!-- Botão de Login -->
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_login"
-            android:backgroundTint="#1976D2"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="4dp" />
-
-        <!-- Botão de Produtos -->
-        <Button
-            android:id="@+id/btnProdutos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_produtos"
-            android:backgroundTint="#388E3C"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="12dp" />
-
-        <!-- Botão de Vendas -->
-        <Button
-            android:id="@+id/btnVendas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_vendas"
-            android:backgroundTint="#F57C00"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="12dp" />
-
-        <!-- Botão de Compras -->
-        <Button
-            android:id="@+id/btnCompras"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_compras"
-            android:backgroundTint="#7B1FA2"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="12dp" />
-
-        <!-- Botão de Relatórios -->
-        <Button
-            android:id="@+id/btnRelatorios"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_relatorios"
-            android:backgroundTint="#0288D1"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="12dp" />
-
-        <!-- Botão de Backup -->
-        <Button
-            android:id="@+id/btnBackup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_backup"
-            android:backgroundTint="#455A64"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="12dp" />
-
-        <!-- Botão de Logout -->
-        <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sair"
-            android:backgroundTint="#C62828"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:padding="10dp" />
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

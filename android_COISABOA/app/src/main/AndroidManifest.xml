@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.coisaboa.app" xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.coisaboa.app">
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:label="@string/app_name"
         android:theme="@style/Theme.COISABOA">
+        
+        <!-- ✅ CORRETO: MainActivity com package completo -->
         <activity
-            android:name=".COISABOA.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <!-- Suas outras activities -->
+        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.produtos.ProductsActivity" />
+        <activity android:name=".ui.vendas.SalesActivity" />
+        <activity android:name=".ui.compras.PurchasesActivity" />
+        <activity android:name=".ui.relatorios.ReportsActivity" />
+        <activity android:name=".ui.backup.BackupActivity" />
+        
+    </application>
 </manifest>

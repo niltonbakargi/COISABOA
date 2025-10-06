@@ -1,21 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:padding="24dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
 
     <EditText
         android:id="@+id/etUser"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="@string/hint_usuario" android:inputType="textPersonName"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Usuário"
+        android:inputType="text"
+        android:background="@android:color/white"
+        android:padding="12dp"
+        android:elevation="2dp" />
 
     <EditText
         android:id="@+id/etPass"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:hint="@string/hint_senha" android:inputType="textPassword"
-        android:layout_marginTop="12dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Senha"
+        android:inputType="textPassword"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/white"
+        android:padding="12dp"
+        android:elevation="2dp" />
 
     <Button
         android:id="@+id/btnDoLogin"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="@string/btn_login" android:layout_marginTop="16dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Entrar"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#1976D2"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cadastrar"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#388E3C"
+        android:textColor="@android:color/white" />
 </LinearLayout>

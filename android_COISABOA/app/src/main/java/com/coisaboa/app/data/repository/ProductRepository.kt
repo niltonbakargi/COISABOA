@@ -4,9 +4,11 @@ import com.coisaboa.app.data.dao.ProductDao
 import com.coisaboa.app.data.entity.ProductEntity
 
 class ProductRepository(private val dao: ProductDao) {
-    fun getAll() = dao.getAll()
-    suspend fun add(nome: String, quantidade: Int, valor: Double, imagemPath: String? = null) =
-        dao.insert(ProductEntity(nome = nome, quantidade = quantidade, valor = valor, imagemPath = imagemPath))
-    suspend fun update(entity: ProductEntity) = dao.update(entity)
-    suspend fun delete(entity: ProductEntity) = dao.delete(entity)
+
+    // ✅ "suspend" para poder chamar o DAO direto
+    suspend fun getAll(): List<ProductEntity> = dao.getAll()
+
+    suspend fun insert(product: ProductEntity) = dao.insert(product)
+
+    suspend fun delete(product: ProductEntity) = dao.delete(product)
 }

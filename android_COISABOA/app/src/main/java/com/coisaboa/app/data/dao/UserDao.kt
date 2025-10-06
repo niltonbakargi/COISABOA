@@ -1,17 +1,17 @@
 package com.coisaboa.app.data.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.coisaboa.app.data.entity.UserEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM users ORDER BY id DESC")
-    fun getAll(): Flow<List<UserEntity>>
 
-    @Query("SELECT * FROM users WHERE login = :login LIMIT 1")
-    suspend fun findByLogin(login: String): UserEntity?
+    @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
+    suspend fun findByUsername(username: String): UserEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(entity: UserEntity): Long
+    suspend fun insert(user: UserEntity)
 }
