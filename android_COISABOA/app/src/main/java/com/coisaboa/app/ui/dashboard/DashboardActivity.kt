@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.coisaboa.app.databinding.ActivityDashboardBinding
+import com.coisaboa.app.ui.compras.ComprarActivity
+import com.coisaboa.app.ui.vendas.VenderActivity
+import com.coisaboa.app.ui.gerenciar.GerenciarActivity
+import com.coisaboa.app.ui.relatorios.RelatoriosActivity
+import com.coisaboa.app.ui.backup.BackupActivity
 import com.coisaboa.app.ui.main.MainActivity
-import com.coisaboa.app.ui.compras.ComprarActivity   // ✅ Módulo de compras
-import com.coisaboa.app.ui.vendas.VenderActivity    // ✅ Módulo de vendas
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -17,40 +20,43 @@ class DashboardActivity : AppCompatActivity() {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = "Painel do Sistema"
+        supportActionBar?.title = "Painel de Controle"
 
-        // 🛒 Botão COMPRAR — abre a tela de Nova Compra
+        // 🛒 Botão "Comprar"
         binding.btnComprar.setOnClickListener {
-            val intent = Intent(this, ComprarActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ComprarActivity::class.java))
         }
 
-        // 🏷️ Botão VENDER — abre a tela de Nova Venda
+        // 🏷️ Botão "Vender"
         binding.btnVender.setOnClickListener {
-            val intent = Intent(this, VenderActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, VenderActivity::class.java))
         }
 
-        // 📊 Botão RELATÓRIOS
+        // ⚙️ Botão "Gerenciar Estoque"
+        binding.btnGerenciar.setOnClickListener {
+            startActivity(Intent(this, GerenciarActivity::class.java))
+        }
+
+        // 📊 Botão "Relatórios"
         binding.btnRelatorios.setOnClickListener {
-            val intent = Intent(this, com.coisaboa.app.ui.relatorios.RelatoriosActivity::class.java)
-            startActivity(intent)
-}
-
-        // ⚙️ Botão GERENCIAR
-binding.btnGerenciar.setOnClickListener {
-    val intent = Intent(this, com.coisaboa.app.ui.gerenciar.GerenciarActivity::class.java)
-    startActivity(intent)
-}
-
-        // 💾 Botão BACKUP — (em breve)
-        binding.btnBackup.setOnClickListener {
-            // TODO: Implementar rotina de backup
+            startActivity(Intent(this, RelatoriosActivity::class.java))
         }
 
-        // 🚪 Botão SAIR — retorna para a tela inicial
+        // ☁️ Botão "Fazer Backup"
+        binding.btnBackup.setOnClickListener {
+            try {
+                val intent = Intent(this, BackupActivity::class.java)
+                startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                android.widget.Toast.makeText(this, "Erro ao abrir backup: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+            }
+        }
+
+        // 🚪 Botão "Sair"
         binding.btnSair.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish()
         }

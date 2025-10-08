@@ -1,81 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
-    tools:context=".ui.dashboard.DashboardActivity">
+    android:background="#F8F9FA">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
         android:gravity="center_horizontal">
 
         <TextView
-            android:id="@+id/tvTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Painel do Sistema"
-            android:textColor="#2C3E50"
+            android:text="Painel de Controle"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textColor="#2C3E50"
             android:gravity="center"
-            android:layout_marginBottom="24dp" />
+            android:paddingBottom="24dp" />
 
         <Button
             android:id="@+id/btnComprar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🛒 Comprar"
-            android:backgroundTint="#10B981"
-            android:textColor="@android:color/white"
+            android:text="Comprar"
+            android:backgroundTint="#43A047"
+            android:textColor="#FFF"
             android:layout_marginBottom="12dp" />
 
         <Button
             android:id="@+id/btnVender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="💰 Vender"
-            android:backgroundTint="#2563EB"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="12dp" />
-
-        <Button
-            android:id="@+id/btnRelatorios"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="📊 Relatórios"
-            android:backgroundTint="#06B6D4"
-            android:textColor="@android:color/white"
+            android:text="Vender"
+            android:backgroundTint="#FB8C00"
+            android:textColor="#FFF"
             android:layout_marginBottom="12dp" />
 
         <Button
             android:id="@+id/btnGerenciar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="⚙️ Gerenciar Estoque"
-            android:backgroundTint="#8B5CF6"
-            android:textColor="@android:color/white"
+            android:text="Gerenciar Estoque"
+            android:backgroundTint="#1976D2"
+            android:textColor="#FFF"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnRelatorios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Relatórios"
+            android:backgroundTint="#6A1B9A"
+            android:textColor="#FFF"
             android:layout_marginBottom="12dp" />
 
         <Button
             android:id="@+id/btnBackup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="☁️ Fazer Backup"
-            android:backgroundTint="#F59E0B"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="24dp" />
+            android:text="Fazer Backup"
+            android:backgroundTint="#0288D1"
+            android:textColor="#FFF"
+            android:layout_marginBottom="12dp" />
 
         <Button
             android:id="@+id/btnSair"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🚪 Sair do Sistema"
-            android:backgroundTint="#DC2626"
-            android:textColor="@android:color/white" />
+            android:text="Sair do Sistema"
+            android:backgroundTint="#E53935"
+            android:textColor="#FFF" />
 
     </LinearLayout>
 </ScrollView>

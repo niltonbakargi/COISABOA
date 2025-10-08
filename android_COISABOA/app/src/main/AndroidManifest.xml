@@ -45,18 +45,23 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-            <!-- 📈 Tela de Relatórios -->
+        <!-- 📈 Tela de Relatórios -->
         <activity
             android:name=".ui.relatorios.RelatoriosActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
-            <!-- ⚙️ Tela de Gerenciamento de Estoque -->
+        <!-- ⚙️ Tela de Gerenciamento de Estoque -->
         <activity
             android:name=".ui.gerenciar.GerenciarActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <!-- ☁️ Tela de Backup -->
+        <activity
+            android:name=".ui.backup.BackupActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
     </application>
 
