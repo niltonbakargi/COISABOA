@@ -45,6 +45,12 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+            <!-- 📈 Tela de Relatórios -->
+        <activity
+            android:name=".ui.relatorios.RelatoriosActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

@@ -31,10 +31,11 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 📊 Botão RELATÓRIOS — (em breve)
+        // 📊 Botão RELATÓRIOS
         binding.btnRelatorios.setOnClickListener {
-            // TODO: Implementar tela de relatórios
-        }
+            val intent = Intent(this, com.coisaboa.app.ui.relatorios.RelatoriosActivity::class.java)
+            startActivity(intent)
+}
 
         // ⚙️ Botão GERENCIAR — (em breve)
         binding.btnGerenciar.setOnClickListener {
