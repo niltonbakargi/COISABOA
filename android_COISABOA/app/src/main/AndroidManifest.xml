@@ -6,25 +6,33 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
         android:theme="@style/Theme.COISABOA">
-        
-        <!-- ✅ CORRETO: MainActivity com package completo -->
+
+        <!-- 🏠 Tela inicial -->
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Suas outras activities -->
-        <activity android:name=".ui.login.LoginActivity" />
-        <activity android:name=".ui.produtos.ProductsActivity" />
-        <activity android:name=".ui.vendas.SalesActivity" />
-        <activity android:name=".ui.compras.PurchasesActivity" />
-        <activity android:name=".ui.relatorios.ReportsActivity" />
-        <activity android:name=".ui.backup.BackupActivity" />
-        
+        <!-- 🔐 Tela de Login -->
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- 📊 Tela do Dashboard -->
+        <activity
+            android:name=".ui.dashboard.DashboardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
     </application>
+
 </manifest>

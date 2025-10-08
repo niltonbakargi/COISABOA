@@ -7,26 +7,27 @@
     android:padding="24dp"
     android:background="#F8F9FA">
 
-    <!-- Saudação -->
     <TextView
-    android:id="@+id/tvHello"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Olá, COISABOA!"
-    android:textSize="20sp"
-    android:textStyle="bold"
-    android:textAlignment="center"
-    android:textColor="#2C3E50"
-    android:paddingBottom="24dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COISABOA - Sistema de Gestão"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="40dp" />
 
-    <!-- Botão de Logout -->
+    <Button
+        android:id="@+id/btnEntrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Entrar no Sistema"
+        android:layout_marginBottom="16dp" />
+
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sair do Sistema"
-        android:textColor="@android:color/white"
         android:backgroundTint="#D32F2F"
-        android:padding="12dp" />
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

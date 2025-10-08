@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.coisaboa.app.databinding.ActivityLoginBinding
-import com.coisaboa.app.ui.main.MainActivity
+import com.coisaboa.app.ui.dashboard.DashboardActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -16,34 +16,38 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.title = "Login Simples"
+        supportActionBar?.title = "Login"
 
         val prefs = getSharedPreferences("usuarios", Context.MODE_PRIVATE)
 
-        // Se já estiver logado, vai direto pra MainActivity
+        // Verifica se já há um usuário logado
         val usuarioLogado = prefs.getString("usuario_logado", null)
         if (usuarioLogado != null) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, DashboardActivity::class.java))
             finish()
         }
 
+        // Botão "Entrar"
         binding.btnDoLogin.setOnClickListener {
             val user = binding.etUser.text.toString().trim()
             val pass = binding.etPass.text.toString().trim()
 
             val senhaSalva = prefs.getString(user, null)
-            if (senhaSalva == null) {
-                Toast.makeText(this, "Usuário não encontrado", Toast.LENGTH_SHORT).show()
-            } else if (senhaSalva == pass) {
-                prefs.edit().putString("usuario_logado", user).apply()
-                Toast.makeText(this, "Bem-vindo, $user!", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            } else {
-                Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT).show()
+            when {
+                senhaSalva == null ->
+                    Toast.makeText(this, "Usuário não encontrado", Toast.LENGTH_SHORT).show()
+                senhaSalva == pass -> {
+                    prefs.edit().putString("usuario_logado", user).apply()
+                    Toast.makeText(this, "Bem-vindo, $user!", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, DashboardActivity::class.java))
+                    finish()
+                }
+                else ->
+                    Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT).show()
             }
         }
 
+        // Botão "Cadastrar"
         binding.btnRegister.setOnClickListener {
             val user = binding.etUser.text.toString().trim()
             val pass = binding.etPass.text.toString().trim()

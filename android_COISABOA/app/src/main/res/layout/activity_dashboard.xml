@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/tvDashboardTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bem-vindo ao Sistema COISABOA"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#2C3E50"
+        android:layout_marginBottom="32dp" />
+
+    <Button
+        android:id="@+id/btnComprar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Comprar"
+        android:backgroundTint="#1976D2"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnVender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vender"
+        android:backgroundTint="#388E3C"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnRelatorios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Relatórios"
+        android:backgroundTint="#FBC02D"
+        android:textColor="#212121"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnSair"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sair"
+        android:backgroundTint="#D32F2F"
+        android:textColor="@android:color/white" />
+</LinearLayout>

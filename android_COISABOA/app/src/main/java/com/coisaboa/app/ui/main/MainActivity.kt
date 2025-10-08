@@ -1,16 +1,11 @@
 package com.coisaboa.app.ui.main
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.coisaboa.app.databinding.ActivityMainBinding
 import com.coisaboa.app.ui.login.LoginActivity
 
-/**
- * Tela principal do aplicativo COISABOA.
- * Exibe uma saudação ao usuário e permite logout.
- */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -20,19 +15,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = "Tela Principal"
+        supportActionBar?.title = "Tela Inicial"
 
-        val prefs = getSharedPreferences("usuarios", Context.MODE_PRIVATE)
-        val user = prefs.getString("usuario_logado", "Usuário")
+        // 👉 Botão "Entrar no Sistema" vai para LoginActivity
+        binding.btnEntrar.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
-        // Exibe saudação
-        // binding.tvHello.text = "Olá, COISABOA!"
-
-        // Botão de logout
+        // 👉 Botão "Sair" fecha o app
         binding.btnLogout.setOnClickListener {
-            prefs.edit().remove("usuario_logado").apply()
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+            finishAffinity()
         }
     }
 }
