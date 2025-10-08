@@ -37,10 +37,11 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(intent)
 }
 
-        // ⚙️ Botão GERENCIAR — (em breve)
-        binding.btnGerenciar.setOnClickListener {
-            // TODO: Implementar tela de gerenciamento
-        }
+        // ⚙️ Botão GERENCIAR
+binding.btnGerenciar.setOnClickListener {
+    val intent = Intent(this, com.coisaboa.app.ui.gerenciar.GerenciarActivity::class.java)
+    startActivity(intent)
+}
 
         // 💾 Botão BACKUP — (em breve)
         binding.btnBackup.setOnClickListener {

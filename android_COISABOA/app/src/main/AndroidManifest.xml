@@ -51,6 +51,13 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+            <!-- ⚙️ Tela de Gerenciamento de Estoque -->
+        <activity
+            android:name=".ui.gerenciar.GerenciarActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+
     </application>
 
 </manifest>
