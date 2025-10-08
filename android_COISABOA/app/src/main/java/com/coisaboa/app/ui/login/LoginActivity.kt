@@ -20,12 +20,15 @@ class LoginActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("usuarios", Context.MODE_PRIVATE)
 
-        // Verifica se já há um usuário logado
+        // 🔒 Sempre exibe a tela de login (sem pular direto ao Dashboard)
+        // Se quiser lembrar o login depois, descomente o trecho abaixo:
+        /*
         val usuarioLogado = prefs.getString("usuario_logado", null)
         if (usuarioLogado != null) {
             startActivity(Intent(this, DashboardActivity::class.java))
             finish()
         }
+        */
 
         // Botão "Entrar"
         binding.btnDoLogin.setOnClickListener {

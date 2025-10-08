@@ -17,7 +17,18 @@ class DashboardActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Painel do Sistema"
 
-        // Botão sair → volta à tela inicial
+        // Botões principais
+        binding.btnComprar.setOnClickListener { /* TODO: Implementar */ }
+        binding.btnVender.setOnClickListener { /* TODO: Implementar */ }
+        binding.btnRelatorios.setOnClickListener { /* TODO: Implementar */ }
+        binding.btnGerenciar.setOnClickListener { /* TODO: Implementar */ }
+
+        // Backup
+        binding.btnBackup.setOnClickListener {
+            // TODO: implementar rotina de backup
+        }
+
+        // Sair
         binding.btnSair.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

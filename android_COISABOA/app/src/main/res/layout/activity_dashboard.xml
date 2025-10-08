@@ -1,54 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
-    android:background="#FFFFFF">
+    android:background="#F8F9FA"
+    tools:context=".ui.dashboard.DashboardActivity">
 
-    <TextView
-        android:id="@+id/tvDashboardTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bem-vindo ao Sistema COISABOA"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#2C3E50"
-        android:layout_marginBottom="32dp" />
-
-    <Button
-        android:id="@+id/btnComprar"
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Comprar"
-        android:backgroundTint="#1976D2"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="12dp" />
+        android:gravity="center_horizontal">
 
-    <Button
-        android:id="@+id/btnVender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Vender"
-        android:backgroundTint="#388E3C"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="12dp" />
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Painel do Sistema"
+            android:textColor="#2C3E50"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
 
-    <Button
-        android:id="@+id/btnRelatorios"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Relatórios"
-        android:backgroundTint="#FBC02D"
-        android:textColor="#212121"
-        android:layout_marginBottom="12dp" />
+        <Button
+            android:id="@+id/btnComprar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🛒 Comprar"
+            android:backgroundTint="#10B981"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="12dp" />
 
-    <Button
-        android:id="@+id/btnSair"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sair"
-        android:backgroundTint="#D32F2F"
-        android:textColor="@android:color/white" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btnVender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="💰 Vender"
+            android:backgroundTint="#2563EB"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnRelatorios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📊 Relatórios"
+            android:backgroundTint="#06B6D4"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnGerenciar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="⚙️ Gerenciar Estoque"
+            android:backgroundTint="#8B5CF6"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnBackup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="☁️ Fazer Backup"
+            android:backgroundTint="#F59E0B"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnSair"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🚪 Sair do Sistema"
+            android:backgroundTint="#DC2626"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>
