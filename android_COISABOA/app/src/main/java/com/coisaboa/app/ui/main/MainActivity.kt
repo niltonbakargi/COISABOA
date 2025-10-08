@@ -17,15 +17,15 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Tela Inicial"
 
-        // 👉 Botão "Entrar no Sistema" vai para LoginActivity
+        // 🔐 Botão "Entrar no Sistema"
         binding.btnEntrar.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
-        // 👉 Botão "Sair" fecha o app
-        binding.btnLogout.setOnClickListener {
-            finishAffinity()
+        // 🚪 Botão "Sair"
+        binding.btnSair.setOnClickListener {
+            finishAffinity() // Fecha todas as atividades e encerra o app
         }
     }
 }
