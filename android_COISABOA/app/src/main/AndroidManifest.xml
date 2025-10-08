@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.COISABOA">
 
-        <!-- 🏠 Tela inicial -->
+        <!-- 🏠 Tela Inicial -->
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
@@ -30,6 +30,18 @@
         <!-- 📊 Tela do Dashboard -->
         <activity
             android:name=".ui.dashboard.DashboardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- 🛒 Tela de Compras -->
+        <activity
+            android:name=".ui.compras.ComprarActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- 🏷️ Tela de Vendas -->
+        <activity
+            android:name=".ui.vendas.VenderActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

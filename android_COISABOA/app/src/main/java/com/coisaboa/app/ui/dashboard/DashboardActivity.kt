@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.coisaboa.app.databinding.ActivityDashboardBinding
 import com.coisaboa.app.ui.main.MainActivity
+import com.coisaboa.app.ui.compras.ComprarActivity   // ✅ Módulo de compras
+import com.coisaboa.app.ui.vendas.VenderActivity    // ✅ Módulo de vendas
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -17,18 +19,34 @@ class DashboardActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Painel do Sistema"
 
-        // Botões principais
-        binding.btnComprar.setOnClickListener { /* TODO: Implementar */ }
-        binding.btnVender.setOnClickListener { /* TODO: Implementar */ }
-        binding.btnRelatorios.setOnClickListener { /* TODO: Implementar */ }
-        binding.btnGerenciar.setOnClickListener { /* TODO: Implementar */ }
-
-        // Backup
-        binding.btnBackup.setOnClickListener {
-            // TODO: implementar rotina de backup
+        // 🛒 Botão COMPRAR — abre a tela de Nova Compra
+        binding.btnComprar.setOnClickListener {
+            val intent = Intent(this, ComprarActivity::class.java)
+            startActivity(intent)
         }
 
-        // Sair
+        // 🏷️ Botão VENDER — abre a tela de Nova Venda
+        binding.btnVender.setOnClickListener {
+            val intent = Intent(this, VenderActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 📊 Botão RELATÓRIOS — (em breve)
+        binding.btnRelatorios.setOnClickListener {
+            // TODO: Implementar tela de relatórios
+        }
+
+        // ⚙️ Botão GERENCIAR — (em breve)
+        binding.btnGerenciar.setOnClickListener {
+            // TODO: Implementar tela de gerenciamento
+        }
+
+        // 💾 Botão BACKUP — (em breve)
+        binding.btnBackup.setOnClickListener {
+            // TODO: Implementar rotina de backup
+        }
+
+        // 🚪 Botão SAIR — retorna para a tela inicial
         binding.btnSair.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
