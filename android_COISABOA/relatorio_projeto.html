@@ -1,0 +1,1471 @@
+<!DOCTYPE html><html lang='pt-BR'><head>
+<meta charset='UTF-8'>
+<title>Relatório Técnico - Projeto COISABOA</title>
+<style>
+body { font-family: 'Segoe UI', Arial, sans-serif; background:#f8fafc; color:#222; margin:20px; }
+h1,h2,h3 { color:#1976D2; }
+pre { background:#fff; padding:15px; border-radius:10px; border:1px solid #ddd; }
+small { color:#666; }
+ul { line-height:1.6; }
+.stat { background:#fff; padding:10px 15px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px; }
+.footer { margin-top:40px; font-size:0.9rem; color:#555; text-align:center; }
+</style></head><body><h1>📊 Relatório Técnico do Projeto COISABOA</h1><p><strong>Gerado em:</strong> 09/10/2025 13:28:04</p><p><strong>Pasta base:</strong> C:\xampp\htdocs\COISABOA\android_COISABOA</p><h2>📂 Estrutura Completa de Arquivos e Pastas</h2><pre>📄 .gitignore <small>(GITIGNORE | 0 linhas | 0.06 KB | mod: 04/10/2025 18:15:02)</small>
+📁 <strong>.gradle/</strong>
+  📁 <strong>8.12/</strong>
+    📁 <strong>checksums/</strong>
+      📄 checksums.lock <small>(LOCK | 0 linhas | 0.02 KB | mod: 09/10/2025 13:13:05)</small>
+      📄 md5-checksums.bin <small>(BIN | 0 linhas | 30.81 KB | mod: 06/10/2025 19:07:18)</small>
+      📄 sha1-checksums.bin <small>(BIN | 0 linhas | 78.75 KB | mod: 06/10/2025 19:07:18)</small>
+    📁 <strong>executionHistory/</strong>
+      📄 executionHistory.bin <small>(BIN | 0 linhas | 4002.96 KB | mod: 09/10/2025 13:13:02)</small>
+      📄 executionHistory.lock <small>(LOCK | 0 linhas | 0.02 KB | mod: 09/10/2025 13:13:05)</small>
+    📁 <strong>expanded/</strong>
+    📁 <strong>fileChanges/</strong>
+      📄 last-build.bin <small>(BIN | 0 linhas | 0.00 KB | mod: 09/10/2025 13:13:05)</small>
+    📁 <strong>fileHashes/</strong>
+      📄 fileHashes.bin <small>(BIN | 0 linhas | 133.24 KB | mod: 09/10/2025 13:13:05)</small>
+      📄 fileHashes.lock <small>(LOCK | 0 linhas | 0.02 KB | mod: 09/10/2025 13:13:05)</small>
+      📄 resourceHashesCache.bin <small>(BIN | 0 linhas | 33.97 KB | mod: 09/10/2025 13:12:58)</small>
+    📄 gc.properties <small>(PROPERTIES | 0 linhas | 0.00 KB | mod: 08/10/2025 13:16:34)</small>
+    📁 <strong>vcsMetadata/</strong>
+  📁 <strong>buildOutputCleanup/</strong>
+    📄 buildOutputCleanup.lock <small>(LOCK | 0 linhas | 0.02 KB | mod: 09/10/2025 13:13:05)</small>
+    📄 cache.properties <small>(PROPERTIES | 0 linhas | 0.05 KB | mod: 04/10/2025 19:21:43)</small>
+    📄 outputFiles.bin <small>(BIN | 0 linhas | 22.55 KB | mod: 09/10/2025 13:13:05)</small>
+  📄 config.properties <small>(PROPERTIES | 0 linhas | 0.07 KB | mod: 04/10/2025 19:21:40)</small>
+  📄 file-system.probe <small>(PROBE | 0 linhas | 0.01 KB | mod: 09/10/2025 12:59:49)</small>
+  📁 <strong>vcs-1/</strong>
+    📄 gc.properties <small>(PROPERTIES | 0 linhas | 0.00 KB | mod: 08/10/2025 13:16:34)</small>
+📁 <strong>.idea/</strong>
+  📄 .gitignore <small>(GITIGNORE | 0 linhas | 0.05 KB | mod: 04/10/2025 19:28:31)</small>
+  📄 .name <small>(NAME | 0 linhas | 0.01 KB | mod: 04/10/2025 19:36:32)</small>
+  📄 AndroidProjectSystem.xml <small>(XML | 6 linhas | 0.21 KB | mod: 04/10/2025 19:28:22)</small>
+  📁 <strong>caches/</strong>
+    📄 deviceStreaming.xml <small>(XML | 909 linhas | 43.64 KB | mod: 08/10/2025 13:29:52)</small>
+  📁 <strong>codeStyles/</strong>
+    📄 Project.xml <small>(XML | 123 linhas | 3.66 KB | mod: 04/10/2025 19:36:32)</small>
+    📄 codeStyleConfig.xml <small>(XML | 5 linhas | 0.14 KB | mod: 04/10/2025 19:36:32)</small>
+  📄 compiler.xml <small>(XML | 6 linhas | 0.17 KB | mod: 04/10/2025 19:36:32)</small>
+  📄 deploymentTargetSelector.xml <small>(XML | 18 linhas | 0.62 KB | mod: 06/10/2025 17:59:11)</small>
+  📄 gradle.xml <small>(XML | 19 linhas | 0.69 KB | mod: 04/10/2025 19:36:32)</small>
+  📄 migrations.xml <small>(XML | 10 linhas | 0.26 KB | mod: 04/10/2025 19:28:22)</small>
+  📄 misc.xml <small>(XML | 17 linhas | 0.65 KB | mod: 06/10/2025 17:59:11)</small>
+  📄 runConfigurations.xml <small>(XML | 17 linhas | 0.96 KB | mod: 04/10/2025 19:28:22)</small>
+  📄 vcs.xml <small>(XML | 6 linhas | 0.18 KB | mod: 04/10/2025 19:28:22)</small>
+  📄 workspace.xml <small>(XML | 176 linhas | 8.40 KB | mod: 09/10/2025 13:13:18)</small>
+📁 <strong>.kotlin/</strong>
+  📁 <strong>sessions/</strong>
+📁 <strong>app/</strong>
+  📁 <strong>build/</strong>
+    📁 <strong>generated/</strong>
+      📁 <strong>ap_generated_sources/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>out/</strong>
+      📁 <strong>data_binding_base_class_source_out/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>out/</strong>
+            📁 <strong>com/</strong>
+              📁 <strong>coisaboa/</strong>
+                📁 <strong>app/</strong>
+                  📁 <strong>databinding/</strong>
+                    📄 ActivityBackupBinding.java <small>(JAVA | 90 linhas | 2.59 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityComprarBinding.java <small>(JAVA | 179 linhas | 5.46 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityDashboardBinding.java <small>(JAVA | 121 linhas | 3.45 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityGerenciarBinding.java <small>(JAVA | 156 linhas | 4.50 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityLoginBinding.java <small>(JAVA | 101 linhas | 2.86 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityMainBinding.java <small>(JAVA | 90 linhas | 2.55 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityProductsBinding.java <small>(JAVA | 69 linhas | 2.10 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityPurchasesBinding.java <small>(JAVA | 80 linhas | 2.44 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityRelatoriosBinding.java <small>(JAVA | 112 linhas | 3.38 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityReportsBinding.java <small>(JAVA | 52 linhas | 1.39 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivitySalesBinding.java <small>(JAVA | 80 linhas | 2.35 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ActivityVenderBinding.java <small>(JAVA | 125 linhas | 3.66 KB | mod: 09/10/2025 13:12:41)</small>
+                    📄 ItemProductBinding.java <small>(JAVA | 89 linhas | 2.55 KB | mod: 09/10/2025 13:12:41)</small>
+      📁 <strong>res/</strong>
+        📁 <strong>pngs/</strong>
+          📁 <strong>debug/</strong>
+        📁 <strong>resValues/</strong>
+          📁 <strong>debug/</strong>
+      📁 <strong>source/</strong>
+        📁 <strong>kapt/</strong>
+          📁 <strong>debug/</strong>
+            📁 <strong>com/</strong>
+              📁 <strong>coisaboa/</strong>
+                📁 <strong>app/</strong>
+                  📁 <strong>data/</strong>
+                    📄 AppDatabase_Impl.java <small>(JAVA | 209 linhas | 8.90 KB | mod: 09/10/2025 00:06:16)</small>
+                    📁 <strong>dao/</strong>
+                      📄 ProductDao_Impl.java <small>(JAVA | 157 linhas | 5.54 KB | mod: 09/10/2025 00:06:16)</small>
+                      📄 UserDao_Impl.java <small>(JAVA | 146 linhas | 5.04 KB | mod: 09/10/2025 00:06:16)</small>
+        📁 <strong>kaptKotlin/</strong>
+          📁 <strong>debug/</strong>
+    📁 <strong>intermediates/</strong>
+      📁 <strong>aar_metadata_check/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>checkDebugAarMetadata/</strong>
+      📁 <strong>annotation_processor_list/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>javaPreCompileDebug/</strong>
+            📄 annotationProcessors.json <small>(JSON | 0 linhas | 0.08 KB | mod: 09/10/2025 00:06:06)</small>
+      📁 <strong>apk/</strong>
+        📁 <strong>debug/</strong>
+          📄 app-debug.apk <small>(APK | 0 linhas | 5985.61 KB | mod: 09/10/2025 00:10:28)</small>
+          📄 output-metadata.json <small>(JSON | 0 linhas | 0.39 KB | mod: 09/10/2025 00:10:28)</small>
+      📁 <strong>apk_ide_redirect_file/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>createDebugApkListingFileRedirect/</strong>
+            📄 redirect.txt <small>(TXT | 0 linhas | 0.07 KB | mod: 09/10/2025 00:06:28)</small>
+      📁 <strong>app_metadata/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>writeDebugAppMetadata/</strong>
+            📄 app-metadata.properties <small>(PROPERTIES | 0 linhas | 0.06 KB | mod: 09/10/2025 00:06:05)</small>
+      📁 <strong>assets/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugAssets/</strong>
+      📁 <strong>compatible_screen_manifest/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>createDebugCompatibleScreenManifests/</strong>
+            📄 output-metadata.json <small>(JSON | 0 linhas | 0.19 KB | mod: 09/10/2025 00:06:05)</small>
+      📁 <strong>compile_and_runtime_not_namespaced_r_class_jar/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugResources/</strong>
+            📄 R.jar <small>(JAR | 0 linhas | 789.85 KB | mod: 09/10/2025 13:12:45)</small>
+      📁 <strong>compressed_assets/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>compressDebugAssets/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>data_binding_base_class_log_artifact/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dataBindingGenBaseClassesDebug/</strong>
+            📁 <strong>out/</strong>
+              📄 com.coisaboa.app-binding_classes.json <small>(JSON | 0 linhas | 5.59 KB | mod: 09/10/2025 13:12:41)</small>
+      📁 <strong>data_binding_dependency_artifacts/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dataBindingMergeDependencyArtifactsDebug/</strong>
+      📁 <strong>data_binding_layout_info_type_merge/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugResources/</strong>
+            📁 <strong>out/</strong>
+              📄 activity_backup-layout.xml <small>(XML | 1 linhas | 0.84 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_comprar-layout.xml <small>(XML | 1 linhas | 1.98 KB | mod: 09/10/2025 13:12:39)</small>
+              📄 activity_dashboard-layout.xml <small>(XML | 1 linhas | 1.25 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_gerenciar-layout.xml <small>(XML | 1 linhas | 1.66 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_login-layout.xml <small>(XML | 1 linhas | 0.97 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_main-layout.xml <small>(XML | 1 linhas | 0.83 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_products-layout.xml <small>(XML | 1 linhas | 0.62 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_purchases-layout.xml <small>(XML | 1 linhas | 0.75 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_relatorios-layout.xml <small>(XML | 1 linhas | 1.14 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_reports-layout.xml <small>(XML | 1 linhas | 0.45 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_sales-layout.xml <small>(XML | 1 linhas | 0.74 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_vender-layout.xml <small>(XML | 1 linhas | 1.26 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 item_product-layout.xml <small>(XML | 1 linhas | 0.83 KB | mod: 09/10/2025 00:06:04)</small>
+      📁 <strong>data_binding_layout_info_type_package/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>packageDebugResources/</strong>
+            📁 <strong>out/</strong>
+              📄 activity_backup-layout.xml <small>(XML | 1 linhas | 0.84 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_comprar-layout.xml <small>(XML | 1 linhas | 1.98 KB | mod: 09/10/2025 13:12:40)</small>
+              📄 activity_dashboard-layout.xml <small>(XML | 1 linhas | 1.25 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_gerenciar-layout.xml <small>(XML | 1 linhas | 1.66 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_login-layout.xml <small>(XML | 1 linhas | 0.97 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_main-layout.xml <small>(XML | 1 linhas | 0.83 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_products-layout.xml <small>(XML | 1 linhas | 0.62 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_purchases-layout.xml <small>(XML | 1 linhas | 0.75 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_relatorios-layout.xml <small>(XML | 1 linhas | 1.14 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_reports-layout.xml <small>(XML | 1 linhas | 0.45 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_sales-layout.xml <small>(XML | 1 linhas | 0.74 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 activity_vender-layout.xml <small>(XML | 1 linhas | 1.26 KB | mod: 09/10/2025 00:06:04)</small>
+              📄 item_product-layout.xml <small>(XML | 1 linhas | 0.83 KB | mod: 09/10/2025 00:06:04)</small>
+      📁 <strong>desugar_graph/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+              📁 <strong>currentProject/</strong>
+                📁 <strong>dirs_bucket_0/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.75 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>dirs_bucket_1/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 1.36 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>dirs_bucket_2/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 1.64 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>dirs_bucket_3/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.74 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>dirs_bucket_4/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 1.13 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>dirs_bucket_5/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 1.14 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>dirs_bucket_6/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 1.18 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>dirs_bucket_7/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>jar_a249dc149dca95e278e9b77161d69ca1b07e9b2e7d8cc673d06bf03781bb2057_bucket_0/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>jar_a249dc149dca95e278e9b77161d69ca1b07e9b2e7d8cc673d06bf03781bb2057_bucket_1/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>jar_a249dc149dca95e278e9b77161d69ca1b07e9b2e7d8cc673d06bf03781bb2057_bucket_2/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>jar_a249dc149dca95e278e9b77161d69ca1b07e9b2e7d8cc673d06bf03781bb2057_bucket_3/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>jar_a249dc149dca95e278e9b77161d69ca1b07e9b2e7d8cc673d06bf03781bb2057_bucket_4/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>jar_a249dc149dca95e278e9b77161d69ca1b07e9b2e7d8cc673d06bf03781bb2057_bucket_5/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>jar_a249dc149dca95e278e9b77161d69ca1b07e9b2e7d8cc673d06bf03781bb2057_bucket_6/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+                📁 <strong>jar_a249dc149dca95e278e9b77161d69ca1b07e9b2e7d8cc673d06bf03781bb2057_bucket_7/</strong>
+                  📄 graph.bin <small>(BIN | 0 linhas | 0.23 KB | mod: 09/10/2025 00:10:28)</small>
+              📁 <strong>externalLibs/</strong>
+              📁 <strong>mixedScopes/</strong>
+              📁 <strong>otherProjects/</strong>
+      📁 <strong>dex/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeExtDexDebug/</strong>
+            📄 classes.dex <small>(DEX | 0 linhas | 10394.08 KB | mod: 09/10/2025 00:06:09)</small>
+          📁 <strong>mergeLibDexDebug/</strong>
+            📁 <strong>0/</strong>
+            📁 <strong>1/</strong>
+            📁 <strong>10/</strong>
+            📁 <strong>11/</strong>
+            📁 <strong>12/</strong>
+            📁 <strong>13/</strong>
+            📁 <strong>14/</strong>
+            📁 <strong>15/</strong>
+            📁 <strong>2/</strong>
+            📁 <strong>3/</strong>
+            📁 <strong>4/</strong>
+            📁 <strong>5/</strong>
+            📁 <strong>6/</strong>
+            📁 <strong>7/</strong>
+            📁 <strong>8/</strong>
+            📁 <strong>9/</strong>
+          📁 <strong>mergeProjectDexDebug/</strong>
+            📁 <strong>0/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 494.27 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>1/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 5.96 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>10/</strong>
+            📁 <strong>11/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 14.30 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>12/</strong>
+            📁 <strong>13/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 19.55 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>14/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 28.50 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>15/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 17.20 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>2/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 8.03 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>3/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 8.51 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>4/</strong>
+            📁 <strong>5/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 1.87 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>6/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 10.12 KB | mod: 09/10/2025 00:06:23)</small>
+            📁 <strong>7/</strong>
+            📁 <strong>8/</strong>
+              📄 classes.dex <small>(DEX | 0 linhas | 16.56 KB | mod: 09/10/2025 00:10:28)</small>
+            📁 <strong>9/</strong>
+      📁 <strong>dex_archive_input_jar_hashes/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📄 out <small>( | 0 linhas | 0.40 KB | mod: 09/10/2025 00:10:28)</small>
+      📁 <strong>dex_number_of_buckets_file/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📄 out <small>( | 0 linhas | 0.00 KB | mod: 09/10/2025 00:06:20)</small>
+      📁 <strong>duplicate_classes_check/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>checkDebugDuplicateClasses/</strong>
+      📁 <strong>external_file_lib_dex_archives/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>desugarDebugFileDependencies/</strong>
+      📁 <strong>external_libs_dex_archive/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>external_libs_dex_archive_with_artifact_transforms/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>global_synthetics_dex/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugGlobalSynthetics/</strong>
+      📁 <strong>global_synthetics_external_lib/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>global_synthetics_external_libs_artifact_transform/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>global_synthetics_file_lib/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>desugarDebugFileDependencies/</strong>
+      📁 <strong>global_synthetics_mixed_scope/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>global_synthetics_project/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>global_synthetics_subproject/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>incremental/</strong>
+        📁 <strong>dataBindingGenBaseClassesDebug/</strong>
+          📄 base_builder_log.json <small>(JSON | 0 linhas | 6.00 KB | mod: 09/10/2025 13:12:41)</small>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugResources/</strong>
+            📄 compile-file-map.properties <small>(PROPERTIES | 0 linhas | 3.63 KB | mod: 09/10/2025 13:12:39)</small>
+            📁 <strong>merged.dir/</strong>
+            📄 merger.xml <small>(XML | 15600 linhas | 1945.69 KB | mod: 09/10/2025 13:12:39)</small>
+            📁 <strong>stripped.dir/</strong>
+              📁 <strong>layout/</strong>
+                📄 activity_comprar.xml <small>(XML | 125 linhas | 4.57 KB | mod: 09/10/2025 13:11:56)</small>
+          📁 <strong>packageDebugResources/</strong>
+            📄 compile-file-map.properties <small>(PROPERTIES | 0 linhas | 3.64 KB | mod: 09/10/2025 13:12:40)</small>
+            📁 <strong>merged.dir/</strong>
+            📄 merger.xml <small>(XML | 7 linhas | 5.80 KB | mod: 09/10/2025 13:12:40)</small>
+            📁 <strong>stripped.dir/</strong>
+              📁 <strong>layout/</strong>
+                📄 activity_comprar.xml <small>(XML | 125 linhas | 4.57 KB | mod: 09/10/2025 13:11:56)</small>
+        📁 <strong>debug-mergeJavaRes/</strong>
+          📄 merge-state <small>( | 0 linhas | 10.93 KB | mod: 09/10/2025 00:06:24)</small>
+          📁 <strong>zip-cache/</strong>
+            📄 +gxdZSoUp0CMNShKaDHAh4fGkTo= <small>( | 0 linhas | 433.51 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 +xApvUJNxxTirx0nxo0WycMrwTI= <small>( | 0 linhas | 52.58 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 0heDLyYRVzLOk40fuMNVrIpp9fg= <small>( | 0 linhas | 1.99 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 1JOUklkz6gpYJCvlr6pN4oVFzag= <small>( | 0 linhas | 189.33 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 4FXN94Mp4s6nkaXHeKPWps7AjgY= <small>( | 0 linhas | 3.61 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 5BzuKHHtctPc1NNyIZy5G9W0Igw= <small>( | 0 linhas | 54.00 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 6YU2ogo1KjP2esfPGJdUXlmYzDw= <small>( | 0 linhas | 41.95 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 7WAEIrvdCtUJqt7VvNcKq7fU0tE= <small>( | 0 linhas | 21.15 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 80A2_+aJyqPdvCrQm0now9S69d4= <small>( | 0 linhas | 38.11 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 9FcBBsl2hNyq59BWwpHq3z9gMUY= <small>( | 0 linhas | 85.16 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 9ihI3G7oVsdpusLQgKpHSN1j2EY= <small>( | 0 linhas | 59.60 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 C4A33vKRpmaTweLS4gnsNAZZkmY= <small>( | 0 linhas | 0.95 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 DAOt3veAhdXkmTJmIm3hmhANBz8= <small>( | 0 linhas | 46.40 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 F_TZIBrjPrb5H7TbgR4DpYwmwjM= <small>( | 0 linhas | 0.02 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 Fhg4nboSo7wva2sr3M+ubQ_njT8= <small>( | 0 linhas | 55.90 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 G1iSiZqdJWQ+1j4oDRDF5rIYc_w= <small>( | 0 linhas | 7.48 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 GeoVUzh9aSg3wt5Tmv_kJW+IeGo= <small>( | 0 linhas | 0.22 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 I4wnmU5GVCAxgZdNnz0qUsmHMYQ= <small>( | 0 linhas | 1231.79 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 JFuUE_m5qMmm0a2cbsV+Zfy+1WM= <small>( | 0 linhas | 251.72 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 JPh7nPvw2mT8KvR8Ksczl0zvOBo= <small>( | 0 linhas | 0.94 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 JQxGcioD1utzvmqo2iVyVdG2y54= <small>( | 0 linhas | 0.19 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 JdnIN6udzc0c_mCO_sTv4nYSW8k= <small>( | 0 linhas | 32.56 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 KG+Sk0wzdrrXeU+nQlp8tgfedBU= <small>( | 0 linhas | 6.16 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 KeKvWL_U8h7MmTJYrVCx4nl51AY= <small>( | 0 linhas | 66.64 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 LKfXySAYqcyNBpT6NgclJS+eq6E= <small>( | 0 linhas | 15.11 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 MI9XmOA4VhiuD690w6oLJHFzLBY= <small>( | 0 linhas | 1510.73 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 ML03Nin2Mfof084hnTVoNQEJriU= <small>( | 0 linhas | 66.31 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 MzbglfYCBEipNf_zp3tQ1v7LYN8= <small>( | 0 linhas | 11.01 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 N1yuQlbOja1w+nXaLupYL5lFEsA= <small>( | 0 linhas | 213.65 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 NLN9QDa5neXdD+3cW9ag_VtXQQI= <small>( | 0 linhas | 19.99 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 OcyuORBZv7wgl0ypVRo1gie3y7w= <small>( | 0 linhas | 3.08 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 PSiS8x5eHNDsmVdctX3KO_ROOo0= <small>( | 0 linhas | 39.30 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 PbVPlF+No5iCSIWGhr4Eow1_mnY= <small>( | 0 linhas | 30.48 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 PjP1Zee0W73u3HCYPEvfoqQLhJM= <small>( | 0 linhas | 1.51 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 Rs6U_Yia0XlCyVaNWWPiZZGnkDs= <small>( | 0 linhas | 28.68 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 SJU9uY5ysh3zuQQBL0Kq2gk4XJQ= <small>( | 0 linhas | 1.50 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 SslCQUMCOXmu9ubvMrAyVB5qu3g= <small>( | 0 linhas | 22.57 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 TDG0n1aOJ6nV1ruQhaeluxocB_c= <small>( | 0 linhas | 37.27 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 TGef2ZQcGlwpq8v6LA8Nlze3L9I= <small>( | 0 linhas | 5.05 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 UHZ70laUmJGrOHtKp_73IlGwtTM= <small>( | 0 linhas | 0.21 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 Uv9fd5LWjuHZ9_YxSMgMqY5yQCE= <small>( | 0 linhas | 11.57 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 _EkgVQN6dZmDRAwRKYz8dw79XMw= <small>( | 0 linhas | 6.12 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 bxDS1akjCvej0YUK2HQHH49lOcc= <small>( | 0 linhas | 2.28 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 c1kZzmtfWhIuvUz6DnDHSYDl83U= <small>( | 0 linhas | 1689.19 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 dpxa31CXflJscIf1xLrTRjN38G0= <small>( | 0 linhas | 1828.48 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 e5ViH3vUSuATGGuVpqq76mLVyFg= <small>( | 0 linhas | 11.38 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 eClClWHUKdwcOIMLqGYPPF01pPI= <small>( | 0 linhas | 31.74 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 fwzcTtebQIGkOqS9GiWr743siVA= <small>( | 0 linhas | 33.51 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 g16b4r0nN1DcMK_VLt0VmvhdTek= <small>( | 0 linhas | 33.12 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 g7cpjTkYq6UKzj_fq+WhUzGKXEY= <small>( | 0 linhas | 60.02 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 gw1X9Tn+gDSS9Yf0nghk4PDvv7Y= <small>( | 0 linhas | 0.21 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 hh3p5DktrstiGjsebNAymh3GqxI= <small>( | 0 linhas | 60.64 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 hjoxluNf3u4eufm+TIBWeJrtqbw= <small>( | 0 linhas | 15.65 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 hq0_EkxSMlthDDnMw6EgB_XJ3sU= <small>( | 0 linhas | 54.81 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 i6vgIdq1ueivdQvnM8fRkOsha+s= <small>( | 0 linhas | 70.55 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 iWoi9SheQn5+p7+eKjVEZQTTcjU= <small>( | 0 linhas | 409.19 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 k5boVQV170qXnWN4vItsBEhTWz8= <small>( | 0 linhas | 19.10 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 kBKX_h_8CA0QGhyMMM2na4EGs+0= <small>( | 0 linhas | 40.86 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 kZWER7vFGHVhvs_YlthqQ9Pcf8o= <small>( | 0 linhas | 11.23 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 kkyNK7p50jc9zk3aVgbZnFijGMA= <small>( | 0 linhas | 25.38 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 kyLDufp1EFe9PlHk_7TXMXKDKRo= <small>( | 0 linhas | 34.35 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 mYxsBreT_PtmU8rNEZHB+kN+8CA= <small>( | 0 linhas | 0.22 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 pGf_36JcIlfDgd64KGVa+nsOi9s= <small>( | 0 linhas | 32.57 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 rQoiPOzvdoXf1L5RnDfAUPm38EQ= <small>( | 0 linhas | 773.37 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 rgk+QRuF6unDKmidFe8s2WpN9Og= <small>( | 0 linhas | 6.71 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 sH4rifL_tb41BYU5fCAFiSiVWaI= <small>( | 0 linhas | 184.23 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 t3NttmUHnRretIqqA21byT9bMnI= <small>( | 0 linhas | 14.20 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 u0CEcCs0b8Na62tP38PLEdZVCB0= <small>( | 0 linhas | 6.63 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 v1HheYm_wPFvxvPEypGjUngrwwI= <small>( | 0 linhas | 462.35 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 vQqP+ZVNGCoEMqC6Ei0fLOCy+Qc= <small>( | 0 linhas | 31.16 KB | mod: 09/10/2025 00:06:24)</small>
+            📄 wZTnatsrku+WWrEGDifEQvzU31Y= <small>( | 0 linhas | 280.53 KB | mod: 09/10/2025 00:06:24)</small>
+        📁 <strong>mergeDebugAssets/</strong>
+          📄 merger.xml <small>(XML | 2 linhas | 0.72 KB | mod: 09/10/2025 00:06:05)</small>
+        📁 <strong>mergeDebugJniLibFolders/</strong>
+          📄 merger.xml <small>(XML | 2 linhas | 0.47 KB | mod: 09/10/2025 00:06:05)</small>
+        📁 <strong>mergeDebugShaders/</strong>
+          📄 merger.xml <small>(XML | 2 linhas | 0.47 KB | mod: 09/10/2025 00:06:05)</small>
+        📁 <strong>packageDebug/</strong>
+          📁 <strong>tmp/</strong>
+            📁 <strong>debug/</strong>
+              📄 dex-renamer-state.txt <small>(TXT | 0 linhas | 2.12 KB | mod: 09/10/2025 00:10:28)</small>
+              📁 <strong>zip-cache/</strong>
+                📄 androidResources <small>( | 0 linhas | 77.52 KB | mod: 09/10/2025 00:06:28)</small>
+                📄 javaResources0 <small>( | 0 linhas | 5.99 KB | mod: 09/10/2025 00:06:28)</small>
+      📁 <strong>java_res/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugJavaRes/</strong>
+            📁 <strong>out/</strong>
+              📁 <strong>META-INF/</strong>
+                📄 app_debug.kotlin_module <small>(KOTLIN_MODULE | 0 linhas | 0.02 KB | mod: 09/10/2025 00:06:23)</small>
+              📁 <strong>com/</strong>
+                📁 <strong>coisaboa/</strong>
+                  📁 <strong>app/</strong>
+                    📁 <strong>COISABOA/</strong>
+                    📁 <strong>config/</strong>
+                    📁 <strong>data/</strong>
+                      📁 <strong>dao/</strong>
+                      📁 <strong>entity/</strong>
+                      📁 <strong>repository/</strong>
+                    📁 <strong>databinding/</strong>
+                    📁 <strong>ui/</strong>
+                      📁 <strong>backup/</strong>
+                      📁 <strong>compras/</strong>
+                      📁 <strong>dashboard/</strong>
+                      📁 <strong>gerenciar/</strong>
+                      📁 <strong>login/</strong>
+                      📁 <strong>main/</strong>
+                      📁 <strong>produtos/</strong>
+                      📁 <strong>relatorios/</strong>
+                      📁 <strong>vendas/</strong>
+                    📁 <strong>utils/</strong>
+      📁 <strong>javac/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>compileDebugJavaWithJavac/</strong>
+            📁 <strong>classes/</strong>
+              📁 <strong>com/</strong>
+                📁 <strong>coisaboa/</strong>
+                  📁 <strong>app/</strong>
+                    📁 <strong>data/</strong>
+                      📄 AppDatabase_Impl$1.class <small>(CLASS | 0 linhas | 6.30 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 AppDatabase_Impl.class <small>(CLASS | 0 linhas | 7.39 KB | mod: 09/10/2025 00:06:20)</small>
+                      📁 <strong>dao/</strong>
+                        📄 ProductDao_Impl$1.class <small>(CLASS | 0 linhas | 2.06 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 ProductDao_Impl$2.class <small>(CLASS | 0 linhas | 1.75 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 ProductDao_Impl$3.class <small>(CLASS | 0 linhas | 1.81 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 ProductDao_Impl$4.class <small>(CLASS | 0 linhas | 1.83 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 ProductDao_Impl$5.class <small>(CLASS | 0 linhas | 3.10 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 ProductDao_Impl.class <small>(CLASS | 0 linhas | 3.65 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 UserDao_Impl$1.class <small>(CLASS | 0 linhas | 2.06 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 UserDao_Impl$2.class <small>(CLASS | 0 linhas | 1.78 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 UserDao_Impl$3.class <small>(CLASS | 0 linhas | 2.86 KB | mod: 09/10/2025 00:06:20)</small>
+                        📄 UserDao_Impl.class <small>(CLASS | 0 linhas | 3.37 KB | mod: 09/10/2025 00:06:20)</small>
+                    📁 <strong>databinding/</strong>
+                      📄 ActivityBackupBinding.class <small>(CLASS | 0 linhas | 3.22 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityComprarBinding.class <small>(CLASS | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityDashboardBinding.class <small>(CLASS | 0 linhas | 3.66 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityGerenciarBinding.class <small>(CLASS | 0 linhas | 4.32 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityLoginBinding.class <small>(CLASS | 0 linhas | 3.38 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityMainBinding.class <small>(CLASS | 0 linhas | 3.19 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityProductsBinding.class <small>(CLASS | 0 linhas | 2.93 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityPurchasesBinding.class <small>(CLASS | 0 linhas | 3.14 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityRelatoriosBinding.class <small>(CLASS | 0 linhas | 3.59 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityReportsBinding.class <small>(CLASS | 0 linhas | 2.18 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivitySalesBinding.class <small>(CLASS | 0 linhas | 3.11 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ActivityVenderBinding.class <small>(CLASS | 0 linhas | 3.83 KB | mod: 09/10/2025 00:06:20)</small>
+                      📄 ItemProductBinding.class <small>(CLASS | 0 linhas | 3.15 KB | mod: 09/10/2025 00:06:20)</small>
+      📁 <strong>linked_resources_binary_format/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugResources/</strong>
+            📄 linked-resources-binary-format-debug.ap_ <small>(AP_ | 0 linhas | 1467.43 KB | mod: 09/10/2025 13:12:45)</small>
+            📄 output-metadata.json <small>(JSON | 0 linhas | 0.41 KB | mod: 09/10/2025 13:12:45)</small>
+      📁 <strong>local_only_symbol_list/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>parseDebugLocalResources/</strong>
+            📄 R-def.txt <small>(TXT | 0 linhas | 1.46 KB | mod: 09/10/2025 13:12:40)</small>
+      📁 <strong>manifest_merge_blame_file/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugMainManifest/</strong>
+            📄 manifest-merger-blame-debug-report.txt <small>(TXT | 0 linhas | 16.46 KB | mod: 09/10/2025 00:06:05)</small>
+      📁 <strong>merged_java_res/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugJavaResource/</strong>
+            📄 base.jar <small>(JAR | 0 linhas | 22.41 KB | mod: 09/10/2025 00:06:23)</small>
+      📁 <strong>merged_jni_libs/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugJniLibFolders/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>merged_manifest/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugMainManifest/</strong>
+            📄 AndroidManifest.xml <small>(XML | 124 linhas | 4.74 KB | mod: 09/10/2025 00:06:05)</small>
+      📁 <strong>merged_manifests/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugManifest/</strong>
+            📄 AndroidManifest.xml <small>(XML | 124 linhas | 4.74 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 output-metadata.json <small>(JSON | 0 linhas | 0.38 KB | mod: 09/10/2025 00:06:05)</small>
+      📁 <strong>merged_res/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugResources/</strong>
+            📄 drawable_ic_launcher_foreground.xml.flat <small>(FLAT | 0 linhas | 0.88 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_backup.xml.flat <small>(FLAT | 0 linhas | 2.34 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_comprar.xml.flat <small>(FLAT | 0 linhas | 7.16 KB | mod: 09/10/2025 13:12:40)</small>
+            📄 layout_activity_dashboard.xml.flat <small>(FLAT | 0 linhas | 4.71 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 layout_activity_gerenciar.xml.flat <small>(FLAT | 0 linhas | 6.14 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_login.xml.flat <small>(FLAT | 0 linhas | 3.02 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_main.xml.flat <small>(FLAT | 0 linhas | 3.38 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_products.xml.flat <small>(FLAT | 0 linhas | 0.82 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_purchases.xml.flat <small>(FLAT | 0 linhas | 1.77 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_relatorios.xml.flat <small>(FLAT | 0 linhas | 4.74 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 layout_activity_reports.xml.flat <small>(FLAT | 0 linhas | 1.17 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_sales.xml.flat <small>(FLAT | 0 linhas | 1.75 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_activity_vender.xml.flat <small>(FLAT | 0 linhas | 4.12 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 layout_item_product.xml.flat <small>(FLAT | 0 linhas | 2.35 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 mipmap-anydpi-v26_ic_launcher.xml.flat <small>(FLAT | 0 linhas | 0.54 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 mipmap-anydpi-v26_ic_launcher_round.xml.flat <small>(FLAT | 0 linhas | 0.55 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-af_values-af.arsc.flat <small>(FLAT | 0 linhas | 8.25 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-am_values-am.arsc.flat <small>(FLAT | 0 linhas | 9.38 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ar_values-ar.arsc.flat <small>(FLAT | 0 linhas | 9.68 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-as_values-as.arsc.flat <small>(FLAT | 0 linhas | 9.20 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-az_values-az.arsc.flat <small>(FLAT | 0 linhas | 8.55 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-b+es+419_values-b+es+419.arsc.flat <small>(FLAT | 0 linhas | 6.52 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-b+sr+Latn_values-b+sr+Latn.arsc.flat <small>(FLAT | 0 linhas | 9.12 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-be_values-be.arsc.flat <small>(FLAT | 0 linhas | 10.11 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-bg_values-bg.arsc.flat <small>(FLAT | 0 linhas | 10.09 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-bn_values-bn.arsc.flat <small>(FLAT | 0 linhas | 11.04 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-bs_values-bs.arsc.flat <small>(FLAT | 0 linhas | 8.57 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ca_values-ca.arsc.flat <small>(FLAT | 0 linhas | 8.67 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-cs_values-cs.arsc.flat <small>(FLAT | 0 linhas | 8.62 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-da_values-da.arsc.flat <small>(FLAT | 0 linhas | 8.29 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-de_values-de.arsc.flat <small>(FLAT | 0 linhas | 8.56 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-el_values-el.arsc.flat <small>(FLAT | 0 linhas | 10.25 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-en-rAU_values-en-rAU.arsc.flat <small>(FLAT | 0 linhas | 2.62 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-en-rCA_values-en-rCA.arsc.flat <small>(FLAT | 0 linhas | 2.62 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-en-rGB_values-en-rGB.arsc.flat <small>(FLAT | 0 linhas | 8.51 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-en-rIN_values-en-rIN.arsc.flat <small>(FLAT | 0 linhas | 2.62 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-en-rXC_values-en-rXC.arsc.flat <small>(FLAT | 0 linhas | 13.62 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-es-rUS_values-es-rUS.arsc.flat <small>(FLAT | 0 linhas | 8.95 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-es_values-es.arsc.flat <small>(FLAT | 0 linhas | 8.64 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-et_values-et.arsc.flat <small>(FLAT | 0 linhas | 8.45 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-eu_values-eu.arsc.flat <small>(FLAT | 0 linhas | 8.53 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-fa_values-fa.arsc.flat <small>(FLAT | 0 linhas | 9.39 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-fi_values-fi.arsc.flat <small>(FLAT | 0 linhas | 8.39 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-fr-rCA_values-fr-rCA.arsc.flat <small>(FLAT | 0 linhas | 9.07 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-fr_values-fr.arsc.flat <small>(FLAT | 0 linhas | 8.67 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-gl_values-gl.arsc.flat <small>(FLAT | 0 linhas | 8.71 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-gu_values-gu.arsc.flat <small>(FLAT | 0 linhas | 10.72 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-h320dp-port-v13_values-h320dp-port-v13.arsc.flat <small>(FLAT | 0 linhas | 0.28 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-h360dp-land-v13_values-h360dp-land-v13.arsc.flat <small>(FLAT | 0 linhas | 0.77 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-h480dp-land-v13_values-h480dp-land-v13.arsc.flat <small>(FLAT | 0 linhas | 0.77 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-h550dp-port-v13_values-h550dp-port-v13.arsc.flat <small>(FLAT | 0 linhas | 0.28 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-h720dp-v13_values-h720dp-v13.arsc.flat <small>(FLAT | 0 linhas | 0.26 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-hdpi-v4_values-hdpi-v4.arsc.flat <small>(FLAT | 0 linhas | 0.46 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-hi_values-hi.arsc.flat <small>(FLAT | 0 linhas | 11.00 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-hr_values-hr.arsc.flat <small>(FLAT | 0 linhas | 8.58 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-hu_values-hu.arsc.flat <small>(FLAT | 0 linhas | 8.69 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-hy_values-hy.arsc.flat <small>(FLAT | 0 linhas | 9.77 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-in_values-in.arsc.flat <small>(FLAT | 0 linhas | 8.35 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-is_values-is.arsc.flat <small>(FLAT | 0 linhas | 8.35 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-it_values-it.arsc.flat <small>(FLAT | 0 linhas | 8.54 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-iw_values-iw.arsc.flat <small>(FLAT | 0 linhas | 9.10 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ja_values-ja.arsc.flat <small>(FLAT | 0 linhas | 8.66 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ka_values-ka.arsc.flat <small>(FLAT | 0 linhas | 11.18 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 values-kk_values-kk.arsc.flat <small>(FLAT | 0 linhas | 9.61 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-km_values-km.arsc.flat <small>(FLAT | 0 linhas | 11.21 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-kn_values-kn.arsc.flat <small>(FLAT | 0 linhas | 11.56 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ko_values-ko.arsc.flat <small>(FLAT | 0 linhas | 8.45 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ky_values-ky.arsc.flat <small>(FLAT | 0 linhas | 9.91 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-land_values-land.arsc.flat <small>(FLAT | 0 linhas | 3.05 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 values-large-v4_values-large-v4.arsc.flat <small>(FLAT | 0 linhas | 1.38 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ldltr-v21_values-ldltr-v21.arsc.flat <small>(FLAT | 0 linhas | 0.32 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ldrtl-v17_values-ldrtl-v17.arsc.flat <small>(FLAT | 0 linhas | 0.46 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 values-lo_values-lo.arsc.flat <small>(FLAT | 0 linhas | 10.73 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-lt_values-lt.arsc.flat <small>(FLAT | 0 linhas | 8.85 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-lv_values-lv.arsc.flat <small>(FLAT | 0 linhas | 8.91 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-mk_values-mk.arsc.flat <small>(FLAT | 0 linhas | 9.87 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ml_values-ml.arsc.flat <small>(FLAT | 0 linhas | 12.02 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-mn_values-mn.arsc.flat <small>(FLAT | 0 linhas | 9.71 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-mr_values-mr.arsc.flat <small>(FLAT | 0 linhas | 10.78 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ms_values-ms.arsc.flat <small>(FLAT | 0 linhas | 8.38 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-my_values-my.arsc.flat <small>(FLAT | 0 linhas | 11.66 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-nb_values-nb.arsc.flat <small>(FLAT | 0 linhas | 8.17 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ne_values-ne.arsc.flat <small>(FLAT | 0 linhas | 11.32 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-night-v8_values-night-v8.arsc.flat <small>(FLAT | 0 linhas | 5.25 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-nl_values-nl.arsc.flat <small>(FLAT | 0 linhas | 8.46 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-or_values-or.arsc.flat <small>(FLAT | 0 linhas | 9.25 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-pa_values-pa.arsc.flat <small>(FLAT | 0 linhas | 10.41 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-pl_values-pl.arsc.flat <small>(FLAT | 0 linhas | 8.64 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-port_values-port.arsc.flat <small>(FLAT | 0 linhas | 0.23 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-pt-rBR_values-pt-rBR.arsc.flat <small>(FLAT | 0 linhas | 8.91 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 values-pt-rPT_values-pt-rPT.arsc.flat <small>(FLAT | 0 linhas | 8.95 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-pt_values-pt.arsc.flat <small>(FLAT | 0 linhas | 2.62 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ro_values-ro.arsc.flat <small>(FLAT | 0 linhas | 8.65 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ru_values-ru.arsc.flat <small>(FLAT | 0 linhas | 10.00 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-si_values-si.arsc.flat <small>(FLAT | 0 linhas | 10.77 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-sk_values-sk.arsc.flat <small>(FLAT | 0 linhas | 8.62 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-sl_values-sl.arsc.flat <small>(FLAT | 0 linhas | 8.57 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-small-v4_values-small-v4.arsc.flat <small>(FLAT | 0 linhas | 0.47 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-sq_values-sq.arsc.flat <small>(FLAT | 0 linhas | 8.55 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-sr_values-sr.arsc.flat <small>(FLAT | 0 linhas | 9.80 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-sv_values-sv.arsc.flat <small>(FLAT | 0 linhas | 8.34 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-sw600dp-v13_values-sw600dp-v13.arsc.flat <small>(FLAT | 0 linhas | 1.66 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-sw_values-sw.arsc.flat <small>(FLAT | 0 linhas | 8.49 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ta_values-ta.arsc.flat <small>(FLAT | 0 linhas | 12.00 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-te_values-te.arsc.flat <small>(FLAT | 0 linhas | 11.63 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-th_values-th.arsc.flat <small>(FLAT | 0 linhas | 10.55 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-tl_values-tl.arsc.flat <small>(FLAT | 0 linhas | 8.66 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-tr_values-tr.arsc.flat <small>(FLAT | 0 linhas | 8.43 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-uk_values-uk.arsc.flat <small>(FLAT | 0 linhas | 9.89 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-ur_values-ur.arsc.flat <small>(FLAT | 0 linhas | 9.56 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-uz_values-uz.arsc.flat <small>(FLAT | 0 linhas | 8.47 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v16_values-v16.arsc.flat <small>(FLAT | 0 linhas | 0.39 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v17_values-v17.arsc.flat <small>(FLAT | 0 linhas | 3.60 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v18_values-v18.arsc.flat <small>(FLAT | 0 linhas | 0.23 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v21_values-v21.arsc.flat <small>(FLAT | 0 linhas | 39.70 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v22_values-v22.arsc.flat <small>(FLAT | 0 linhas | 0.90 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v23_values-v23.arsc.flat <small>(FLAT | 0 linhas | 5.59 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v24_values-v24.arsc.flat <small>(FLAT | 0 linhas | 1.74 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 values-v25_values-v25.arsc.flat <small>(FLAT | 0 linhas | 0.56 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v26_values-v26.arsc.flat <small>(FLAT | 0 linhas | 1.02 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v28_values-v28.arsc.flat <small>(FLAT | 0 linhas | 1.76 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v31_values-v31.arsc.flat <small>(FLAT | 0 linhas | 44.91 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-v34_values-v34.arsc.flat <small>(FLAT | 0 linhas | 9.85 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-vi_values-vi.arsc.flat <small>(FLAT | 0 linhas | 8.79 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 values-w320dp-land-v13_values-w320dp-land-v13.arsc.flat <small>(FLAT | 0 linhas | 0.33 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-w360dp-port-v13_values-w360dp-port-v13.arsc.flat <small>(FLAT | 0 linhas | 0.71 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-w400dp-port-v13_values-w400dp-port-v13.arsc.flat <small>(FLAT | 0 linhas | 0.70 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-w600dp-land-v13_values-w600dp-land-v13.arsc.flat <small>(FLAT | 0 linhas | 0.27 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-watch-v20_values-watch-v20.arsc.flat <small>(FLAT | 0 linhas | 0.70 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-watch-v21_values-watch-v21.arsc.flat <small>(FLAT | 0 linhas | 0.87 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-xlarge-v4_values-xlarge-v4.arsc.flat <small>(FLAT | 0 linhas | 0.55 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-zh-rCN_values-zh-rCN.arsc.flat <small>(FLAT | 0 linhas | 8.61 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-zh-rHK_values-zh-rHK.arsc.flat <small>(FLAT | 0 linhas | 8.61 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-zh-rTW_values-zh-rTW.arsc.flat <small>(FLAT | 0 linhas | 8.62 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values-zu_values-zu.arsc.flat <small>(FLAT | 0 linhas | 8.54 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 values_values.arsc.flat <small>(FLAT | 0 linhas | 879.16 KB | mod: 09/10/2025 00:06:04)</small>
+            📄 xml_file_paths.xml.flat <small>(FLAT | 0 linhas | 0.25 KB | mod: 09/10/2025 00:06:04)</small>
+      📁 <strong>merged_res_blame_folder/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugResources/</strong>
+            📁 <strong>out/</strong>
+              📁 <strong>multi-v2/</strong>
+                📄 mergeDebugResources.json <small>(JSON | 0 linhas | 808.96 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-af.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-am.json <small>(JSON | 0 linhas | 6.72 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ar.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-as.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-az.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-b+es+419.json <small>(JSON | 0 linhas | 2.24 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-b+sr+Latn.json <small>(JSON | 0 linhas | 6.83 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-be.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-bg.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-bn.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-bs.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ca.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-cs.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-da.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-de.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-el.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-en-rAU.json <small>(JSON | 0 linhas | 2.84 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-en-rCA.json <small>(JSON | 0 linhas | 2.84 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-en-rGB.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-en-rIN.json <small>(JSON | 0 linhas | 2.84 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-en-rXC.json <small>(JSON | 0 linhas | 2.91 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-es-rUS.json <small>(JSON | 0 linhas | 6.80 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-es.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-et.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-eu.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-fa.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-fi.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-fr-rCA.json <small>(JSON | 0 linhas | 6.81 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-fr.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-gl.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-gu.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-h320dp-port-v13.json <small>(JSON | 0 linhas | 0.70 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-h360dp-land-v13.json <small>(JSON | 0 linhas | 0.81 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-h480dp-land-v13.json <small>(JSON | 0 linhas | 0.81 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-h550dp-port-v13.json <small>(JSON | 0 linhas | 0.70 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-h720dp-v13.json <small>(JSON | 0 linhas | 0.68 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-hdpi-v4.json <small>(JSON | 0 linhas | 0.71 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-hi.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-hr.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-hu.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-hy.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-in.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-is.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-it.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-iw.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ja.json <small>(JSON | 0 linhas | 6.72 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ka.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-kk.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-km.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-kn.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-ko.json <small>(JSON | 0 linhas | 6.71 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ky.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-land.json <small>(JSON | 0 linhas | 2.39 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-large-v4.json <small>(JSON | 0 linhas | 1.65 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-ldltr-v21.json <small>(JSON | 0 linhas | 0.67 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ldrtl-v17.json <small>(JSON | 0 linhas | 0.69 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-lo.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-lt.json <small>(JSON | 0 linhas | 6.79 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-lv.json <small>(JSON | 0 linhas | 6.80 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-mk.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ml.json <small>(JSON | 0 linhas | 6.79 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-mn.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-mr.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ms.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-my.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-nb.json <small>(JSON | 0 linhas | 6.74 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ne.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-night-v8.json <small>(JSON | 0 linhas | 3.10 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-nl.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-or.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-pa.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-pl.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-port.json <small>(JSON | 0 linhas | 0.65 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-pt-rBR.json <small>(JSON | 0 linhas | 6.80 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-pt-rPT.json <small>(JSON | 0 linhas | 6.80 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-pt.json <small>(JSON | 0 linhas | 2.82 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ro.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ru.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-si.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-sk.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-sl.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-small-v4.json <small>(JSON | 0 linhas | 0.71 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-sq.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-sr.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-sv.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-sw.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-sw600dp-v13.json <small>(JSON | 0 linhas | 2.04 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ta.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-te.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-th.json <small>(JSON | 0 linhas | 6.74 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-tl.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-tr.json <small>(JSON | 0 linhas | 6.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-uk.json <small>(JSON | 0 linhas | 6.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-ur.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-uz.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v16.json <small>(JSON | 0 linhas | 0.69 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v17.json <small>(JSON | 0 linhas | 1.01 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v18.json <small>(JSON | 0 linhas | 0.65 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v21.json <small>(JSON | 0 linhas | 10.37 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v22.json <small>(JSON | 0 linhas | 0.74 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v23.json <small>(JSON | 0 linhas | 2.97 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v24.json <small>(JSON | 0 linhas | 1.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v25.json <small>(JSON | 0 linhas | 0.74 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v26.json <small>(JSON | 0 linhas | 0.78 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v28.json <small>(JSON | 0 linhas | 2.37 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v31.json <small>(JSON | 0 linhas | 5.58 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-v34.json <small>(JSON | 0 linhas | 2.23 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-vi.json <small>(JSON | 0 linhas | 6.76 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-w320dp-land-v13.json <small>(JSON | 0 linhas | 0.71 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-w360dp-port-v13.json <small>(JSON | 0 linhas | 0.80 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-w400dp-port-v13.json <small>(JSON | 0 linhas | 0.80 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-w600dp-land-v13.json <small>(JSON | 0 linhas | 0.70 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-watch-v20.json <small>(JSON | 0 linhas | 0.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-watch-v21.json <small>(JSON | 0 linhas | 0.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-xlarge-v4.json <small>(JSON | 0 linhas | 0.75 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-zh-rCN.json <small>(JSON | 0 linhas | 6.74 KB | mod: 09/10/2025 00:06:03)</small>
+                📄 values-zh-rHK.json <small>(JSON | 0 linhas | 6.74 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-zh-rTW.json <small>(JSON | 0 linhas | 6.74 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values-zu.json <small>(JSON | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:04)</small>
+                📄 values.json <small>(JSON | 0 linhas | 203.29 KB | mod: 09/10/2025 00:06:04)</small>
+              📁 <strong>single/</strong>
+                📄 layout.json <small>(JSON | 0 linhas | 3.48 KB | mod: 09/10/2025 13:12:39)</small>
+                📄 mergeDebugResources.json <small>(JSON | 0 linhas | 4.36 KB | mod: 09/10/2025 13:12:39)</small>
+      📁 <strong>merged_shaders/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mergeDebugShaders/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>mixed_scope_dex_archive/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>navigation_json/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>extractDeepLinksDebug/</strong>
+            📄 navigation.json <small>(JSON | 0 linhas | 0.00 KB | mod: 09/10/2025 00:06:05)</small>
+      📁 <strong>nested_resources_validation_report/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>generateDebugResources/</strong>
+            📄 nestedResourcesValidationReport.txt <small>(TXT | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:38)</small>
+      📁 <strong>packaged_manifests/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugManifestForPackage/</strong>
+            📄 AndroidManifest.xml <small>(XML | 124 linhas | 4.74 KB | mod: 09/10/2025 00:06:05)</small>
+            📄 output-metadata.json <small>(JSON | 0 linhas | 0.38 KB | mod: 09/10/2025 00:06:05)</small>
+      📁 <strong>packaged_res/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>packageDebugResources/</strong>
+            📁 <strong>drawable/</strong>
+              📄 ic_launcher_foreground.xml <small>(XML | 13 linhas | 0.48 KB | mod: 04/10/2025 18:15:02)</small>
+            📁 <strong>layout/</strong>
+              📄 activity_backup.xml <small>(XML | 37 linhas | 1.24 KB | mod: 09/10/2025 00:05:28)</small>
+              📄 activity_comprar.xml <small>(XML | 125 linhas | 4.57 KB | mod: 09/10/2025 13:11:56)</small>
+              📄 activity_dashboard.xml <small>(XML | 78 linhas | 2.76 KB | mod: 08/10/2025 23:42:45)</small>
+              📄 activity_gerenciar.xml <small>(XML | 100 linhas | 3.61 KB | mod: 08/10/2025 21:36:01)</small>
+              📄 activity_login.xml <small>(XML | 47 linhas | 1.60 KB | mod: 06/10/2025 19:23:21)</small>
+              📄 activity_main.xml <small>(XML | 60 linhas | 2.12 KB | mod: 08/10/2025 23:29:02)</small>
+              📄 activity_products.xml <small>(XML | 12 linhas | 0.45 KB | mod: 06/10/2025 21:23:46)</small>
+              📄 activity_purchases.xml <small>(XML | 9 linhas | 0.80 KB | mod: 04/10/2025 19:16:04)</small>
+              📄 activity_relatorios.xml <small>(XML | 76 linhas | 2.81 KB | mod: 08/10/2025 20:46:56)</small>
+              📄 activity_reports.xml <small>(XML | 7 linhas | 0.55 KB | mod: 04/10/2025 19:16:04)</small>
+              📄 activity_sales.xml <small>(XML | 9 linhas | 0.79 KB | mod: 04/10/2025 19:16:04)</small>
+              📄 activity_vender.xml <small>(XML | 69 linhas | 2.39 KB | mod: 08/10/2025 18:58:19)</small>
+              📄 item_product.xml <small>(XML | 38 linhas | 1.22 KB | mod: 06/10/2025 21:15:20)</small>
+            📁 <strong>mipmap-anydpi-v26/</strong>
+              📄 ic_launcher.xml <small>(XML | 6 linhas | 0.32 KB | mod: 04/10/2025 18:15:02)</small>
+              📄 ic_launcher_round.xml <small>(XML | 6 linhas | 0.32 KB | mod: 04/10/2025 18:15:02)</small>
+            📁 <strong>values/</strong>
+              📄 values.xml <small>(XML | 26 linhas | 1.23 KB | mod: 09/10/2025 00:06:04)</small>
+            📁 <strong>xml/</strong>
+              📄 file_paths.xml <small>(XML | 4 linhas | 0.17 KB | mod: 08/10/2025 22:25:11)</small>
+      📁 <strong>project_dex_archive/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+              📄 6ef7bf5975bacd530749d53ae6fcf6a07d5cd9ef9b494423f9d9158d51fa713b_0.jar <small>(JAR | 0 linhas | 3.75 KB | mod: 09/10/2025 00:06:21)</small>
+              📄 6ef7bf5975bacd530749d53ae6fcf6a07d5cd9ef9b494423f9d9158d51fa713b_1.jar <small>(JAR | 0 linhas | 4.06 KB | mod: 09/10/2025 00:06:21)</small>
+              📄 6ef7bf5975bacd530749d53ae6fcf6a07d5cd9ef9b494423f9d9158d51fa713b_2.jar <small>(JAR | 0 linhas | 39.39 KB | mod: 09/10/2025 00:06:21)</small>
+              📄 6ef7bf5975bacd530749d53ae6fcf6a07d5cd9ef9b494423f9d9158d51fa713b_3.jar <small>(JAR | 0 linhas | 6.67 KB | mod: 09/10/2025 00:06:21)</small>
+              📄 6ef7bf5975bacd530749d53ae6fcf6a07d5cd9ef9b494423f9d9158d51fa713b_4.jar <small>(JAR | 0 linhas | 5.56 KB | mod: 09/10/2025 00:06:21)</small>
+              📄 6ef7bf5975bacd530749d53ae6fcf6a07d5cd9ef9b494423f9d9158d51fa713b_5.jar <small>(JAR | 0 linhas | 24.22 KB | mod: 09/10/2025 00:06:21)</small>
+              📄 6ef7bf5975bacd530749d53ae6fcf6a07d5cd9ef9b494423f9d9158d51fa713b_6.jar <small>(JAR | 0 linhas | 4.45 KB | mod: 09/10/2025 00:06:21)</small>
+              📄 6ef7bf5975bacd530749d53ae6fcf6a07d5cd9ef9b494423f9d9158d51fa713b_7.jar <small>(JAR | 0 linhas | 87.98 KB | mod: 09/10/2025 00:06:21)</small>
+              📁 <strong>com/</strong>
+                📁 <strong>coisaboa/</strong>
+                  📁 <strong>app/</strong>
+                    📁 <strong>COISABOA/</strong>
+                      📄 MainActivity.dex <small>(DEX | 0 linhas | 2.25 KB | mod: 09/10/2025 00:06:21)</small>
+                    📁 <strong>config/</strong>
+                      📄 DatabaseProvider.dex <small>(DEX | 0 linhas | 2.14 KB | mod: 09/10/2025 00:06:21)</small>
+                    📁 <strong>data/</strong>
+                      📄 AppDatabase.dex <small>(DEX | 0 linhas | 1.34 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 AppDatabase_Impl$1.dex <small>(DEX | 0 linhas | 5.56 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 AppDatabase_Impl.dex <small>(DEX | 0 linhas | 5.93 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>dao/</strong>
+                        📄 ProductDao.dex <small>(DEX | 0 linhas | 1.84 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductDao_Impl$1.dex <small>(DEX | 0 linhas | 2.35 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductDao_Impl$2.dex <small>(DEX | 0 linhas | 1.98 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductDao_Impl$3.dex <small>(DEX | 0 linhas | 2.16 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductDao_Impl$4.dex <small>(DEX | 0 linhas | 2.19 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductDao_Impl$5.dex <small>(DEX | 0 linhas | 3.30 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductDao_Impl.dex <small>(DEX | 0 linhas | 3.71 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 PurchaseDao.dex <small>(DEX | 0 linhas | 1.91 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 SaleDao.dex <small>(DEX | 0 linhas | 1.89 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserDao.dex <small>(DEX | 0 linhas | 1.77 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserDao_Impl$1.dex <small>(DEX | 0 linhas | 2.30 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserDao_Impl$2.dex <small>(DEX | 0 linhas | 2.14 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserDao_Impl$3.dex <small>(DEX | 0 linhas | 2.97 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserDao_Impl.dex <small>(DEX | 0 linhas | 3.34 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>entity/</strong>
+                        📄 ProductEntity.dex <small>(DEX | 0 linhas | 3.75 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 PurchaseEntity.dex <small>(DEX | 0 linhas | 4.03 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 SaleEntity.dex <small>(DEX | 0 linhas | 4.01 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserEntity.dex <small>(DEX | 0 linhas | 3.66 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>repository/</strong>
+                        📄 ProductRepository.dex <small>(DEX | 0 linhas | 2.45 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserRepository$ensureDefaultAdmin$1.dex <small>(DEX | 0 linhas | 1.89 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserRepository$login$1.dex <small>(DEX | 0 linhas | 1.91 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserRepository$register$1.dex <small>(DEX | 0 linhas | 2.02 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 UserRepository.dex <small>(DEX | 0 linhas | 4.89 KB | mod: 09/10/2025 00:06:21)</small>
+                    📁 <strong>databinding/</strong>
+                      📄 ActivityBackupBinding.dex <small>(DEX | 0 linhas | 2.84 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityComprarBinding.dex <small>(DEX | 0 linhas | 3.31 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityDashboardBinding.dex <small>(DEX | 0 linhas | 3.11 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityGerenciarBinding.dex <small>(DEX | 0 linhas | 3.50 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityLoginBinding.dex <small>(DEX | 0 linhas | 2.94 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityMainBinding.dex <small>(DEX | 0 linhas | 2.83 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityProductsBinding.dex <small>(DEX | 0 linhas | 2.66 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityPurchasesBinding.dex <small>(DEX | 0 linhas | 2.79 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityRelatoriosBinding.dex <small>(DEX | 0 linhas | 3.07 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityReportsBinding.dex <small>(DEX | 0 linhas | 2.10 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivitySalesBinding.dex <small>(DEX | 0 linhas | 2.77 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ActivityVenderBinding.dex <small>(DEX | 0 linhas | 3.21 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 ItemProductBinding.dex <small>(DEX | 0 linhas | 2.80 KB | mod: 09/10/2025 00:06:21)</small>
+                    📁 <strong>ui/</strong>
+                      📁 <strong>backup/</strong>
+                        📄 BackupActivity.dex <small>(DEX | 0 linhas | 7.20 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>compras/</strong>
+                        📄 ComprarActivity$onCreate$watcher$1.dex <small>(DEX | 0 linhas | 2.12 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ComprarActivity.dex <small>(DEX | 0 linhas | 7.11 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 PurchasesActivity.dex <small>(DEX | 0 linhas | 1.54 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>dashboard/</strong>
+                        📄 DashboardActivity.dex <small>(DEX | 0 linhas | 6.79 KB | mod: 09/10/2025 00:10:28)</small>
+                      📁 <strong>gerenciar/</strong>
+                        📄 GerenciarActivity$onCreate$1.dex <small>(DEX | 0 linhas | 2.92 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 GerenciarActivity.dex <small>(DEX | 0 linhas | 7.18 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>login/</strong>
+                        📄 LoginActivity.dex <small>(DEX | 0 linhas | 5.65 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 LoginViewModel$login$1.dex <small>(DEX | 0 linhas | 4.26 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 LoginViewModel$register$1.dex <small>(DEX | 0 linhas | 4.03 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 LoginViewModel.dex <small>(DEX | 0 linhas | 4.89 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>main/</strong>
+                        📄 MainActivity.dex <small>(DEX | 0 linhas | 3.77 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>produtos/</strong>
+                        📄 ProductAdapter$ProductViewHolder.dex <small>(DEX | 0 linhas | 4.48 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductAdapter.dex <small>(DEX | 0 linhas | 3.80 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductsActivity$carregarProdutos$1.dex <small>(DEX | 0 linhas | 3.25 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductsActivity.dex <small>(DEX | 0 linhas | 5.25 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductsViewModel$adicionarProduto$1.dex <small>(DEX | 0 linhas | 3.53 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductsViewModel$carregarProdutos$1.dex <small>(DEX | 0 linhas | 3.52 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductsViewModel$excluirProduto$1.dex <small>(DEX | 0 linhas | 3.52 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ProductsViewModel.dex <small>(DEX | 0 linhas | 4.34 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>relatorios/</strong>
+                        📄 RelatoriosActivity.dex <small>(DEX | 0 linhas | 1.55 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 ReportsActivity.dex <small>(DEX | 0 linhas | 1.54 KB | mod: 09/10/2025 00:06:21)</small>
+                      📁 <strong>vendas/</strong>
+                        📄 SalesActivity.dex <small>(DEX | 0 linhas | 1.52 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 VenderActivity$onCreate$watcher$1.dex <small>(DEX | 0 linhas | 2.11 KB | mod: 09/10/2025 00:06:21)</small>
+                        📄 VenderActivity.dex <small>(DEX | 0 linhas | 6.74 KB | mod: 09/10/2025 00:06:21)</small>
+                    📁 <strong>utils/</strong>
+                      📄 PasswordUtils.dex <small>(DEX | 0 linhas | 3.31 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 SessionManager.dex <small>(DEX | 0 linhas | 2.75 KB | mod: 09/10/2025 00:06:21)</small>
+                      📄 TextWatcherAdapter.dex <small>(DEX | 0 linhas | 2.30 KB | mod: 09/10/2025 00:06:21)</small>
+      📁 <strong>runtime_symbol_list/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugResources/</strong>
+            📄 R.txt <small>(TXT | 0 linhas | 382.10 KB | mod: 09/10/2025 13:12:44)</small>
+      📁 <strong>signing_config_versions/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>writeDebugSigningConfigVersions/</strong>
+            📄 signing-config-versions.json <small>(JSON | 0 linhas | 0.09 KB | mod: 09/10/2025 00:06:05)</small>
+      📁 <strong>source_set_path_map/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>mapDebugSourceSetPaths/</strong>
+            📄 file-map.txt <small>(TXT | 0 linhas | 6.97 KB | mod: 09/10/2025 13:12:40)</small>
+      📁 <strong>stable_resource_ids_file/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugResources/</strong>
+            📄 stableIds.txt <small>(TXT | 0 linhas | 375.49 KB | mod: 09/10/2025 13:12:44)</small>
+      📁 <strong>sub_project_dex_archive/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>dexBuilderDebug/</strong>
+            📁 <strong>out/</strong>
+      📁 <strong>symbol_list_with_package_name/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>processDebugResources/</strong>
+            📄 package-aware-r.txt <small>(TXT | 0 linhas | 223.46 KB | mod: 09/10/2025 13:12:45)</small>
+      📁 <strong>validate_signing_config/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>validateSigningDebug/</strong>
+    📁 <strong>kotlin/</strong>
+      📁 <strong>compileDebugKotlin/</strong>
+        📁 <strong>cacheable/</strong>
+          📁 <strong>caches-jvm/</strong>
+            📁 <strong>inputs/</strong>
+              📄 source-to-output.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 source-to-output.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:19)</small>
+              📄 source-to-output.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+              📄 source-to-output.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+              📄 source-to-output.tab.values.at <small>(AT | 0 linhas | 10.83 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 source-to-output.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:19)</small>
+              📄 source-to-output.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+            📁 <strong>jvm/</strong>
+              📁 <strong>kotlin/</strong>
+                📄 class-attributes.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 class-attributes.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:18)</small>
+                📄 class-attributes.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 class-attributes.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 class-attributes.tab.values.at <small>(AT | 0 linhas | 0.14 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 class-attributes.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:18)</small>
+                📄 class-attributes.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 class-fq-name-to-source.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 class-fq-name-to-source.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:19)</small>
+                📄 class-fq-name-to-source.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 class-fq-name-to-source.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 class-fq-name-to-source.tab.values.at <small>(AT | 0 linhas | 4.24 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 class-fq-name-to-source.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:19)</small>
+                📄 class-fq-name-to-source.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 internal-name-to-source.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 internal-name-to-source.tab.keystream <small>(KEYSTREAM | 0 linhas | 8.00 KB | mod: 09/10/2025 00:06:19)</small>
+                📄 internal-name-to-source.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 internal-name-to-source.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 internal-name-to-source.tab.values.at <small>(AT | 0 linhas | 5.85 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 internal-name-to-source.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:19)</small>
+                📄 internal-name-to-source.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 proto.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 proto.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:19)</small>
+                📄 proto.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 proto.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 proto.tab.values.at <small>(AT | 0 linhas | 15.42 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 proto.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:19)</small>
+                📄 proto.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 source-to-classes.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 source-to-classes.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:19)</small>
+                📄 source-to-classes.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 source-to-classes.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 source-to-classes.tab.values.at <small>(AT | 0 linhas | 5.39 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 source-to-classes.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:19)</small>
+                📄 source-to-classes.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 subtypes.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 subtypes.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:18)</small>
+                📄 subtypes.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 subtypes.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 subtypes.tab.values.at <small>(AT | 0 linhas | 0.93 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 subtypes.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:18)</small>
+                📄 subtypes.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 supertypes.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 supertypes.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:18)</small>
+                📄 supertypes.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 supertypes.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+                📄 supertypes.tab.values.at <small>(AT | 0 linhas | 0.87 KB | mod: 09/10/2025 00:10:28)</small>
+                📄 supertypes.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:18)</small>
+                📄 supertypes.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+            📁 <strong>lookups/</strong>
+              📄 counters.tab <small>(TAB | 0 linhas | 0.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 file-to-id.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 file-to-id.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:19)</small>
+              📄 file-to-id.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 file-to-id.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 file-to-id.tab.values.at <small>(AT | 0 linhas | 0.24 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 file-to-id.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:19)</small>
+              📄 file-to-id.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 id-to-file.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 id-to-file.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 id-to-file.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 id-to-file.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 id-to-file.tab.values.at <small>(AT | 0 linhas | 2.08 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 id-to-file.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 id-to-file.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 lookups.tab <small>(TAB | 0 linhas | 16.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 lookups.tab.keystream <small>(KEYSTREAM | 0 linhas | 100.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 lookups.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+              📄 lookups.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+              📄 lookups.tab.values.at <small>(AT | 0 linhas | 12.66 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 lookups.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:10:28)</small>
+              📄 lookups.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:13:05)</small>
+          📄 last-build.bin <small>(BIN | 0 linhas | 0.02 KB | mod: 09/10/2025 00:10:28)</small>
+        📁 <strong>classpath-snapshot/</strong>
+          📄 shrunk-classpath-snapshot.bin <small>(BIN | 0 linhas | 47.13 KB | mod: 09/10/2025 00:10:28)</small>
+        📁 <strong>local-state/</strong>
+          📄 build-history.bin <small>(BIN | 0 linhas | 0.05 KB | mod: 09/10/2025 00:10:28)</small>
+      📁 <strong>kaptGenerateStubsDebugKotlin/</strong>
+        📁 <strong>cacheable/</strong>
+          📁 <strong>caches-jvm/</strong>
+            📁 <strong>inputs/</strong>
+              📄 source-to-output.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 source-to-output.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:12)</small>
+              📄 source-to-output.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 source-to-output.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 source-to-output.tab.values.at <small>(AT | 0 linhas | 19.48 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 source-to-output.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:12)</small>
+              📄 source-to-output.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+            📁 <strong>jvm/</strong>
+              📁 <strong>kotlin/</strong>
+                📄 class-attributes.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-attributes.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-attributes.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-attributes.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-attributes.tab.values.at <small>(AT | 0 linhas | 0.15 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-attributes.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-attributes.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-fq-name-to-source.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-fq-name-to-source.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-fq-name-to-source.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-fq-name-to-source.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-fq-name-to-source.tab.values.at <small>(AT | 0 linhas | 4.61 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-fq-name-to-source.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 class-fq-name-to-source.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 internal-name-to-source.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 internal-name-to-source.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:12)</small>
+                📄 internal-name-to-source.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 internal-name-to-source.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 internal-name-to-source.tab.values.at <small>(AT | 0 linhas | 4.37 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 internal-name-to-source.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:12)</small>
+                📄 internal-name-to-source.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 java-sources-proto-map.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 java-sources-proto-map.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 java-sources-proto-map.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 java-sources-proto-map.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 java-sources-proto-map.tab.values.at <small>(AT | 0 linhas | 1.23 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 java-sources-proto-map.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 java-sources-proto-map.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 proto.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 proto.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:12)</small>
+                📄 proto.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 proto.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 proto.tab.values.at <small>(AT | 0 linhas | 16.28 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 proto.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:12)</small>
+                📄 proto.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 source-to-classes.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 source-to-classes.tab.keystream <small>(KEYSTREAM | 0 linhas | 8.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 source-to-classes.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 source-to-classes.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 source-to-classes.tab.values.at <small>(AT | 0 linhas | 4.16 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 source-to-classes.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 source-to-classes.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 subtypes.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 subtypes.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 subtypes.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 subtypes.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 subtypes.tab.values.at <small>(AT | 0 linhas | 1.03 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 subtypes.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 subtypes.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 supertypes.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 supertypes.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 supertypes.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 supertypes.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 supertypes.tab.values.at <small>(AT | 0 linhas | 0.95 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 supertypes.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 13:12:57)</small>
+                📄 supertypes.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+            📁 <strong>lookups/</strong>
+              📄 counters.tab <small>(TAB | 0 linhas | 0.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 file-to-id.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 file-to-id.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 00:06:12)</small>
+              📄 file-to-id.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 file-to-id.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 file-to-id.tab.values.at <small>(AT | 0 linhas | 0.24 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 file-to-id.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 00:06:12)</small>
+              📄 file-to-id.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 id-to-file.tab <small>(TAB | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 id-to-file.tab.keystream <small>(KEYSTREAM | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 id-to-file.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 id-to-file.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 id-to-file.tab.values.at <small>(AT | 0 linhas | 2.14 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 id-to-file.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 id-to-file.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 lookups.tab <small>(TAB | 0 linhas | 8.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 lookups.tab.keystream <small>(KEYSTREAM | 0 linhas | 36.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 lookups.tab.keystream.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 lookups.tab.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 lookups.tab.values.at <small>(AT | 0 linhas | 6.04 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 lookups.tab_i <small>(TAB_I | 0 linhas | 32.00 KB | mod: 09/10/2025 13:12:57)</small>
+              📄 lookups.tab_i.len <small>(LEN | 0 linhas | 0.01 KB | mod: 09/10/2025 13:12:57)</small>
+          📄 last-build.bin <small>(BIN | 0 linhas | 0.02 KB | mod: 09/10/2025 13:12:57)</small>
+        📁 <strong>classpath-snapshot/</strong>
+          📄 shrunk-classpath-snapshot.bin <small>(BIN | 0 linhas | 24.22 KB | mod: 09/10/2025 13:12:57)</small>
+        📁 <strong>local-state/</strong>
+          📄 build-history.bin <small>(BIN | 0 linhas | 1.34 KB | mod: 09/10/2025 13:12:57)</small>
+    📁 <strong>outputs/</strong>
+      📁 <strong>logs/</strong>
+        📄 manifest-merger-debug-report.txt <small>(TXT | 0 linhas | 54.35 KB | mod: 09/10/2025 00:06:05)</small>
+    📁 <strong>snapshot/</strong>
+      📁 <strong>kotlin/</strong>
+    📁 <strong>tmp/</strong>
+      📁 <strong>compileDebugJavaWithJavac/</strong>
+        📄 previous-compilation-data.bin <small>(BIN | 0 linhas | 55.16 KB | mod: 09/10/2025 00:06:20)</small>
+      📁 <strong>kapt3/</strong>
+        📁 <strong>classes/</strong>
+          📁 <strong>debug/</strong>
+        📁 <strong>incApCache/</strong>
+          📁 <strong>debug/</strong>
+            📄 ap-classpath-entries.bin <small>(BIN | 0 linhas | 4.00 KB | mod: 09/10/2025 13:12:58)</small>
+            📄 apt-cache.bin <small>(BIN | 0 linhas | 0.99 KB | mod: 09/10/2025 13:13:02)</small>
+            📄 classpath-entries.bin <small>(BIN | 0 linhas | 8.41 KB | mod: 09/10/2025 13:12:58)</small>
+            📄 classpath-structure.bin <small>(BIN | 0 linhas | 1416.67 KB | mod: 09/10/2025 13:12:59)</small>
+            📄 java-cache.bin <small>(BIN | 0 linhas | 33.88 KB | mod: 09/10/2025 13:13:02)</small>
+        📁 <strong>incrementalData/</strong>
+          📁 <strong>debug/</strong>
+            📁 <strong>META-INF/</strong>
+              📄 app_debug.kotlin_module <small>(KOTLIN_MODULE | 0 linhas | 0.02 KB | mod: 09/10/2025 13:12:57)</small>
+            📁 <strong>com/</strong>
+              📁 <strong>coisaboa/</strong>
+                📁 <strong>app/</strong>
+                  📁 <strong>COISABOA/</strong>
+                    📄 MainActivity.class <small>(CLASS | 0 linhas | 0.90 KB | mod: 09/10/2025 00:06:11)</small>
+                  📁 <strong>config/</strong>
+                    📄 DatabaseProvider.class <small>(CLASS | 0 linhas | 1.04 KB | mod: 09/10/2025 00:06:11)</small>
+                  📁 <strong>data/</strong>
+                    📄 AppDatabase.class <small>(CLASS | 0 linhas | 1.01 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>dao/</strong>
+                      📄 ProductDao.class <small>(CLASS | 0 linhas | 1.40 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 PurchaseDao.class <small>(CLASS | 0 linhas | 1.53 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 SaleDao.class <small>(CLASS | 0 linhas | 1.49 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserDao.class <small>(CLASS | 0 linhas | 1.34 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>entity/</strong>
+                      📄 ProductEntity.class <small>(CLASS | 0 linhas | 2.34 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 PurchaseEntity.class <small>(CLASS | 0 linhas | 2.45 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 SaleEntity.class <small>(CLASS | 0 linhas | 2.43 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserEntity.class <small>(CLASS | 0 linhas | 2.50 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>repository/</strong>
+                      📄 ProductRepository.class <small>(CLASS | 0 linhas | 1.73 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserRepository.class <small>(CLASS | 0 linhas | 2.05 KB | mod: 09/10/2025 00:06:11)</small>
+                  📁 <strong>ui/</strong>
+                    📁 <strong>backup/</strong>
+                      📄 BackupActivity.class <small>(CLASS | 0 linhas | 1.36 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>compras/</strong>
+                      📄 ComprarActivity.class <small>(CLASS | 0 linhas | 2.38 KB | mod: 09/10/2025 13:12:57)</small>
+                      📄 PurchasesActivity.class <small>(CLASS | 0 linhas | 0.81 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>dashboard/</strong>
+                      📄 DashboardActivity.class <small>(CLASS | 0 linhas | 0.92 KB | mod: 09/10/2025 00:10:27)</small>
+                    📁 <strong>gerenciar/</strong>
+                      📄 GerenciarActivity.class <small>(CLASS | 0 linhas | 1.35 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>login/</strong>
+                      📄 LoginActivity.class <small>(CLASS | 0 linhas | 0.90 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 LoginViewModel.class <small>(CLASS | 0 linhas | 2.96 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>main/</strong>
+                      📄 MainActivity.class <small>(CLASS | 0 linhas | 0.89 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>produtos/</strong>
+                      📄 ProductAdapter$ProductViewHolder.class <small>(CLASS | 0 linhas | 1.80 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductAdapter.class <small>(CLASS | 0 linhas | 3.05 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductsActivity.class <small>(CLASS | 0 linhas | 1.09 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductsViewModel.class <small>(CLASS | 0 linhas | 2.31 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>relatorios/</strong>
+                      📄 RelatoriosActivity.class <small>(CLASS | 0 linhas | 0.82 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ReportsActivity.class <small>(CLASS | 0 linhas | 0.81 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>vendas/</strong>
+                      📄 SalesActivity.class <small>(CLASS | 0 linhas | 0.80 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 VenderActivity.class <small>(CLASS | 0 linhas | 1.21 KB | mod: 09/10/2025 00:06:11)</small>
+                  📁 <strong>utils/</strong>
+                    📄 PasswordUtils.class <small>(CLASS | 0 linhas | 1.03 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 SessionManager.class <small>(CLASS | 0 linhas | 1.67 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 TextWatcherAdapter.class <small>(CLASS | 0 linhas | 1.68 KB | mod: 09/10/2025 00:06:11)</small>
+        📁 <strong>stubs/</strong>
+          📁 <strong>debug/</strong>
+            📁 <strong>com/</strong>
+              📁 <strong>coisaboa/</strong>
+                📁 <strong>app/</strong>
+                  📁 <strong>COISABOA/</strong>
+                    📄 MainActivity.java <small>(JAVA | 15 linhas | 1.07 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 MainActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.69 KB | mod: 09/10/2025 00:06:11)</small>
+                  📁 <strong>config/</strong>
+                    📄 DatabaseProvider.java <small>(JAVA | 20 linhas | 1.24 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 DatabaseProvider.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.81 KB | mod: 09/10/2025 00:06:11)</small>
+                  📁 <strong>data/</strong>
+                    📄 AppDatabase.java <small>(JAVA | 16 linhas | 1.09 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 AppDatabase.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.80 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>dao/</strong>
+                      📄 ProductDao.java <small>(JAVA | 23 linhas | 1.92 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductDao.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.42 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 PurchaseDao.java <small>(JAVA | 22 linhas | 1.88 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 PurchaseDao.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.30 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 SaleDao.java <small>(JAVA | 22 linhas | 1.84 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 SaleDao.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.24 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserDao.java <small>(JAVA | 18 linhas | 1.62 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserDao.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.00 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>entity/</strong>
+                      📄 ProductEntity.java <small>(JAVA | 74 linhas | 3.57 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductEntity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 2.22 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 PurchaseEntity.java <small>(JAVA | 78 linhas | 3.80 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 PurchaseEntity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 2.56 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 SaleEntity.java <small>(JAVA | 78 linhas | 3.79 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 SaleEntity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 2.46 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserEntity.java <small>(JAVA | 84 linhas | 4.11 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserEntity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 2.43 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>repository/</strong>
+                      📄 ProductRepository.java <small>(JAVA | 32 linhas | 2.38 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductRepository.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 2.01 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserRepository.java <small>(JAVA | 35 linhas | 2.77 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 UserRepository.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 2.00 KB | mod: 09/10/2025 00:06:11)</small>
+                  📁 <strong>ui/</strong>
+                    📁 <strong>backup/</strong>
+                      📄 BackupActivity.java <small>(JAVA | 27 linhas | 1.86 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 BackupActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.40 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>compras/</strong>
+                      📄 ComprarActivity.java <small>(JAVA | 43 linhas | 4.21 KB | mod: 09/10/2025 13:12:57)</small>
+                      📄 ComprarActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 3.77 KB | mod: 09/10/2025 13:12:57)</small>
+                      📄 PurchasesActivity.java <small>(JAVA | 14 linhas | 0.87 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 PurchasesActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.62 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>dashboard/</strong>
+                      📄 DashboardActivity.java <small>(JAVA | 15 linhas | 1.10 KB | mod: 09/10/2025 00:10:27)</small>
+                      📄 DashboardActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.80 KB | mod: 09/10/2025 00:10:27)</small>
+                    📁 <strong>gerenciar/</strong>
+                      📄 GerenciarActivity.java <small>(JAVA | 23 linhas | 2.27 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 GerenciarActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 2.20 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>login/</strong>
+                      📄 LoginActivity.java <small>(JAVA | 15 linhas | 1.08 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 LoginActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.73 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 LoginViewModel.java <small>(JAVA | 61 linhas | 4.85 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 LoginViewModel.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 3.64 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>main/</strong>
+                      📄 MainActivity.java <small>(JAVA | 15 linhas | 1.07 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 MainActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.72 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>produtos/</strong>
+                      📄 ProductAdapter.java <small>(JAVA | 73 linhas | 5.68 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductAdapter.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 4.43 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductsActivity.java <small>(JAVA | 19 linhas | 1.43 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductsActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.17 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductsViewModel.java <small>(JAVA | 44 linhas | 3.44 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ProductsViewModel.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 2.70 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>relatorios/</strong>
+                      📄 RelatoriosActivity.java <small>(JAVA | 14 linhas | 0.88 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 RelatoriosActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.64 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ReportsActivity.java <small>(JAVA | 14 linhas | 0.87 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 ReportsActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.62 KB | mod: 09/10/2025 00:06:11)</small>
+                    📁 <strong>vendas/</strong>
+                      📄 SalesActivity.java <small>(JAVA | 14 linhas | 0.85 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 SalesActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.59 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 VenderActivity.java <small>(JAVA | 20 linhas | 1.87 KB | mod: 09/10/2025 00:06:11)</small>
+                      📄 VenderActivity.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.58 KB | mod: 09/10/2025 00:06:11)</small>
+                  📁 <strong>utils/</strong>
+                    📄 PasswordUtils.java <small>(JAVA | 23 linhas | 1.26 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 PasswordUtils.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 0.90 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 SessionManager.java <small>(JAVA | 37 linhas | 2.39 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 SessionManager.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.89 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 TextWatcherAdapter.java <small>(JAVA | 31 linhas | 2.38 KB | mod: 09/10/2025 00:06:11)</small>
+                    📄 TextWatcherAdapter.kapt_metadata <small>(KAPT_METADATA | 0 linhas | 1.52 KB | mod: 09/10/2025 00:06:11)</small>
+            📁 <strong>error/</strong>
+              📄 NonExistentClass.java <small>(JAVA | 4 linhas | 0.06 KB | mod: 09/10/2025 13:12:57)</small>
+      📁 <strong>kotlin-classes/</strong>
+        📁 <strong>debug/</strong>
+          📁 <strong>META-INF/</strong>
+            📄 app_debug.kotlin_module <small>(KOTLIN_MODULE | 0 linhas | 0.02 KB | mod: 09/10/2025 00:10:28)</small>
+          📁 <strong>com/</strong>
+            📁 <strong>coisaboa/</strong>
+              📁 <strong>app/</strong>
+                📁 <strong>COISABOA/</strong>
+                  📄 MainActivity.class <small>(CLASS | 0 linhas | 2.12 KB | mod: 09/10/2025 00:06:18)</small>
+                📁 <strong>config/</strong>
+                  📄 DatabaseProvider.class <small>(CLASS | 0 linhas | 2.11 KB | mod: 09/10/2025 00:06:18)</small>
+                📁 <strong>data/</strong>
+                  📄 AppDatabase.class <small>(CLASS | 0 linhas | 1.05 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>dao/</strong>
+                    📄 ProductDao.class <small>(CLASS | 0 linhas | 1.39 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 PurchaseDao.class <small>(CLASS | 0 linhas | 1.52 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 SaleDao.class <small>(CLASS | 0 linhas | 1.49 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 UserDao.class <small>(CLASS | 0 linhas | 1.34 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>entity/</strong>
+                    📄 ProductEntity.class <small>(CLASS | 0 linhas | 3.75 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 PurchaseEntity.class <small>(CLASS | 0 linhas | 3.84 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 SaleEntity.class <small>(CLASS | 0 linhas | 3.81 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 UserEntity.class <small>(CLASS | 0 linhas | 3.94 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>repository/</strong>
+                    📄 ProductRepository.class <small>(CLASS | 0 linhas | 2.27 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 UserRepository$ensureDefaultAdmin$1.class <small>(CLASS | 0 linhas | 1.75 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 UserRepository$login$1.class <small>(CLASS | 0 linhas | 1.73 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 UserRepository$register$1.class <small>(CLASS | 0 linhas | 1.86 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 UserRepository.class <small>(CLASS | 0 linhas | 5.44 KB | mod: 09/10/2025 00:06:18)</small>
+                📁 <strong>ui/</strong>
+                  📁 <strong>backup/</strong>
+                    📄 BackupActivity.class <small>(CLASS | 0 linhas | 7.27 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>compras/</strong>
+                    📄 ComprarActivity$onCreate$watcher$1.class <small>(CLASS | 0 linhas | 1.72 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ComprarActivity.class <small>(CLASS | 0 linhas | 7.21 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 PurchasesActivity.class <small>(CLASS | 0 linhas | 1.31 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>dashboard/</strong>
+                    📄 DashboardActivity.class <small>(CLASS | 0 linhas | 5.08 KB | mod: 09/10/2025 00:10:28)</small>
+                  📁 <strong>gerenciar/</strong>
+                    📄 GerenciarActivity$onCreate$1.class <small>(CLASS | 0 linhas | 2.85 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 GerenciarActivity.class <small>(CLASS | 0 linhas | 6.85 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>login/</strong>
+                    📄 LoginActivity.class <small>(CLASS | 0 linhas | 5.51 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 LoginViewModel$login$1.class <small>(CLASS | 0 linhas | 5.04 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 LoginViewModel$register$1.class <small>(CLASS | 0 linhas | 4.74 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 LoginViewModel.class <small>(CLASS | 0 linhas | 5.51 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>main/</strong>
+                    📄 MainActivity.class <small>(CLASS | 0 linhas | 3.21 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>produtos/</strong>
+                    📄 ProductAdapter$ProductViewHolder.class <small>(CLASS | 0 linhas | 4.39 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ProductAdapter.class <small>(CLASS | 0 linhas | 4.50 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ProductsActivity$carregarProdutos$1.class <small>(CLASS | 0 linhas | 3.82 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ProductsActivity.class <small>(CLASS | 0 linhas | 5.67 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ProductsViewModel$adicionarProduto$1.class <small>(CLASS | 0 linhas | 4.37 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ProductsViewModel$carregarProdutos$1.class <small>(CLASS | 0 linhas | 4.20 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ProductsViewModel$excluirProduto$1.class <small>(CLASS | 0 linhas | 4.36 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ProductsViewModel.class <small>(CLASS | 0 linhas | 4.80 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>relatorios/</strong>
+                    📄 RelatoriosActivity.class <small>(CLASS | 0 linhas | 1.32 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 ReportsActivity.class <small>(CLASS | 0 linhas | 1.31 KB | mod: 09/10/2025 00:06:18)</small>
+                  📁 <strong>vendas/</strong>
+                    📄 SalesActivity.class <small>(CLASS | 0 linhas | 1.29 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 VenderActivity$onCreate$watcher$1.class <small>(CLASS | 0 linhas | 1.71 KB | mod: 09/10/2025 00:06:18)</small>
+                    📄 VenderActivity.class <small>(CLASS | 0 linhas | 6.77 KB | mod: 09/10/2025 00:06:18)</small>
+                📁 <strong>utils/</strong>
+                  📄 PasswordUtils.class <small>(CLASS | 0 linhas | 2.94 KB | mod: 09/10/2025 00:06:18)</small>
+                  📄 SessionManager.class <small>(CLASS | 0 linhas | 2.93 KB | mod: 09/10/2025 00:06:18)</small>
+                  📄 TextWatcherAdapter.class <small>(CLASS | 0 linhas | 2.19 KB | mod: 09/10/2025 00:06:18)</small>
+  📄 build.gradle.kts <small>(KTS | 0 linhas | 2.19 KB | mod: 06/10/2025 19:01:23)</small>
+  📄 proguard-rules.pro <small>(PRO | 0 linhas | 0.04 KB | mod: 04/10/2025 18:15:02)</small>
+  📁 <strong>src/</strong>
+    📁 <strong>main/</strong>
+      📄 AndroidManifest.xml <small>(XML | 83 linhas | 3.07 KB | mod: 09/10/2025 13:16:07)</small>
+      📁 <strong>java/</strong>
+        📁 <strong>com/</strong>
+          📁 <strong>coisaboa/</strong>
+            📁 <strong>app/</strong>
+              📄 MainActivity.kt <small>(KT | 23 linhas | 0.68 KB | mod: 08/10/2025 23:19:39)</small>
+              📁 <strong>config/</strong>
+                📄 DatabaseProvider.kt <small>(KT | 22 linhas | 0.59 KB | mod: 04/10/2025 19:19:58)</small>
+              📁 <strong>data/</strong>
+                📄 AppDatabase.kt <small>(KT | 18 linhas | 0.55 KB | mod: 06/10/2025 21:07:38)</small>
+                📁 <strong>dao/</strong>
+                  📄 ProductDao.kt <small>(KT | 17 linhas | 0.39 KB | mod: 06/10/2025 21:07:32)</small>
+                  📄 PurchaseDao.kt <small>(KT | 17 linhas | 0.45 KB | mod: 04/10/2025 19:19:58)</small>
+                  📄 SaleDao.kt <small>(KT | 17 linhas | 0.42 KB | mod: 04/10/2025 19:19:58)</small>
+                  📄 UserDao.kt <small>(KT | 17 linhas | 0.46 KB | mod: 06/10/2025 19:23:28)</small>
+                📁 <strong>entity/</strong>
+                  📄 ProductEntity.kt <small>(KT | 12 linhas | 0.29 KB | mod: 06/10/2025 21:07:35)</small>
+                  📄 PurchaseEntity.kt <small>(KT | 13 linhas | 0.35 KB | mod: 04/10/2025 19:19:58)</small>
+                  📄 SaleEntity.kt <small>(KT | 13 linhas | 0.34 KB | mod: 04/10/2025 19:19:58)</small>
+                  📄 UserEntity.kt <small>(KT | 12 linhas | 0.29 KB | mod: 06/10/2025 19:23:26)</small>
+                📁 <strong>repository/</strong>
+                  📄 ProductRepository.kt <small>(KT | 14 linhas | 0.45 KB | mod: 06/10/2025 21:11:17)</small>
+                  📄 UserRepository.kt <small>(KT | 38 linhas | 1.23 KB | mod: 06/10/2025 19:32:44)</small>
+              📁 <strong>ui/</strong>
+                📁 <strong>backup/</strong>
+                  📄 BackupActivity.kt <small>(KT | 98 linhas | 3.50 KB | mod: 09/10/2025 00:05:07)</small>
+                📁 <strong>compras/</strong>
+                  📄 ComprarActivity.kt <small>(KT | 174 linhas | 6.83 KB | mod: 09/10/2025 13:12:29)</small>
+                  📄 PurchasesActivity.kt <small>(KT | 13 linhas | 0.39 KB | mod: 04/10/2025 19:16:04)</small>
+                📁 <strong>dashboard/</strong>
+                  📄 DashboardActivity.kt <small>(KT | 64 linhas | 2.30 KB | mod: 09/10/2025 00:10:20)</small>
+                📁 <strong>gerenciar/</strong>
+                  📄 GerenciarActivity.kt <small>(KT | 79 linhas | 3.52 KB | mod: 08/10/2025 21:35:44)</small>
+                📁 <strong>login/</strong>
+                  📄 LoginActivity.kt <small>(KT | 71 linhas | 2.73 KB | mod: 08/10/2025 17:31:01)</small>
+                  📄 LoginViewModel.kt <small>(KT | 70 linhas | 2.37 KB | mod: 06/10/2025 19:42:48)</small>
+                📁 <strong>main/</strong>
+                  📄 MainActivity.kt <small>(KT | 31 linhas | 0.96 KB | mod: 08/10/2025 23:28:46)</small>
+                📁 <strong>produtos/</strong>
+                  📄 ProductAdapter.kt <small>(KT | 52 linhas | 1.75 KB | mod: 06/10/2025 21:13:50)</small>
+                  📄 ProductsActivity.kt <small>(KT | 44 linhas | 1.44 KB | mod: 06/10/2025 21:20:00)</small>
+                  📄 ProductsViewModel.kt <small>(KT | 64 linhas | 1.95 KB | mod: 06/10/2025 21:26:25)</small>
+                📁 <strong>relatorios/</strong>
+                  📄 RelatoriosActivity.kt <small>(KT | 15 linhas | 0.41 KB | mod: 08/10/2025 20:45:16)</small>
+                  📄 ReportsActivity.kt <small>(KT | 13 linhas | 0.39 KB | mod: 04/10/2025 19:16:04)</small>
+                📁 <strong>vendas/</strong>
+                  📄 SalesActivity.kt <small>(KT | 13 linhas | 0.38 KB | mod: 04/10/2025 19:16:04)</small>
+                  📄 VenderActivity.kt <small>(KT | 80 linhas | 3.15 KB | mod: 08/10/2025 18:58:02)</small>
+              📁 <strong>utils/</strong>
+                📄 PasswordUtils.kt <small>(KT | 14 linhas | 0.42 KB | mod: 06/10/2025 19:23:23)</small>
+                📄 SessionManager.kt <small>(KT | 33 linhas | 1.05 KB | mod: 06/10/2025 18:43:11)</small>
+                📄 TextWatcherAdapter.kt <small>(KT | 19 linhas | 0.62 KB | mod: 08/10/2025 18:53:20)</small>
+      📁 <strong>res/</strong>
+        📁 <strong>drawable/</strong>
+          📄 ic_launcher_foreground.xml <small>(XML | 13 linhas | 0.48 KB | mod: 04/10/2025 18:15:02)</small>
+        📁 <strong>layout/</strong>
+          📄 activity_backup.xml <small>(XML | 37 linhas | 1.24 KB | mod: 09/10/2025 00:05:28)</small>
+          📄 activity_comprar.xml <small>(XML | 125 linhas | 4.57 KB | mod: 09/10/2025 13:11:56)</small>
+          📄 activity_dashboard.xml <small>(XML | 78 linhas | 2.76 KB | mod: 08/10/2025 23:42:45)</small>
+          📄 activity_gerenciar.xml <small>(XML | 100 linhas | 3.61 KB | mod: 08/10/2025 21:36:01)</small>
+          📄 activity_login.xml <small>(XML | 47 linhas | 1.60 KB | mod: 06/10/2025 19:23:21)</small>
+          📄 activity_main.xml <small>(XML | 60 linhas | 2.12 KB | mod: 08/10/2025 23:29:02)</small>
+          📄 activity_products.xml <small>(XML | 12 linhas | 0.45 KB | mod: 06/10/2025 21:23:46)</small>
+          📄 activity_purchases.xml <small>(XML | 9 linhas | 0.80 KB | mod: 04/10/2025 19:16:04)</small>
+          📄 activity_relatorios.xml <small>(XML | 76 linhas | 2.81 KB | mod: 08/10/2025 20:46:56)</small>
+          📄 activity_reports.xml <small>(XML | 7 linhas | 0.55 KB | mod: 04/10/2025 19:16:04)</small>
+          📄 activity_sales.xml <small>(XML | 9 linhas | 0.79 KB | mod: 04/10/2025 19:16:04)</small>
+          📄 activity_vender.xml <small>(XML | 69 linhas | 2.39 KB | mod: 08/10/2025 18:58:19)</small>
+          📄 item_product.xml <small>(XML | 38 linhas | 1.22 KB | mod: 06/10/2025 21:15:20)</small>
+        📁 <strong>mipmap-anydpi-v26/</strong>
+          📄 ic_launcher.xml <small>(XML | 6 linhas | 0.32 KB | mod: 04/10/2025 18:15:02)</small>
+          📄 ic_launcher_round.xml <small>(XML | 6 linhas | 0.32 KB | mod: 04/10/2025 18:15:02)</small>
+        📁 <strong>values/</strong>
+          📄 colors.xml <small>(XML | 12 linhas | 0.40 KB | mod: 04/10/2025 18:15:02)</small>
+          📄 strings.xml <small>(XML | 12 linhas | 0.49 KB | mod: 04/10/2025 21:05:10)</small>
+          📄 themes.xml <small>(XML | 9 linhas | 0.49 KB | mod: 04/10/2025 18:15:02)</small>
+        📁 <strong>xml/</strong>
+          📄 file_paths.xml <small>(XML | 4 linhas | 0.17 KB | mod: 08/10/2025 22:25:11)</small>
+📁 <strong>build/</strong>
+  📁 <strong>reports/</strong>
+    📁 <strong>problems/</strong>
+      📄 problems-report.html <small>(HTML | 0 linhas | 124.77 KB | mod: 09/10/2025 13:13:05)</small>
+📄 build.gradle.kts <small>(KTS | 0 linhas | 0.21 KB | mod: 04/10/2025 19:30:22)</small>
+📄 gerar_relatorio_projeto.php <small>(PHP | 175 linhas | 6.76 KB | mod: 09/10/2025 13:27:27)</small>
+📁 <strong>gradle/</strong>
+  📁 <strong>wrapper/</strong>
+    📄 gradle-wrapper.jar <small>(JAR | 0 linhas | 42.56 KB | mod: 04/10/2025 19:23:20)</small>
+    📄 gradle-wrapper.properties <small>(PROPERTIES | 0 linhas | 0.25 KB | mod: 04/10/2025 19:23:20)</small>
+📄 gradle.properties <small>(PROPERTIES | 0 linhas | 0.13 KB | mod: 04/10/2025 18:15:02)</small>
+📄 gradlew <small>( | 0 linhas | 8.56 KB | mod: 04/10/2025 19:23:21)</small>
+📄 gradlew.bat <small>(BAT | 0 linhas | 2.90 KB | mod: 04/10/2025 19:23:21)</small>
+📄 local.properties <small>(PROPERTIES | 0 linhas | 0.36 KB | mod: 04/10/2025 19:21:40)</small>
+📄 settings.gradle.kts <small>(KTS | 0 linhas | 0.33 KB | mod: 04/10/2025 18:15:02)</small></pre><h2>📈 Estatísticas Gerais</h2><div class='stat'>Total de arquivos: <strong>975</strong></div><div class='stat'>Total de pastas: <strong>484</strong></div><div class='stat'>Tamanho total do projeto: <strong>44.11 MB</strong></div><h3>📄 Linhas de código por tipo de arquivo</h3><ul><li><strong>.XML</strong>: 19107 linhas</li><li><strong>.JAVA</strong>: 2879 linhas</li><li><strong>.KT</strong>: 1180 linhas</li><li><strong>.PHP</strong>: 175 linhas</li></ul><h2>🔗 Relações Identificadas</h2><h3>Activities no Manifest</h3><ul><li>📱 </li><li>📱 </li><li>📱 </li><li>📱 </li><li>📱 </li><li>📱 </li><li>📱 </li><li>📱 </li></ul><h3>Layouts XML</h3><ul><li>🧩 activity_backup.xml</li><li>🧩 activity_comprar.xml</li><li>🧩 activity_dashboard.xml</li><li>🧩 activity_gerenciar.xml</li><li>🧩 activity_login.xml</li><li>🧩 activity_main.xml</li><li>🧩 activity_products.xml</li><li>🧩 activity_purchases.xml</li><li>🧩 activity_relatorios.xml</li><li>🧩 activity_reports.xml</li><li>🧩 activity_sales.xml</li><li>🧩 activity_vender.xml</li><li>🧩 item_product.xml</li></ul><h3>Classes Java/Kotlin</h3><ul><li>💡 com/coisaboa/app/config/DatabaseProvider.kt</li><li>💡 com/coisaboa/app/data/AppDatabase.kt</li><li>💡 com/coisaboa/app/data/dao/ProductDao.kt</li><li>💡 com/coisaboa/app/data/dao/PurchaseDao.kt</li><li>💡 com/coisaboa/app/data/dao/SaleDao.kt</li><li>💡 com/coisaboa/app/data/dao/UserDao.kt</li><li>💡 com/coisaboa/app/data/entity/ProductEntity.kt</li><li>💡 com/coisaboa/app/data/entity/PurchaseEntity.kt</li><li>💡 com/coisaboa/app/data/entity/SaleEntity.kt</li><li>💡 com/coisaboa/app/data/entity/UserEntity.kt</li><li>💡 com/coisaboa/app/data/repository/ProductRepository.kt</li><li>💡 com/coisaboa/app/data/repository/UserRepository.kt</li><li>💡 com/coisaboa/app/MainActivity.kt</li><li>💡 com/coisaboa/app/ui/backup/BackupActivity.kt</li><li>💡 com/coisaboa/app/ui/compras/ComprarActivity.kt</li><li>💡 com/coisaboa/app/ui/compras/PurchasesActivity.kt</li><li>💡 com/coisaboa/app/ui/dashboard/DashboardActivity.kt</li><li>💡 com/coisaboa/app/ui/gerenciar/GerenciarActivity.kt</li><li>💡 com/coisaboa/app/ui/login/LoginActivity.kt</li><li>💡 com/coisaboa/app/ui/login/LoginViewModel.kt</li><li>💡 com/coisaboa/app/ui/main/MainActivity.kt</li><li>💡 com/coisaboa/app/ui/produtos/ProductAdapter.kt</li><li>💡 com/coisaboa/app/ui/produtos/ProductsActivity.kt</li><li>💡 com/coisaboa/app/ui/produtos/ProductsViewModel.kt</li><li>💡 com/coisaboa/app/ui/relatorios/RelatoriosActivity.kt</li><li>💡 com/coisaboa/app/ui/relatorios/ReportsActivity.kt</li><li>💡 com/coisaboa/app/ui/vendas/SalesActivity.kt</li><li>💡 com/coisaboa/app/ui/vendas/VenderActivity.kt</li><li>💡 com/coisaboa/app/utils/PasswordUtils.kt</li><li>💡 com/coisaboa/app/utils/SessionManager.kt</li><li>💡 com/coisaboa/app/utils/TextWatcherAdapter.kt</li></ul><h2>🧭 Conclusão</h2><p>O relatório foi gerado automaticamente a partir da análise de todo o conteúdo do projeto COISABOA. 
+Ele permite visualizar a estrutura, dependências, atividades e estatísticas de desenvolvimento.</p><div class='footer'>Relatório gerado automaticamente por ChatGPT e Nilton Bakargi © 2025</div></body></html>

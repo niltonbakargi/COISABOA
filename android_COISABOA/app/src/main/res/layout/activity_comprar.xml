@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Título -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp" />
 
+        <!-- Nome do Produto -->
         <EditText
             android:id="@+id/etProduto"
             android:layout_width="match_parent"
@@ -26,6 +28,7 @@
             android:hint="Nome do Produto"
             android:inputType="text" />
 
+        <!-- Quantidade -->
         <EditText
             android:id="@+id/etQuantidade"
             android:layout_width="match_parent"
@@ -34,6 +37,7 @@
             android:inputType="number"
             android:layout_marginTop="12dp" />
 
+        <!-- Valor Unitário -->
         <EditText
             android:id="@+id/etValorUnitario"
             android:layout_width="match_parent"
@@ -42,6 +46,7 @@
             android:inputType="numberDecimal"
             android:layout_marginTop="12dp" />
 
+        <!-- Valor Revenda -->
         <EditText
             android:id="@+id/etValorRevenda"
             android:layout_width="match_parent"
@@ -50,6 +55,7 @@
             android:inputType="numberDecimal"
             android:layout_marginTop="12dp" />
 
+        <!-- Valor Total -->
         <TextView
             android:id="@+id/tvValorTotal"
             android:layout_width="match_parent"
@@ -60,12 +66,57 @@
             android:textStyle="bold"
             android:layout_marginTop="16dp" />
 
+        <!-- Forma de Pagamento -->
         <Spinner
             android:id="@+id/spPagamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp" />
 
+        <!-- Captura de Imagens -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btnFotoProduto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📸 Produto"
+                android:backgroundTint="#1976D2"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="12dp" />
+
+            <Button
+                android:id="@+id/btnFotoNota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🧾 Nota"
+                android:backgroundTint="#009688"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <!-- Preview das fotos -->
+        <ImageView
+            android:id="@+id/imgPreviewProduto"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="16dp"
+            android:background="#E0E0E0" />
+
+        <ImageView
+            android:id="@+id/imgPreviewNota"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="12dp"
+            android:background="#E0E0E0" />
+
+        <!-- Botão Salvar -->
         <Button
             android:id="@+id/btnSalvarCompra"
             android:layout_width="match_parent"

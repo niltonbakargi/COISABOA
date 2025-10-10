@@ -9,9 +9,10 @@ import com.coisaboa.app.data.entity.UserEntity
 @Dao
 interface UserDao {
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(user: UserEntity): Long
+
+    // 🔍 usado pelo UserRepository.login() e register()
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
     suspend fun findByUsername(username: String): UserEntity?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: UserEntity)
 }
