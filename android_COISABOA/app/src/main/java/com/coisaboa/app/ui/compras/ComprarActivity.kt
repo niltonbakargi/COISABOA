@@ -3,6 +3,9 @@ package com.coisaboa.app.ui.compras
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
@@ -36,7 +39,7 @@ class ComprarActivity : AppCompatActivity() {
     private var caminhoFotoProduto: String? = null
     private var caminhoFotoVendedor: String? = null
 
-    // 🔹 Controle da câmera
+    // 🔹 Controle de tipo de imagem
     private var tipoFotoAtual: String = ""
 
     // 🔹 Classe utilitária para salvar imagens localmente
@@ -49,28 +52,18 @@ class ComprarActivity : AppCompatActivity() {
         ComprarViewModelFactory(repo)
     }
 
-    // 🔹 Launcher moderno para capturar imagem
-    private val cameraLauncher =
+    // 🖼️ Launcher: GALERIA
+    private val galeriaLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                val bitmap = result.data!!.extras?.get("data") as? Bitmap
-                if (bitmap != null) {
-                    val caminho = mediaStorage.salvarImagem(bitmap, tipoFotoAtual)
-                    when (tipoFotoAtual) {
-                        "produto" -> {
-                            caminhoFotoProduto = caminho
-                            imgPreviewProduto.setImageBitmap(bitmap)
-                            Toast.makeText(this, "📷 Foto do produto salva!", Toast.LENGTH_SHORT).show()
-                        }
-                        "vendedor" -> {
-                            caminhoFotoVendedor = caminho
-                            imgPreviewVendedor.setImageBitmap(bitmap)
-                            Toast.makeText(this, "🧑‍🌾 Foto do vendedor salva!", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+            if (result.resultCode == Activity.RESULT_OK && result.data?.data != null) {
+                val uri: Uri = result.data!!.data!!
+                val bitmap: Bitmap = if (Build.VERSION.SDK_INT >= 28) {
+                    ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
                 } else {
-                    Toast.makeText(this, "Erro ao capturar imagem!", Toast.LENGTH_SHORT).show()
+                    MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 }
+                val caminho = mediaStorage.salvarImagem(bitmap, tipoFotoAtual)
+                atualizarPreview(bitmap, caminho)
             }
         }
 
@@ -114,16 +107,16 @@ class ComprarActivity : AppCompatActivity() {
         etQuantidade.addTextChangedListener { atualizarTotal() }
         etValorUnitario.addTextChangedListener { atualizarTotal() }
 
-        // 📸 Foto do produto
+        // 🖼️ Escolher imagem do produto
         btnFotoProduto.setOnClickListener {
             tipoFotoAtual = "produto"
-            abrirCamera()
+            abrirGaleria()
         }
 
-        // 📸 Foto do vendedor
+        // 🖼️ Escolher imagem do vendedor
         btnFotoVendedor.setOnClickListener {
             tipoFotoAtual = "vendedor"
-            abrirCamera()
+            abrirGaleria()
         }
 
         // 💾 Salvar compra
@@ -132,12 +125,24 @@ class ComprarActivity : AppCompatActivity() {
         }
     }
 
-    private fun abrirCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent.resolveActivity(packageManager) != null) {
-            cameraLauncher.launch(intent)
-        } else {
-            Toast.makeText(this, "Câmera não disponível!", Toast.LENGTH_SHORT).show()
+    private fun abrirGaleria() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galeriaLauncher.launch(intent)
+    }
+
+    // 🔹 Atualiza o preview e salva caminho
+    private fun atualizarPreview(bitmap: Bitmap, caminho: String) {
+        when (tipoFotoAtual) {
+            "produto" -> {
+                caminhoFotoProduto = caminho
+                imgPreviewProduto.setImageBitmap(bitmap)
+                Toast.makeText(this, "🖼️ Imagem do produto selecionada!", Toast.LENGTH_SHORT).show()
+            }
+            "vendedor" -> {
+                caminhoFotoVendedor = caminho
+                imgPreviewVendedor.setImageBitmap(bitmap)
+                Toast.makeText(this, "🧑‍🌾 Imagem do vendedor selecionada!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -163,7 +168,7 @@ class ComprarActivity : AppCompatActivity() {
             valorRevenda = valorRevenda,
             formaPagamento = formaPagamento,
             caminhoImagemProduto = caminhoFotoProduto,
-            caminhoImagemNota = caminhoFotoVendedor, // usando campo nota para foto do vendedor
+            caminhoImagemNota = caminhoFotoVendedor, // Foto do vendedor
             dataCompra = Date()
         )
 
