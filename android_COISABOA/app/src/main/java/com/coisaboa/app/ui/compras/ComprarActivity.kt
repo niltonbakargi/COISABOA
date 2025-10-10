@@ -1,23 +1,25 @@
 package com.coisaboa.app.ui.compras
-import androidx.core.widget.addTextChangedListener
+
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.coisaboa.app.R
 import com.coisaboa.app.config.DatabaseProvider
 import com.coisaboa.app.data.entity.PurchaseEntity
 import com.coisaboa.app.data.repository.PurchaseRepository
 import com.coisaboa.app.utils.MediaStorage
-import java.io.File
 import java.util.*
 
 class ComprarActivity : AppCompatActivity() {
 
+    // 🔹 Referências da UI
     private lateinit var etProduto: EditText
     private lateinit var etQuantidade: EditText
     private lateinit var etValorUnitario: EditText
@@ -26,30 +28,62 @@ class ComprarActivity : AppCompatActivity() {
     private lateinit var spPagamento: Spinner
     private lateinit var btnSalvar: Button
     private lateinit var btnFotoProduto: Button
-    private lateinit var btnFotoNota: Button
+    private lateinit var btnFotoVendedor: Button
     private lateinit var imgPreviewProduto: ImageView
-    private lateinit var imgPreviewNota: ImageView
+    private lateinit var imgPreviewVendedor: ImageView
 
+    // 🔹 Caminhos das fotos salvas
     private var caminhoFotoProduto: String? = null
-    private var caminhoFotoNota: String? = null
+    private var caminhoFotoVendedor: String? = null
 
-    companion object {
-        private const val REQ_FOTO_PRODUTO = 101
-        private const val REQ_FOTO_NOTA = 102
-    }
+    // 🔹 Controle da câmera
+    private var tipoFotoAtual: String = ""
 
+    // 🔹 Classe utilitária para salvar imagens localmente
+    private val mediaStorage by lazy { MediaStorage(this) }
+
+    // 🔹 ViewModel
     private val viewModel: ComprarViewModel by viewModels {
         val db = DatabaseProvider.get(this)
         val repo = PurchaseRepository(db.purchaseDao(), db.productDao())
         ComprarViewModelFactory(repo)
     }
 
+    // 🔹 Launcher moderno para capturar imagem
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                val bitmap = result.data!!.extras?.get("data") as? Bitmap
+                if (bitmap != null) {
+                    val caminho = mediaStorage.salvarImagem(bitmap, tipoFotoAtual)
+                    when (tipoFotoAtual) {
+                        "produto" -> {
+                            caminhoFotoProduto = caminho
+                            imgPreviewProduto.setImageBitmap(bitmap)
+                            Toast.makeText(this, "📷 Foto do produto salva!", Toast.LENGTH_SHORT).show()
+                        }
+                        "vendedor" -> {
+                            caminhoFotoVendedor = caminho
+                            imgPreviewVendedor.setImageBitmap(bitmap)
+                            Toast.makeText(this, "🧑‍🌾 Foto do vendedor salva!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, "Erro ao capturar imagem!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comprar)
         supportActionBar?.title = "Nova Compra"
 
-        // Referências
+        inicializarComponentes()
+        configurarEventos()
+    }
+
+    private fun inicializarComponentes() {
         etProduto = findViewById(R.id.etProduto)
         etQuantidade = findViewById(R.id.etQuantidade)
         etValorUnitario = findViewById(R.id.etValorUnitario)
@@ -58,17 +92,19 @@ class ComprarActivity : AppCompatActivity() {
         spPagamento = findViewById(R.id.spPagamento)
         btnSalvar = findViewById(R.id.btnSalvarCompra)
         btnFotoProduto = findViewById(R.id.btnFotoProduto)
-        btnFotoNota = findViewById(R.id.btnFotoNota)
+        btnFotoVendedor = findViewById(R.id.btnFotoVendedor)
         imgPreviewProduto = findViewById(R.id.imgPreviewProduto)
-        imgPreviewNota = findViewById(R.id.imgPreviewNota)
+        imgPreviewVendedor = findViewById(R.id.imgPreviewVendedor)
 
-        // Spinner de pagamento
+        // 🪙 Opções de pagamento
         val formasPagamento = arrayOf(
             "Dinheiro", "Cartão Crédito", "Cartão Débito", "PIX", "Transferência", "Outro"
         )
         spPagamento.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, formasPagamento)
+    }
 
-        // Calcula o valor total automaticamente
+    private fun configurarEventos() {
+        // 🧮 Atualiza valor total automaticamente
         val atualizarTotal = {
             val qtd = etQuantidade.text.toString().toIntOrNull() ?: 0
             val valor = etValorUnitario.text.toString().toDoubleOrNull() ?: 0.0
@@ -78,21 +114,30 @@ class ComprarActivity : AppCompatActivity() {
         etQuantidade.addTextChangedListener { atualizarTotal() }
         etValorUnitario.addTextChangedListener { atualizarTotal() }
 
-        // Botão para tirar foto do produto
+        // 📸 Foto do produto
         btnFotoProduto.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, REQ_FOTO_PRODUTO)
+            tipoFotoAtual = "produto"
+            abrirCamera()
         }
 
-        // Botão para tirar foto da nota
-        btnFotoNota.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, REQ_FOTO_NOTA)
+        // 📸 Foto do vendedor
+        btnFotoVendedor.setOnClickListener {
+            tipoFotoAtual = "vendedor"
+            abrirCamera()
         }
 
-        // Botão para salvar compra
+        // 💾 Salvar compra
         btnSalvar.setOnClickListener {
             salvarCompra()
+        }
+    }
+
+    private fun abrirCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            cameraLauncher.launch(intent)
+        } else {
+            Toast.makeText(this, "Câmera não disponível!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -118,40 +163,19 @@ class ComprarActivity : AppCompatActivity() {
             valorRevenda = valorRevenda,
             formaPagamento = formaPagamento,
             caminhoImagemProduto = caminhoFotoProduto,
-            caminhoImagemNota = caminhoFotoNota,
+            caminhoImagemNota = caminhoFotoVendedor, // usando campo nota para foto do vendedor
             dataCompra = Date()
         )
 
         viewModel.registrarCompra(
             purchase = compra,
             onSucesso = { id ->
-                Toast.makeText(this, "Compra registrada! ID: $id", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "✅ Compra registrada! ID: $id", Toast.LENGTH_LONG).show()
                 finish()
             },
             onErro = { e ->
                 Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
             }
         )
-    }
-
-    // Recebe as fotos tiradas pela câmera
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            val bitmap = data.extras?.get("data") as? Bitmap ?: return
-            val mediaStorage = MediaStorage(this)
-
-            when (requestCode) {
-                REQ_FOTO_PRODUTO -> {
-                    caminhoFotoProduto = mediaStorage.salvarImagem(bitmap, "produto")
-                    imgPreviewProduto.setImageBitmap(bitmap)
-                }
-                REQ_FOTO_NOTA -> {
-                    caminhoFotoNota = mediaStorage.salvarImagem(bitmap, "nota")
-                    imgPreviewNota.setImageBitmap(bitmap)
-                }
-            }
-        }
     }
 }
