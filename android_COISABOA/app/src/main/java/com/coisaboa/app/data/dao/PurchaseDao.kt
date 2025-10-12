@@ -1,30 +1,37 @@
 package com.coisaboa.app.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.coisaboa.app.data.entity.PurchaseEntity
 
 /**
- * DAO responsável pelo acesso à tabela de compras (purchases).
+ * 🔹 PurchaseDao
+ * Interface de acesso ao banco de dados local (Room) para operações de compras.
  */
 @Dao
 interface PurchaseDao {
 
-    // Insere uma nova compra e retorna o ID gerado
+    // ➕ Inserir ou atualizar uma compra
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(purchase: PurchaseEntity): Long
 
-    // Retorna todas as compras registradas
-    @Query("SELECT * FROM purchases ORDER BY dataCompra DESC")
+    // 📋 Buscar todas as compras, mais recentes primeiro
+    @Query("SELECT * FROM purchase ORDER BY dataCompra DESC")
     suspend fun getAll(): List<PurchaseEntity>
 
-    // Conta o número total de compras
-    @Query("SELECT COUNT(*) FROM purchases")
-    suspend fun count(): Int
+    // 🔍 Buscar compra pelo ID
+    @Query("SELECT * FROM purchase WHERE id = :id LIMIT 1")
+    suspend fun getById(id: Long): PurchaseEntity?
 
-    // Limpa todas as compras (uso interno em caso de reset)
-    @Query("DELETE FROM purchases")
-    suspend fun clearAll()
+    // 🔍 Buscar compras por nome do produto
+    @Query("SELECT * FROM purchase WHERE produtoNome LIKE '%' || :nome || '%' ORDER BY dataCompra DESC")
+    suspend fun getByProductName(nome: String): List<PurchaseEntity>
+
+    // ❌ Excluir uma compra específica
+    @Delete
+    suspend fun delete(purchase: PurchaseEntity)
 }
+    

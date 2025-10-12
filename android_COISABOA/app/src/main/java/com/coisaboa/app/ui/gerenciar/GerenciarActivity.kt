@@ -1,79 +1,249 @@
 package com.coisaboa.app.ui.gerenciar
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.coisaboa.app.R
+import com.coisaboa.app.config.DatabaseProvider
+import com.coisaboa.app.data.entity.ProductEntity
+import com.coisaboa.app.data.repository.ProductRepository
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
+/**
+ * ⚙️ GerenciarActivity
+ * Tela de administração do estoque local.
+ * Permite visualizar, editar, excluir e cadastrar novos produtos,
+ * armazenando dados no banco Room.
+ */
 class GerenciarActivity : AppCompatActivity() {
 
-    private lateinit var spProduto: Spinner
-    private lateinit var etNovaQuantidade: EditText
-    private lateinit var etNovoCusto: EditText
-    private lateinit var etNovoRevenda: EditText
+    // Componentes da interface
+    private lateinit var rvProdutos: RecyclerView
+    private lateinit var imgProduto: ImageView
+    private lateinit var etNome: EditText
+    private lateinit var etQuantidade: EditText
+    private lateinit var etValorEstimado: EditText
+    private lateinit var etValorRevenda: EditText
     private lateinit var etObservacoes: EditText
-    private lateinit var tvInfo: TextView
-    private lateinit var btnAjustar: Button
-    private lateinit var btnCorrigir: Button
+    private lateinit var btnSalvar: Button
     private lateinit var btnExcluir: Button
+    private lateinit var btnLimpar: Button
+    private lateinit var btnSelecionarImagem: Button
+
+    // Variáveis auxiliares
+    private var caminhoImagemSelecionada: String? = null
+    private var produtoSelecionado: ProductEntity? = null
+
+    // ✅ ViewModel com Factory injetando o repositório
+    private val viewModel: GerenciarViewModel by viewModels {
+        val dao = DatabaseProvider.get(this).productDao()
+        GerenciarViewModelFactory(ProductRepository(dao))
+    }
+
+    // Adaptador da lista
+    private val adapter = GerenciarAdapter { produto ->
+        preencherCampos(produto)
+    }
+
+    // 📸 Registro para escolher imagem da galeria
+    private val selecionarImagemLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data?.data != null) {
+                val uri = result.data!!.data!!
+                val caminhoSalvo = salvarImagemLocal(uri)
+                caminhoImagemSelecionada = caminhoSalvo
+                imgProduto.setImageBitmap(BitmapFactory.decodeFile(caminhoSalvo))
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gerenciar)
         supportActionBar?.title = "Gerenciar Estoque"
 
-        // Vincular elementos
-        spProduto = findViewById(R.id.spProduto)
-        etNovaQuantidade = findViewById(R.id.etNovaQuantidade)
-        etNovoCusto = findViewById(R.id.etNovoCusto)
-        etNovoRevenda = findViewById(R.id.etNovoRevenda)
+        inicializarComponentes()
+        configurarRecycler()
+        observarProdutos()
+        configurarEventos()
+        viewModel.carregar()
+    }
+
+    // 🔹 Liga todos os elementos da tela
+    private fun inicializarComponentes() {
+        rvProdutos = findViewById(R.id.rvProdutos)
+        imgProduto = findViewById(R.id.imgProduto)
+        etNome = findViewById(R.id.etNome)
+        etQuantidade = findViewById(R.id.etQuantidade)
+        etValorEstimado = findViewById(R.id.etValorEstimado)
+        etValorRevenda = findViewById(R.id.etValorRevenda)
         etObservacoes = findViewById(R.id.etObservacoes)
-        tvInfo = findViewById(R.id.tvInfo)
-        btnAjustar = findViewById(R.id.btnAjustar)
-        btnCorrigir = findViewById(R.id.btnCorrigir)
+        btnSalvar = findViewById(R.id.btnSalvar)
         btnExcluir = findViewById(R.id.btnExcluir)
+        btnLimpar = findViewById(R.id.btnLimpar)
+        btnSelecionarImagem = findViewById(R.id.btnSelecionarImagem)
+    }
 
-        // Exemplo de produtos simulados
-        val produtos = listOf("Selecione um produto...", "Cadeira Gamer", "Mesa de Escritório", "Monitor 24\"")
-        spProduto.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, produtos)
+    // 🔹 Configura a RecyclerView
+    private fun configurarRecycler() {
+        rvProdutos.layoutManager = LinearLayoutManager(this)
+        rvProdutos.adapter = adapter
+    }
 
-        // Mostrar informações simuladas
-        spProduto.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, pos: Int, id: Long) {
-                if (pos == 0) tvInfo.text = "Selecione um produto para visualizar informações"
-                else tvInfo.text = "Produto selecionado: ${produtos[pos]}"
+    // 🔹 Observa alterações na lista de produtos (Flow)
+    private fun observarProdutos() {
+        lifecycleScope.launch {
+            viewModel.produtos.collectLatest { lista ->
+                adapter.submitList(lista)
             }
+        }
+    }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
+    // 🔹 Define eventos de clique e ações da tela
+    private fun configurarEventos() {
+        btnSelecionarImagem.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            selecionarImagemLauncher.launch(intent)
         }
 
-        // Botões
-        btnAjustar.setOnClickListener {
-            val qtd = etNovaQuantidade.text.toString().toIntOrNull()
-            if (qtd == null || qtd < 0) {
-                Toast.makeText(this, "Quantidade inválida!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            Toast.makeText(this, "✅ Estoque ajustado para $qtd unidades.", Toast.LENGTH_SHORT).show()
+        // 💾 Salvar produto
+        btnSalvar.setOnClickListener { salvarProduto() }
+
+        // 🗑️ Excluir produto
+        btnExcluir.setOnClickListener { excluirProduto() }
+
+        // 🧽 Limpar campos
+        btnLimpar.setOnClickListener { limparCampos() }
+    }
+
+    // 🔹 Lógica de salvar / atualizar produto
+    private fun salvarProduto() {
+        val nome = etNome.text.toString().trim()
+        val qtd = etQuantidade.text.toString().toIntOrNull() ?: 0
+        val custo = etValorEstimado.text.toString().toDoubleOrNull() ?: 0.0
+        val revenda = etValorRevenda.text.toString().toDoubleOrNull() ?: 0.0
+        val obs = etObservacoes.text.toString().trim()
+
+        if (nome.isEmpty()) {
+            Toast.makeText(this, "Informe o nome do produto!", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        btnCorrigir.setOnClickListener {
-            val custo = etNovoCusto.text.toString().toDoubleOrNull()
-            val revenda = etNovoRevenda.text.toString().toDoubleOrNull()
-            if (custo == null || revenda == null) {
-                Toast.makeText(this, "Preencha os novos preços!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+        val produto = produtoSelecionado?.copy(
+            nome = nome,
+            quantidade = qtd,
+            valorEstimado = custo,
+            valorRevenda = revenda,
+            observacoes = obs,
+            caminhoImagem = caminhoImagemSelecionada
+        ) ?: ProductEntity(
+            nome = nome,
+            quantidade = qtd,
+            valorEstimado = custo,
+            valorRevenda = revenda,
+            observacoes = obs,
+            caminhoImagem = caminhoImagemSelecionada
+        )
+
+        viewModel.salvar(
+            produto,
+            onOk = {
+                runOnUiThread {
+                    Toast.makeText(this, "✅ Produto salvo com sucesso!", Toast.LENGTH_SHORT).show()
+                    limparCampos()
+                }
+            },
+            onErro = {
+                runOnUiThread {
+                    Toast.makeText(this, "Erro ao salvar: ${it.message}", Toast.LENGTH_LONG).show()
+                }
             }
-            Toast.makeText(this, "💰 Preços atualizados: custo R$ %.2f / revenda R$ %.2f".format(custo, revenda), Toast.LENGTH_LONG).show()
+        )
+    }
+
+    // 🔹 Excluir produto selecionado
+    private fun excluirProduto() {
+        val produto = produtoSelecionado
+        if (produto == null) {
+            Toast.makeText(this, "Nenhum produto selecionado.", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        btnExcluir.setOnClickListener {
-            val produto = spProduto.selectedItem.toString()
-            if (spProduto.selectedItemPosition == 0) {
-                Toast.makeText(this, "Selecione um produto primeiro!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+        viewModel.excluir(
+            produto,
+            onOk = {
+                runOnUiThread {
+                    Toast.makeText(this, "Produto excluído!", Toast.LENGTH_SHORT).show()
+                    limparCampos()
+                }
+            },
+            onErro = {
+                runOnUiThread {
+                    Toast.makeText(this, "Erro ao excluir: ${it.message}", Toast.LENGTH_LONG).show()
+                }
             }
-            Toast.makeText(this, "⚠️ Produto '$produto' excluído do estoque!", Toast.LENGTH_SHORT).show()
+        )
+    }
+
+    // 🔹 Preenche campos com produto selecionado da lista
+    private fun preencherCampos(produto: ProductEntity) {
+        produtoSelecionado = produto
+        etNome.setText(produto.nome)
+        etQuantidade.setText(produto.quantidade.toString())
+        etValorEstimado.setText(produto.valorEstimado?.toString() ?: "")
+        etValorRevenda.setText(produto.valorRevenda?.toString() ?: "")
+        etObservacoes.setText(produto.observacoes ?: "")
+        caminhoImagemSelecionada = produto.caminhoImagem
+
+        if (!produto.caminhoImagem.isNullOrBlank()) {
+            val file = File(produto.caminhoImagem!!)
+            if (file.exists()) {
+                imgProduto.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
+            } else {
+                imgProduto.setImageResource(R.drawable.ic_placeholder)
+            }
+        } else {
+            imgProduto.setImageResource(R.drawable.ic_placeholder)
+        }
+    }
+
+    // 🔹 Limpa o formulário
+    private fun limparCampos() {
+        produtoSelecionado = null
+        caminhoImagemSelecionada = null
+        etNome.text.clear()
+        etQuantidade.text.clear()
+        etValorEstimado.text.clear()
+        etValorRevenda.text.clear()
+        etObservacoes.text.clear()
+        imgProduto.setImageResource(R.drawable.ic_placeholder)
+    }
+
+    // 🔹 Copia imagem escolhida para pasta interna do app
+    private fun salvarImagemLocal(uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val file = File(filesDir, "produto_${System.currentTimeMillis()}.jpg")
+            val outputStream = FileOutputStream(file)
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+            file.absolutePath
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }

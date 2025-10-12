@@ -16,6 +16,7 @@ import androidx.core.widget.addTextChangedListener
 import com.coisaboa.app.R
 import com.coisaboa.app.config.DatabaseProvider
 import com.coisaboa.app.data.entity.PurchaseEntity
+import com.coisaboa.app.data.repository.ProductRepository
 import com.coisaboa.app.data.repository.PurchaseRepository
 import com.coisaboa.app.utils.MediaStorage
 import java.util.*
@@ -45,14 +46,15 @@ class ComprarActivity : AppCompatActivity() {
     // 🔹 Classe utilitária para salvar imagens localmente
     private val mediaStorage by lazy { MediaStorage(this) }
 
-    // 🔹 ViewModel
+    // 🔹 ViewModel com injeção dos repositórios corretos
     private val viewModel: ComprarViewModel by viewModels {
         val db = DatabaseProvider.get(this)
-        val repo = PurchaseRepository(db.purchaseDao(), db.productDao())
-        ComprarViewModelFactory(repo)
+        val productRepo = ProductRepository(db.productDao())
+        val purchaseRepo = PurchaseRepository(db.purchaseDao(), productRepo)
+        ComprarViewModelFactory(purchaseRepo)
     }
 
-    // 🖼️ Launcher: GALERIA
+    // 🖼️ Launcher para escolher imagem na galeria
     private val galeriaLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data?.data != null) {
@@ -60,6 +62,7 @@ class ComprarActivity : AppCompatActivity() {
                 val bitmap: Bitmap = if (Build.VERSION.SDK_INT >= 28) {
                     ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
                 } else {
+                    @Suppress("DEPRECATION")
                     MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 }
                 val caminho = mediaStorage.salvarImagem(bitmap, tipoFotoAtual)
@@ -93,7 +96,11 @@ class ComprarActivity : AppCompatActivity() {
         val formasPagamento = arrayOf(
             "Dinheiro", "Cartão Crédito", "Cartão Débito", "PIX", "Transferência", "Outro"
         )
-        spPagamento.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, formasPagamento)
+        spPagamento.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            formasPagamento
+        )
     }
 
     private fun configurarEventos() {
@@ -101,9 +108,9 @@ class ComprarActivity : AppCompatActivity() {
         val atualizarTotal = {
             val qtd = etQuantidade.text.toString().toIntOrNull() ?: 0
             val valor = etValorUnitario.text.toString().toDoubleOrNull() ?: 0.0
-            val total = qtd * valor
-            tvValorTotal.text = "R$ %.2f".format(total)
+            tvValorTotal.text = "R$ %.2f".format(qtd * valor)
         }
+
         etQuantidade.addTextChangedListener { atualizarTotal() }
         etValorUnitario.addTextChangedListener { atualizarTotal() }
 
@@ -120,9 +127,7 @@ class ComprarActivity : AppCompatActivity() {
         }
 
         // 💾 Salvar compra
-        btnSalvar.setOnClickListener {
-            salvarCompra()
-        }
+        btnSalvar.setOnClickListener { salvarCompra() }
     }
 
     private fun abrirGaleria() {
@@ -138,6 +143,7 @@ class ComprarActivity : AppCompatActivity() {
                 imgPreviewProduto.setImageBitmap(bitmap)
                 Toast.makeText(this, "🖼️ Imagem do produto selecionada!", Toast.LENGTH_SHORT).show()
             }
+
             "vendedor" -> {
                 caminhoFotoVendedor = caminho
                 imgPreviewVendedor.setImageBitmap(bitmap)
@@ -161,25 +167,29 @@ class ComprarActivity : AppCompatActivity() {
 
         val compra = PurchaseEntity(
             id = 0,
-            produto = produto,
+            produtoNome = produto, // ✅ nome do campo deve coincidir com sua entidade
             quantidade = qtd,
             valorUnitario = valorUnit,
-            valorTotal = valorTotal,
             valorRevenda = valorRevenda,
+            valorTotal = valorTotal,
             formaPagamento = formaPagamento,
             caminhoImagemProduto = caminhoFotoProduto,
-            caminhoImagemNota = caminhoFotoVendedor, // Foto do vendedor
+            caminhoImagemNota = caminhoFotoVendedor,
             dataCompra = Date()
         )
 
         viewModel.registrarCompra(
             purchase = compra,
             onSucesso = { id ->
-                Toast.makeText(this, "✅ Compra registrada! ID: $id", Toast.LENGTH_LONG).show()
-                finish()
+                runOnUiThread {
+                    Toast.makeText(this, "✅ Compra registrada! ID: $id", Toast.LENGTH_LONG).show()
+                    finish()
+                }
             },
             onErro = { e ->
-                Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                runOnUiThread {
+                    Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                }
             }
         )
     }

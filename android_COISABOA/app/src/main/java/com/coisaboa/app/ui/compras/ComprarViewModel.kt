@@ -4,30 +4,34 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.coisaboa.app.data.entity.PurchaseEntity
 import com.coisaboa.app.data.repository.PurchaseRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel responsável por controlar a lógica da tela de compras.
- * Recebe as informações da interface e repassa ao repositório.
+ * 💼 ComprarViewModel
+ * Responsável por intermediar a tela de compras (UI) com o repositório de dados.
  */
 class ComprarViewModel(
     private val repository: PurchaseRepository
 ) : ViewModel() {
 
     /**
-     * Registra uma compra no banco de dados local.
-     * Recebe o objeto completo da compra e chama o repositório.
+     * 🔹 Registra uma nova compra no banco e atualiza o estoque automaticamente.
+     *
+     * @param purchase Objeto da compra
+     * @param onSucesso Callback com o ID da compra salva
+     * @param onErro Callback em caso de falha
      */
     fun registrarCompra(
         purchase: PurchaseEntity,
         onSucesso: (Long) -> Unit,
         onErro: (Throwable) -> Unit
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val id = repository.registrarCompra(purchase)
+                val id = repository.insertCompra(purchase)
                 onSucesso(id)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 onErro(e)
             }
         }

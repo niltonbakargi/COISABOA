@@ -1,11 +1,11 @@
 package com.coisaboa.app.utils
 
 import androidx.room.TypeConverter
-import java.util.Date
+import java.util.*
 
 /**
- * Converte objetos Date para Long (timestamp) e vice-versa
- * para permitir que o Room armazene datas no banco local.
+ * Converte automaticamente Date ↔ Long (timestamp)
+ * para o Room armazenar no SQLite.
  */
 class Converters {
 

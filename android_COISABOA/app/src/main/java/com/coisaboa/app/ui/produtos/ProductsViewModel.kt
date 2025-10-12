@@ -1,63 +1,51 @@
 package com.coisaboa.app.ui.produtos
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.coisaboa.app.config.DatabaseProvider
 import com.coisaboa.app.data.entity.ProductEntity
 import com.coisaboa.app.data.repository.ProductRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
-/**
- * ViewModel responsável por carregar e gerenciar os produtos.
- */
-class ProductsViewModel(app: Application) : AndroidViewModel(app) {
+class ProductsViewModel(
+    private val repo: ProductRepository
+) : ViewModel() {
 
-    private val repo = ProductRepository(DatabaseProvider.get(app).productDao())
+    private val _produtos = MutableStateFlow<List<ProductEntity>>(emptyList())
+    val produtos: StateFlow<List<ProductEntity>> = _produtos
 
-    private val _produtos = MutableLiveData<List<ProductEntity>>(emptyList())
-    val produtos: LiveData<List<ProductEntity>> = _produtos
-
-    private val _erro = MutableLiveData<String?>()
-    val erro: LiveData<String?> = _erro
-
-    init {
-        carregarProdutos()
-    }
-
-    // ✅ Chamando o suspend dentro de uma coroutine
     fun carregarProdutos() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+            val lista = repo.getAll()
+            _produtos.update { lista }
+        }
+    }
+
+    fun salvarProduto(produto: ProductEntity, onSucesso: () -> Unit = {}, onErro: (Throwable) -> Unit = {}) {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
+                repo.insertOrUpdate(produto) // ✅ aqui a correção
                 val lista = repo.getAll()
-                _produtos.value = lista
+                _produtos.update { lista }
+                onSucesso()
             } catch (e: Exception) {
-                _erro.value = "Erro ao carregar produtos: ${e.message}"
+                onErro(e)
             }
         }
     }
 
-    // Exemplo: inserir um produto
-    fun adicionarProduto(produto: ProductEntity) {
-        viewModelScope.launch {
-            try {
-                repo.insert(produto)
-                carregarProdutos()
-            } catch (e: Exception) {
-                _erro.value = "Erro ao inserir produto: ${e.message}"
-            }
-        }
-    }
-
-    fun excluirProduto(produto: ProductEntity) {
-        viewModelScope.launch {
+    fun excluirProduto(produto: ProductEntity, onSucesso: () -> Unit = {}, onErro: (Throwable) -> Unit = {}) {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 repo.delete(produto)
-                carregarProdutos()
+                val lista = repo.getAll()
+                _produtos.update { lista }
+                onSucesso()
             } catch (e: Exception) {
-                _erro.value = "Erro ao excluir produto: ${e.message}"
+                onErro(e)
             }
         }
     }

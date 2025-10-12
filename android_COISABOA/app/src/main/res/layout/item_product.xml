@@ -1,38 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp"
-    android:background="@android:color/white"
-    android:elevation="2dp"
-    android:layout_marginVertical="4dp">
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="6dp"
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/tvNome"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nome do produto"
-        android:textStyle="bold"
-        android:textColor="#2C3E50"
-        android:textSize="16sp" />
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tvPreco"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="R$ 0,00"
-        android:textSize="14sp"
-        android:textColor="#388E3C"
-        android:paddingTop="4dp" />
+        <!-- 🏷️ Nome do produto -->
+        <TextView
+            android:id="@+id/tvNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Produto Exemplo"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="4dp" />
 
-    <TextView
-        android:id="@+id/tvQuantidade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Qtd: 0"
-        android:textSize="13sp"
-        android:textColor="#555"
-        android:paddingTop="2dp" />
+        <!-- 💰 Preço de revenda -->
+        <TextView
+            android:id="@+id/tvPreco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="R$ 0,00"
+            android:textColor="#008000"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
 
-</LinearLayout>
+        <!-- 📦 Quantidade em estoque -->
+        <TextView
+            android:id="@+id/tvQuantidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Qtd: 0"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

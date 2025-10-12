@@ -5,17 +5,17 @@ import androidx.room.Room
 import com.coisaboa.app.data.AppDatabase
 
 /**
- * Singleton responsável por fornecer a instância única do banco Room.
+ * 🔹 DatabaseProvider
+ * Responsável por criar e fornecer a instância única do banco de dados Room.
  */
 object DatabaseProvider {
 
-    // Guarda a instância única do banco
+    // Guarda a instância do banco
     @Volatile
     private var INSTANCE: AppDatabase? = null
 
     /**
-     * Retorna a instância do banco de dados.
-     * Cria se ainda não existir.
+     * Retorna a instância do banco de dados (singleton)
      */
     fun get(context: Context): AppDatabase {
         return INSTANCE ?: synchronized(this) {
@@ -24,7 +24,7 @@ object DatabaseProvider {
                 AppDatabase::class.java,
                 "coisaboa.db"
             )
-                .fallbackToDestructiveMigration() // recria o banco se mudar versão
+                .fallbackToDestructiveMigration() // recria se versão mudar
                 .build()
             INSTANCE = instance
             instance

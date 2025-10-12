@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.coisaboa.app">
 
+    <!-- 🔒 Permissões básicas -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:enableOnBackInvokedCallback="true"
@@ -11,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.COISABOA">
 
-        <!-- 🏠 Tela Inicial -->
+        <!-- 🏠 Tela Inicial (Launcher) -->
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
@@ -46,15 +52,15 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <!-- 📈 Tela de Relatórios -->
-        <activity
-            android:name=".ui.relatorios.RelatoriosActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
         <!-- ⚙️ Tela de Gerenciamento de Estoque -->
         <activity
             android:name=".ui.gerenciar.GerenciarActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- 📈 Tela de Relatórios -->
+        <activity
+            android:name=".ui.relatorios.RelatoriosActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
@@ -63,6 +69,11 @@
             android:name=".ui.backup.BackupActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <!-- 🧩 Suporte a Room (persistência local) -->
+        <meta-data
+            android:name="androidx.room.Database"
+            android:value="coisaboa.db" />
 
     </application>
 

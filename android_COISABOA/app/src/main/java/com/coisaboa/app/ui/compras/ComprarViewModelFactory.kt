@@ -5,18 +5,27 @@ import androidx.lifecycle.ViewModelProvider
 import com.coisaboa.app.data.repository.PurchaseRepository
 
 /**
- * Fábrica que cria instâncias do ComprarViewModel
- * injetando o repositório corretamente.
+ * 🏗️ ComprarViewModelFactory
+ * Responsável por criar instâncias de [ComprarViewModel],
+ * injetando corretamente o [PurchaseRepository].
+ *
+ * Essa fábrica garante a injeção segura de dependências
+ * para o uso do ViewModel no Android Jetpack.
  */
 class ComprarViewModelFactory(
-    private val repository: PurchaseRepository
+    private val purchaseRepository: PurchaseRepository
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        // Garante que estamos criando o ViewModel correto
         if (modelClass.isAssignableFrom(ComprarViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ComprarViewModel(repository) as T
+            return ComprarViewModel(purchaseRepository) as T
         }
-        throw IllegalArgumentException("Classe ViewModel desconhecida")
+
+        // Caso ocorra uso incorreto da factory
+        throw IllegalArgumentException(
+            "Classe ViewModel desconhecida: ${modelClass.name}"
+        )
     }
 }

@@ -9,8 +9,9 @@ import com.coisaboa.app.R
 import com.coisaboa.app.data.entity.ProductEntity
 
 /**
- * Adapter para exibir a lista de produtos no RecyclerView.
- * Mostra nome, preço de revenda e quantidade atual em estoque.
+ * 🔹 ProductAdapter
+ * Adapter responsável por exibir a lista de produtos no RecyclerView.
+ * Mostra nome, preço de revenda (ou estimado) e quantidade atual.
  */
 class ProductAdapter(
     private val produtos: MutableList<ProductEntity>,
@@ -23,15 +24,17 @@ class ProductAdapter(
         private val tvQuantidade: TextView = itemView.findViewById(R.id.tvQuantidade)
 
         fun bind(produto: ProductEntity) {
+            // 🏷️ Nome
             tvNome.text = produto.nome
 
-            // Exibe o valor de revenda, ou valor unitário caso não tenha revenda
-            val precoExibir = if (produto.valorRevenda > 0) produto.valorRevenda else produto.valorUnitario
+            // 💰 Preço — exibe valorRevenda se existir, senão valorEstimado
+            val precoExibir = produto.valorRevenda ?: produto.valorEstimado ?: 0.0
             tvPreco.text = "R$ %.2f".format(precoExibir)
 
-            // Exibe a quantidade atual (stock)
-            tvQuantidade.text = "Qtd: ${produto.stock}"
+            // 📦 Quantidade
+            tvQuantidade.text = "Qtd: ${produto.quantidade}"
 
+            // 🔘 Clique no item
             itemView.setOnClickListener { onItemClick(produto) }
         }
     }
@@ -48,6 +51,9 @@ class ProductAdapter(
 
     override fun getItemCount(): Int = produtos.size
 
+    /**
+     * 🔄 Atualiza a lista de produtos exibida.
+     */
     fun updateList(newList: List<ProductEntity>) {
         produtos.clear()
         produtos.addAll(newList)
