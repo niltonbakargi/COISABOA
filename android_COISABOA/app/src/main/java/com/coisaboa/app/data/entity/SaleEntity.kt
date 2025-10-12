@@ -2,12 +2,21 @@ package com.coisaboa.app.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
-@Entity(tableName = "sales")
+/**
+ * 🧾 SaleEntity
+ * Representa uma venda registrada no sistema COISABOA.
+ */
+@Entity(tableName = "sale")
 data class SaleEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val productId: Long,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0L,
+
+    val produtoNome: String,
     val quantidade: Int,
-    val valorVendido: Double,
-    val data: Long = System.currentTimeMillis()
+    val valorUnitario: Double,
+    val valorTotal: Double,
+    val formaPagamento: String,
+    val dataVenda: Date = Date()
 )

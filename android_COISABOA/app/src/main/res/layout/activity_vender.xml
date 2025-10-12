@@ -11,37 +11,60 @@
         android:orientation="vertical"
         android:paddingBottom="20dp">
 
+        <!-- 🏷️ Título -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nova Venda"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#2C3E50"
             android:gravity="center"
-            android:paddingBottom="20dp"/>
+            android:paddingBottom="24dp" />
 
+        <!-- 🛒 Botão para abrir lista de produtos -->
+        <Button
+            android:id="@+id/btnSelecionarProduto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecionar Produto do Estoque"
+            android:backgroundTint="#2563EB"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 📦 Campo nome do produto -->
         <EditText
             android:id="@+id/etProduto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Produto"
-            android:inputType="text"/>
+            android:hint="Produto selecionado"
+            android:inputType="text"
+            android:enabled="false"
+            android:backgroundTint="#B0BEC5"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_marginBottom="12dp" />
 
+        <!-- 🔢 Quantidade -->
         <EditText
             android:id="@+id/etQuantidade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Quantidade"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:layout_marginBottom="12dp" />
 
+        <!-- 💲 Valor unitário -->
         <EditText
             android:id="@+id/etValorUnitario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Valor unitário"
-            android:inputType="numberDecimal"/>
+            android:hint="Valor unitário (R$)"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="12dp" />
 
+        <!-- 💰 Valor total -->
         <TextView
             android:id="@+id/tvValorTotal"
             android:layout_width="match_parent"
@@ -49,14 +72,28 @@
             android:text="R$ 0,00"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:paddingTop="10dp"/>
+            android:gravity="end"
+            android:textColor="#2E7D32"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp" />
+
+        <!-- 💳 Forma de pagamento -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Forma de Pagamento:"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#37474F"
+            android:paddingBottom="6dp" />
 
         <Spinner
             android:id="@+id/spPagamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginBottom="20dp" />
 
+        <!-- ✅ Botão Salvar -->
         <Button
             android:id="@+id/btnSalvarVenda"
             android:layout_width="match_parent"
@@ -64,6 +101,7 @@
             android:text="Registrar Venda"
             android:backgroundTint="#10B981"
             android:textColor="#FFFFFF"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp" />
+
     </LinearLayout>
 </ScrollView>
