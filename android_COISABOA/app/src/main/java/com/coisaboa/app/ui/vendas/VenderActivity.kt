@@ -3,10 +3,13 @@ package com.coisaboa.app.ui.vendas
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.coisaboa.app.R
 import com.coisaboa.app.config.DatabaseProvider
 import com.coisaboa.app.data.entity.ProductEntity
@@ -20,8 +23,7 @@ import java.util.*
 
 /**
  * 🛒 VenderActivity
- * Registra vendas, permite selecionar produtos do estoque,
- * visualizar valor estimado, inserir observações e calcular total.
+ * Registra vendas com seletor de produtos filtrável.
  */
 class VenderActivity : AppCompatActivity() {
 
@@ -95,57 +97,75 @@ class VenderActivity : AppCompatActivity() {
         etValorUnitario.addTextChangedListener(watcher)
 
         btnSelecionarProduto.setOnClickListener {
-            Toast.makeText(this, "Abrindo lista de produtos...", Toast.LENGTH_SHORT).show()
-            abrirListaDeProdutos()
+            abrirDialogoProdutosFiltravel()
         }
 
         btnSalvar.setOnClickListener { salvarVenda() }
     }
 
-    /** 📦 Abre o diálogo com a lista de produtos disponíveis no estoque */
-    private fun abrirListaDeProdutos() {
+    /** 🔍 Novo diálogo com filtro dinâmico */
+    private fun abrirDialogoProdutosFiltravel() {
         lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val produtos = productRepo.getAll().filter { it.quantidade > 0 }
+            val produtos = productRepo.getAll().filter { it.quantidade > 0 }
 
-                withContext(Dispatchers.Main) {
-                    if (produtos.isEmpty()) {
-                        Toast.makeText(this@VenderActivity, "Nenhum produto disponível no estoque!", Toast.LENGTH_SHORT).show()
-                        return@withContext
+            withContext(Dispatchers.Main) {
+                if (produtos.isEmpty()) {
+                    Toast.makeText(this@VenderActivity, "Nenhum produto disponível no estoque!", Toast.LENGTH_SHORT).show()
+                    return@withContext
+                }
+
+                val view = LayoutInflater.from(this@VenderActivity)
+                    .inflate(R.layout.dialog_selecionar_produto, null)
+
+                val etBuscar = view.findViewById<EditText>(R.id.etBuscarProduto)
+                val rvProdutos = view.findViewById<RecyclerView>(R.id.rvListaProdutos)
+                val tvEmpty = view.findViewById<TextView>(R.id.tvSemResultados)
+
+                val adapter = ProdutoDialogAdapter { produto ->
+                    preencherCamposProduto(produto)
+                }
+
+                rvProdutos.layoutManager = LinearLayoutManager(this@VenderActivity)
+                rvProdutos.adapter = adapter
+
+                adapter.submitList(produtos)
+                tvEmpty.visibility = if (produtos.isEmpty()) TextView.VISIBLE else TextView.GONE
+
+                etBuscar.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        val query = s.toString().trim().lowercase()
+                        val filtrados = produtos.filter { it.nome.lowercase().contains(query) }
+                        adapter.submitList(filtrados)
+                        tvEmpty.visibility = if (filtrados.isEmpty()) TextView.VISIBLE else TextView.GONE
                     }
+                    override fun afterTextChanged(s: Editable?) {}
+                })
 
-                    val nomes = produtos.map { "${it.nome} (Qtd: ${it.quantidade})" }.toTypedArray()
-
-                    AlertDialog.Builder(this@VenderActivity)
-                        .setTitle("Selecionar produto")
-                        .setItems(nomes) { _, which ->
-                            val p = produtos[which]
-                            produtoSelecionado = p
-                            etProduto.setText(p.nome)
-
-                            // Mostra valor estimado
-                            tvValorEstimado.text = "Valor estimado: R$ %.2f".format(p.valorEstimado ?: 0.0)
-
-                            // Define valor unitário preferencialmente pelo valorRevenda
-                            val preco = when {
-                                (p.valorRevenda ?: 0.0) > 0.0 -> p.valorRevenda!!
-                                (p.valorEstimado ?: 0.0) > 0.0 -> p.valorEstimado!!
-                                else -> 0.0
-                            }
-                            etValorUnitario.setText("%.2f".format(preco))
-                        }
-                        .setNegativeButton("Cancelar", null)
-                        .show()
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@VenderActivity, "Erro ao carregar produtos: ${e.message}", Toast.LENGTH_LONG).show()
-                }
+                AlertDialog.Builder(this@VenderActivity)
+                    .setTitle("Selecionar produto")
+                    .setView(view)
+                    .setNegativeButton("Cancelar", null)
+                    .show()
             }
         }
     }
 
-    /** 💾 Valida e registra nova venda no banco */
+    /** 🧾 Preenche campos da tela após selecionar produto */
+    private fun preencherCamposProduto(p: ProductEntity) {
+        produtoSelecionado = p
+        etProduto.setText(p.nome)
+        tvValorEstimado.text = "Valor estimado: R$ %.2f".format(p.valorEstimado ?: 0.0)
+
+        val preco = when {
+            (p.valorRevenda ?: 0.0) > 0.0 -> p.valorRevenda!!
+            (p.valorEstimado ?: 0.0) > 0.0 -> p.valorEstimado!!
+            else -> 0.0
+        }
+        etValorUnitario.setText("%.2f".format(preco))
+    }
+
+    /** 💾 Valida e registra nova venda */
     private fun salvarVenda() {
         val produto = produtoSelecionado
         val qtd = etQuantidade.text.toString().toIntOrNull() ?: 0

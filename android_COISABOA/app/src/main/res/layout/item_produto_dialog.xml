@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- 🏷️ Nome do produto -->
+    <TextView
+        android:id="@+id/tvNomeProduto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Produto"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#111827" />
+
+    <!-- 📦 Quantidade e 💲 Valor -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="2dp">
+
+        <TextView
+            android:id="@+id/tvQuantidadeProduto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Qtd: 0"
+            android:textColor="#4B5563"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvValorProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$ 0,00"
+            android:textColor="#15803D"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>
