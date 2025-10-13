@@ -25,7 +25,7 @@ import java.util.*
 
 /**
  * 🛒 VenderActivity
- * Registra vendas com seletor de produtos filtrável e exibição da imagem do produto.
+ * Registra vendas com seletor de produtos filtrável, fechamento automático e imagem exibida.
  */
 class VenderActivity : AppCompatActivity() {
 
@@ -39,7 +39,7 @@ class VenderActivity : AppCompatActivity() {
     private lateinit var spPagamento: Spinner
     private lateinit var btnSalvar: Button
     private lateinit var btnSelecionarProduto: Button
-    private lateinit var imgProduto: ImageView   // 🆕 Adicionado
+    private lateinit var imgProduto: ImageView
 
     // 🔹 Repositórios
     private lateinit var productRepo: ProductRepository
@@ -67,7 +67,7 @@ class VenderActivity : AppCompatActivity() {
         spPagamento = findViewById(R.id.spPagamento)
         btnSalvar = findViewById(R.id.btnSalvarVenda)
         btnSelecionarProduto = findViewById(R.id.btnSelecionarProduto)
-        imgProduto = findViewById(R.id.imgProduto)  // 🆕
+        imgProduto = findViewById(R.id.imgProduto)
 
         configurarSpinnerPagamento()
         configurarEventos()
@@ -104,7 +104,7 @@ class VenderActivity : AppCompatActivity() {
         btnSalvar.setOnClickListener { salvarVenda() }
     }
 
-    /** 🔍 Diálogo filtrável de produtos */
+    /** 🔍 Diálogo filtrável de produtos (fecha automaticamente após seleção) */
     private fun abrirDialogoProdutosFiltravel() {
         lifecycleScope.launch(Dispatchers.IO) {
             val produtos = productRepo.getAll().filter { it.quantidade > 0 }
@@ -117,18 +117,26 @@ class VenderActivity : AppCompatActivity() {
 
                 val view = LayoutInflater.from(this@VenderActivity)
                     .inflate(R.layout.dialog_selecionar_produto, null)
-
                 val etBuscar = view.findViewById<EditText>(R.id.etBuscarProduto)
                 val rvProdutos = view.findViewById<RecyclerView>(R.id.rvListaProdutos)
                 val tvEmpty = view.findViewById<TextView>(R.id.tvSemResultados)
 
+                // Cria o diálogo primeiro para poder fechá-lo dentro do adapter
+                val dialog = AlertDialog.Builder(this@VenderActivity)
+                    .setTitle("Selecionar produto")
+                    .setView(view)
+                    .setNegativeButton("Cancelar", null)
+                    .create()
+
+                // Adapter com fechamento automático e feedback
                 val adapter = ProdutoDialogAdapter { produto ->
                     preencherCamposProduto(produto)
+                    Toast.makeText(this@VenderActivity, "✅ Produto selecionado: ${produto.nome}", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss() // ✅ Fecha o diálogo ao selecionar
                 }
 
                 rvProdutos.layoutManager = LinearLayoutManager(this@VenderActivity)
                 rvProdutos.adapter = adapter
-
                 adapter.submitList(produtos)
                 tvEmpty.visibility = if (produtos.isEmpty()) TextView.VISIBLE else TextView.GONE
 
@@ -143,11 +151,7 @@ class VenderActivity : AppCompatActivity() {
                     override fun afterTextChanged(s: Editable?) {}
                 })
 
-                AlertDialog.Builder(this@VenderActivity)
-                    .setTitle("Selecionar produto")
-                    .setView(view)
-                    .setNegativeButton("Cancelar", null)
-                    .show()
+                dialog.show()
             }
         }
     }
