@@ -4,31 +4,39 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Entidade que representa um produto armazenado no estoque local (Room Database).
- * Utilizada nas telas de Compras, Gerenciar Estoque e Vendas.
+ * 🧱 ProductEntity
+ * Representa um produto armazenado no banco de dados local (Room).
+ *
+ * Utilizada pelas telas:
+ *  - 📦 Gerenciar Estoque
+ *  - 🛒 Compras (para criar/atualizar produtos)
+ *  - 💰 Vendas (para selecionar e registrar saída)
+ *
+ * Cada produto possui valores de custo, revenda e imagem local,
+ * garantindo que o sistema funcione 100% offline.
  */
 @Entity(tableName = "product")
 data class ProductEntity(
 
-    // 🔹 Identificador único (gerado automaticamente pelo Room)
+    /** 🔹 Identificador único gerado automaticamente pelo Room */
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,  // ✅ agora é Long, compatível com o DAO e Repository
+    val id: Long = 0L,
 
-    // 🔹 Nome do produto
+    /** 🏷️ Nome do produto */
     val nome: String,
 
-    // 🔹 Quantidade atual disponível em estoque
+    /** 📦 Quantidade atual disponível em estoque */
     val quantidade: Int = 0,
 
-    // 🔹 Valor médio de aquisição (custo estimado)
+    /** 💰 Valor médio de aquisição (custo estimado) */
     val valorEstimado: Double? = null,
 
-    // 🔹 Valor sugerido de revenda
+    /** 💲 Valor sugerido de revenda */
     val valorRevenda: Double? = null,
 
-    // 🔹 Caminho da imagem local (URI ou path no armazenamento interno)
+    /** 🖼️ Caminho da imagem local (armazenamento interno do app) */
     val caminhoImagem: String? = null,
 
-    // 🔹 Observações gerais
+    /** 📝 Observações adicionais do produto */
     val observacoes: String? = null
 )

@@ -11,30 +11,35 @@ import java.util.*
 
 /**
  * Classe utilitária para salvar e gerenciar fotos tiradas pelo app COISABOA.
- * Opera 100% offline no armazenamento interno da aplicação.
+ * Opera 100% offline e armazena em pasta privada externa do app.
  *
- * 📂 Local de salvamento: /data/data/com.coisaboa.app/files/compras/
+ * 📂 Local de salvamento:
+ * /storage/emulated/0/Android/data/com.coisaboa.app/files/compras/
  */
 class MediaStorage(private val context: Context) {
 
-    // 📁 Pasta principal onde as imagens serão armazenadas
-    private val pastaCompras = File(context.filesDir, "compras")
+    // 📁 Pasta principal (armazenamento externo privado do app)
+    private val pastaCompras: File = File(context.getExternalFilesDir("compras"), "")
 
     init {
         if (!pastaCompras.exists()) {
             val criada = pastaCompras.mkdirs()
             if (!criada) {
                 Log.e("MediaStorage", "❌ Falha ao criar pasta de imagens: ${pastaCompras.absolutePath}")
+            } else {
+                Log.i("MediaStorage", "📁 Pasta criada: ${pastaCompras.absolutePath}")
             }
+        } else {
+            Log.i("MediaStorage", "📂 Pasta já existente: ${pastaCompras.absolutePath}")
         }
     }
 
     /**
-     * 💾 Salva uma imagem (Bitmap) no armazenamento interno e retorna o caminho completo.
+     * 💾 Salva uma imagem (Bitmap) no armazenamento e retorna o caminho absoluto.
      *
-     * @param bitmap  Imagem capturada pela câmera (miniatura ou redimensionada).
-     * @param tipo    Identificador do tipo de foto ("produto", "nota", etc.).
-     * @return Caminho absoluto do arquivo salvo ou string vazia se falhar.
+     * @param bitmap  Imagem vinda da galeria ou câmera.
+     * @param tipo    Identificador da foto ("produto", "vendedor", "nota", etc.).
+     * @return Caminho absoluto do arquivo salvo.
      */
     fun salvarImagem(bitmap: Bitmap, tipo: String): String {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
@@ -47,24 +52,19 @@ class MediaStorage(private val context: Context) {
                 out.flush()
             }
             Log.i("MediaStorage", "✅ Imagem salva em: ${arquivo.absolutePath}")
-            arquivo.absolutePath
+            arquivo.absolutePath // ✅ Caminho visível e decodificável
         } catch (e: IOException) {
             Log.e("MediaStorage", "❌ Erro ao salvar imagem: ${e.message}")
             ""
         }
     }
 
-    /**
-     * 📸 Lista todos os arquivos de imagem salvos na pasta "compras".
-     * Pode ser usada para depuração ou histórico de fotos.
-     */
+    /** 📸 Lista todas as imagens salvas na pasta "compras". */
     fun listarImagens(): List<File> {
         return pastaCompras.listFiles()?.toList()?.sortedByDescending { it.lastModified() } ?: emptyList()
     }
 
-    /**
-     * 🧹 Remove todas as imagens salvas (útil para backups ou limpeza de cache).
-     */
+    /** 🧹 Remove todas as imagens salvas. */
     fun limparImagens(): Boolean {
         var sucesso = true
         pastaCompras.listFiles()?.forEach {
@@ -73,11 +73,7 @@ class MediaStorage(private val context: Context) {
         return sucesso
     }
 
-    /**
-     * 🔍 Verifica se uma imagem existe em disco.
-     *
-     * @param caminho Caminho absoluto do arquivo.
-     */
+    /** 🔍 Verifica se uma imagem existe em disco. */
     fun existeImagem(caminho: String?): Boolean {
         if (caminho.isNullOrBlank()) return false
         val arquivo = File(caminho)

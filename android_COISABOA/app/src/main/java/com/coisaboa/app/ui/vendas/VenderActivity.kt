@@ -1,5 +1,6 @@
 package com.coisaboa.app.ui.vendas
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,11 +20,12 @@ import com.coisaboa.app.data.repository.SaleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.*
 
 /**
  * 🛒 VenderActivity
- * Registra vendas com seletor de produtos filtrável.
+ * Registra vendas com seletor de produtos filtrável e exibição da imagem do produto.
  */
 class VenderActivity : AppCompatActivity() {
 
@@ -37,6 +39,7 @@ class VenderActivity : AppCompatActivity() {
     private lateinit var spPagamento: Spinner
     private lateinit var btnSalvar: Button
     private lateinit var btnSelecionarProduto: Button
+    private lateinit var imgProduto: ImageView   // 🆕 Adicionado
 
     // 🔹 Repositórios
     private lateinit var productRepo: ProductRepository
@@ -64,6 +67,7 @@ class VenderActivity : AppCompatActivity() {
         spPagamento = findViewById(R.id.spPagamento)
         btnSalvar = findViewById(R.id.btnSalvarVenda)
         btnSelecionarProduto = findViewById(R.id.btnSelecionarProduto)
+        imgProduto = findViewById(R.id.imgProduto)  // 🆕
 
         configurarSpinnerPagamento()
         configurarEventos()
@@ -96,14 +100,11 @@ class VenderActivity : AppCompatActivity() {
         etQuantidade.addTextChangedListener(watcher)
         etValorUnitario.addTextChangedListener(watcher)
 
-        btnSelecionarProduto.setOnClickListener {
-            abrirDialogoProdutosFiltravel()
-        }
-
+        btnSelecionarProduto.setOnClickListener { abrirDialogoProdutosFiltravel() }
         btnSalvar.setOnClickListener { salvarVenda() }
     }
 
-    /** 🔍 Novo diálogo com filtro dinâmico */
+    /** 🔍 Diálogo filtrável de produtos */
     private fun abrirDialogoProdutosFiltravel() {
         lifecycleScope.launch(Dispatchers.IO) {
             val produtos = productRepo.getAll().filter { it.quantidade > 0 }
@@ -157,12 +158,27 @@ class VenderActivity : AppCompatActivity() {
         etProduto.setText(p.nome)
         tvValorEstimado.text = "Valor estimado: R$ %.2f".format(p.valorEstimado ?: 0.0)
 
+        // 💲 Define valor unitário com prioridade para valorRevenda
         val preco = when {
             (p.valorRevenda ?: 0.0) > 0.0 -> p.valorRevenda!!
             (p.valorEstimado ?: 0.0) > 0.0 -> p.valorEstimado!!
             else -> 0.0
         }
         etValorUnitario.setText("%.2f".format(preco))
+
+        // 🖼️ Exibe imagem do produto
+        val caminho = p.caminhoImagem
+        if (!caminho.isNullOrEmpty()) {
+            val arquivo = File(caminho)
+            if (arquivo.exists()) {
+                val bitmap = BitmapFactory.decodeFile(arquivo.absolutePath)
+                imgProduto.setImageBitmap(bitmap)
+            } else {
+                imgProduto.setImageResource(R.drawable.ic_placeholder)
+            }
+        } else {
+            imgProduto.setImageResource(R.drawable.ic_placeholder)
+        }
     }
 
     /** 💾 Valida e registra nova venda */

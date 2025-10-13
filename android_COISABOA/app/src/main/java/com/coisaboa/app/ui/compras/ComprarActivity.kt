@@ -21,9 +21,13 @@ import com.coisaboa.app.data.repository.PurchaseRepository
 import com.coisaboa.app.utils.MediaStorage
 import java.util.*
 
+/**
+ * 🛒 ComprarActivity
+ * Tela para registrar novas compras de produtos, com suporte a imagem local.
+ */
 class ComprarActivity : AppCompatActivity() {
 
-    // 🔹 Referências da UI
+    // 🔹 Referências da interface
     private lateinit var etProduto: EditText
     private lateinit var etQuantidade: EditText
     private lateinit var etValorUnitario: EditText
@@ -36,14 +40,14 @@ class ComprarActivity : AppCompatActivity() {
     private lateinit var imgPreviewProduto: ImageView
     private lateinit var imgPreviewVendedor: ImageView
 
-    // 🔹 Caminhos das fotos salvas
+    // 🔹 Caminhos absolutos das imagens salvas
     private var caminhoFotoProduto: String? = null
     private var caminhoFotoVendedor: String? = null
 
-    // 🔹 Controle de tipo de imagem
+    // 🔹 Controle de qual tipo de imagem está sendo tratada
     private var tipoFotoAtual: String = ""
 
-    // 🔹 Classe utilitária para salvar imagens localmente
+    // 🔹 Classe utilitária de salvamento offline
     private val mediaStorage by lazy { MediaStorage(this) }
 
     // 🔹 ViewModel com injeção dos repositórios corretos
@@ -54,19 +58,27 @@ class ComprarActivity : AppCompatActivity() {
         ComprarViewModelFactory(purchaseRepo)
     }
 
-    // 🖼️ Launcher para escolher imagem na galeria
+    // 🖼️ Launcher para abrir a galeria
     private val galeriaLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data?.data != null) {
                 val uri: Uri = result.data!!.data!!
-                val bitmap: Bitmap = if (Build.VERSION.SDK_INT >= 28) {
-                    ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
-                } else {
-                    @Suppress("DEPRECATION")
-                    MediaStore.Images.Media.getBitmap(contentResolver, uri)
+
+                try {
+                    val bitmap: Bitmap = if (Build.VERSION.SDK_INT >= 28) {
+                        ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
+                    } else {
+                        @Suppress("DEPRECATION")
+                        MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    }
+
+                    // Salva a imagem e obtém o caminho real
+                    val caminho = mediaStorage.salvarImagem(bitmap, tipoFotoAtual)
+                    atualizarPreview(bitmap, caminho)
+
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Erro ao carregar imagem: ${e.message}", Toast.LENGTH_LONG).show()
                 }
-                val caminho = mediaStorage.salvarImagem(bitmap, tipoFotoAtual)
-                atualizarPreview(bitmap, caminho)
             }
         }
 
@@ -79,6 +91,7 @@ class ComprarActivity : AppCompatActivity() {
         configurarEventos()
     }
 
+    /** 🧩 Inicializa os componentes da tela */
     private fun inicializarComponentes() {
         etProduto = findViewById(R.id.etProduto)
         etQuantidade = findViewById(R.id.etQuantidade)
@@ -92,9 +105,9 @@ class ComprarActivity : AppCompatActivity() {
         imgPreviewProduto = findViewById(R.id.imgPreviewProduto)
         imgPreviewVendedor = findViewById(R.id.imgPreviewVendedor)
 
-        // 🪙 Opções de pagamento
+        // 💳 Opções de pagamento
         val formasPagamento = arrayOf(
-            "Dinheiro", "Cartão Crédito", "Cartão Débito", "PIX", "Transferência", "Outro"
+            "Dinheiro", "PIX", "Cartão Crédito", "Cartão Débito", "Transferência", "Outro"
         )
         spPagamento.adapter = ArrayAdapter(
             this,
@@ -103,8 +116,9 @@ class ComprarActivity : AppCompatActivity() {
         )
     }
 
+    /** ⚙️ Configura os eventos da tela */
     private fun configurarEventos() {
-        // 🧮 Atualiza valor total automaticamente
+        // 🧮 Atualiza automaticamente o valor total
         val atualizarTotal = {
             val qtd = etQuantidade.text.toString().toIntOrNull() ?: 0
             val valor = etValorUnitario.text.toString().toDoubleOrNull() ?: 0.0
@@ -114,44 +128,45 @@ class ComprarActivity : AppCompatActivity() {
         etQuantidade.addTextChangedListener { atualizarTotal() }
         etValorUnitario.addTextChangedListener { atualizarTotal() }
 
-        // 🖼️ Escolher imagem do produto
+        // 🖼️ Selecionar imagem do produto
         btnFotoProduto.setOnClickListener {
             tipoFotoAtual = "produto"
             abrirGaleria()
         }
 
-        // 🖼️ Escolher imagem do vendedor
+        // 🧾 Selecionar imagem do vendedor/nota
         btnFotoVendedor.setOnClickListener {
             tipoFotoAtual = "vendedor"
             abrirGaleria()
         }
 
-        // 💾 Salvar compra
+        // 💾 Registrar compra
         btnSalvar.setOnClickListener { salvarCompra() }
     }
 
+    /** 📂 Abre a galeria para escolher uma imagem */
     private fun abrirGaleria() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galeriaLauncher.launch(intent)
     }
 
-    // 🔹 Atualiza o preview e salva caminho
+    /** 🖼️ Atualiza o preview e guarda o caminho salvo */
     private fun atualizarPreview(bitmap: Bitmap, caminho: String) {
         when (tipoFotoAtual) {
             "produto" -> {
                 caminhoFotoProduto = caminho
                 imgPreviewProduto.setImageBitmap(bitmap)
-                Toast.makeText(this, "🖼️ Imagem do produto selecionada!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "🖼️ Imagem do produto salva!", Toast.LENGTH_SHORT).show()
             }
-
             "vendedor" -> {
                 caminhoFotoVendedor = caminho
                 imgPreviewVendedor.setImageBitmap(bitmap)
-                Toast.makeText(this, "🧑‍🌾 Imagem do vendedor selecionada!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "🧾 Imagem do vendedor salva!", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+    /** 💾 Valida e registra a compra no banco */
     private fun salvarCompra() {
         val produto = etProduto.text.toString().trim()
         val qtd = etQuantidade.text.toString().toIntOrNull() ?: 0
@@ -160,6 +175,7 @@ class ComprarActivity : AppCompatActivity() {
         val formaPagamento = spPagamento.selectedItem.toString()
         val valorTotal = qtd * valorUnit
 
+        // 🚨 Validação básica
         if (produto.isEmpty() || qtd <= 0 || valorUnit <= 0.0) {
             Toast.makeText(this, "Preencha todos os campos obrigatórios!", Toast.LENGTH_SHORT).show()
             return
@@ -167,7 +183,7 @@ class ComprarActivity : AppCompatActivity() {
 
         val compra = PurchaseEntity(
             id = 0,
-            produtoNome = produto, // ✅ nome do campo deve coincidir com sua entidade
+            produtoNome = produto,
             quantidade = qtd,
             valorUnitario = valorUnit,
             valorRevenda = valorRevenda,
@@ -188,7 +204,7 @@ class ComprarActivity : AppCompatActivity() {
             },
             onErro = { e ->
                 runOnUiThread {
-                    Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "❌ Erro ao salvar: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         )
