@@ -4,7 +4,8 @@
 
     <!-- 🔒 Permissões básicas -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -34,7 +35,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <!-- 📊 Tela do Dashboard -->
+        <!-- 📊 Painel de Controle -->
         <activity
             android:name=".ui.dashboard.DashboardActivity"
             android:exported="false"
@@ -52,17 +53,24 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <!-- ⚙️ Tela de Gerenciamento de Estoque -->
+        <!-- ⚙️ Gerenciamento de Estoque -->
         <activity
             android:name=".ui.gerenciar.GerenciarActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <!-- 📈 Tela de Relatórios -->
+        <!-- 📈 Relatórios Gerais -->
         <activity
             android:name=".ui.relatorios.RelatoriosActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <!-- 💰 Relatório Financeiro (nova tela) -->
+        <activity
+            android:name=".ui.relatorios.FinanceiroActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.COISABOA" />
 
         <!-- ☁️ Tela de Backup -->
         <activity
@@ -70,7 +78,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <!-- 🧩 Suporte a Room (persistência local) -->
+        <!-- 🧩 Suporte ao Room (persistência local) -->
         <meta-data
             android:name="androidx.room.Database"
             android:value="coisaboa.db" />

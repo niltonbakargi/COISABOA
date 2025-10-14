@@ -1,5 +1,6 @@
 package com.coisaboa.app.ui.relatorios
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -14,10 +15,11 @@ import kotlinx.coroutines.withContext
 
 /**
  * 📊 RelatóriosActivity
- * Exibe resumo geral do sistema com base nos dados locais (Room Database):
- * - Total de produtos em estoque
+ * Exibe o resumo geral do sistema e permite acessar relatórios específicos:
+ * - Total de produtos cadastrados
  * - Quantidade total de itens
  * - Valor total estimado e lucro potencial
+ * - Acesso ao Relatório Financeiro detalhado
  */
 class RelatoriosActivity : AppCompatActivity() {
 
@@ -25,46 +27,54 @@ class RelatoriosActivity : AppCompatActivity() {
     private lateinit var btnVoltar: Button
     private lateinit var btnRelatorioEstoque: Button
     private lateinit var btnRelatorioVendas: Button
-    private lateinit var btnGerarRelatorio: Button
+    private lateinit var btnRelatorioFinanceiro: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_relatorios)
         supportActionBar?.title = "Relatórios do Sistema"
 
-        // Vincular elementos da interface
+        // 🔗 Vincula elementos da interface
         tvResumo = findViewById(R.id.tvResumo)
         btnVoltar = findViewById(R.id.btnVoltar)
         btnRelatorioEstoque = findViewById(R.id.btnRelatorioEstoque)
         btnRelatorioVendas = findViewById(R.id.btnRelatorioVendas)
-        btnGerarRelatorio = findViewById(R.id.btnGerarRelatorio)
+        btnRelatorioFinanceiro = findViewById(R.id.btnGerarRelatorio)
 
-        // Carregar resumo assim que abrir
+        // 📈 Carrega o resumo geral ao abrir
         carregarResumo()
 
-        // Botão voltar
+        // ⚙️ Eventos dos botões
+        configurarEventos()
+    }
+
+    /** 🔧 Configura todos os botões da tela */
+    private fun configurarEventos() {
+        // ↩️ Voltar ao painel
         btnVoltar.setOnClickListener { finish() }
 
-        // Botões futuros (placeholder)
+        // 💰 Abre o Relatório Financeiro detalhado
+        btnRelatorioFinanceiro.setOnClickListener {
+            val intent = Intent(this, FinanceiroActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 📦 Em breve: Relatório de Estoque detalhado
         btnRelatorioEstoque.setOnClickListener {
             tvResumo.text = "📦 Em breve: relatório detalhado de estoque."
         }
+
+        // 🧾 Em breve: Relatório de Vendas detalhado
         btnRelatorioVendas.setOnClickListener {
-            tvResumo.text = "💰 Em breve: relatório detalhado de vendas."
-        }
-        btnGerarRelatorio.setOnClickListener {
-            carregarResumo()
+            tvResumo.text = "🧾 Em breve: relatório detalhado de vendas."
         }
     }
 
-    /**
-     * 🧮 Consulta o banco e calcula o resumo geral.
-     */
+    /** 🧮 Consulta o banco e calcula o resumo geral */
     private fun carregarResumo() {
         lifecycleScope.launch(Dispatchers.IO) {
             val db = DatabaseProvider.get(this@RelatoriosActivity)
             val repo = ProductRepository(db.productDao())
-
             val produtos = repo.getAll()
 
             val totalProdutos = produtos.size
@@ -78,6 +88,8 @@ class RelatoriosActivity : AppCompatActivity() {
 
             withContext(Dispatchers.Main) {
                 tvResumo.text = """
+                    📊 Resumo Geral do Sistema
+                    
                     • Produtos cadastrados: $totalProdutos
                     • Itens em estoque: $totalItens
                     • Valor total em estoque: R$ %.2f

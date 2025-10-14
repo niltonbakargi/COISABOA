@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- 🏷️ Título -->
+        <TextView
+            android:id="@+id/tvTituloFinanceiro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="💰 Relatório Financeiro"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1E293B"
+            android:gravity="center"
+            android:paddingBottom="16dp" />
+
+        <!-- 🗓️ Filtros de Data -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnDataInicio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📅 Data Início"
+                android:textAllCaps="false"
+                android:backgroundTint="#3B82F6"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btnDataFim"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📅 Data Fim"
+                android:textAllCaps="false"
+                android:backgroundTint="#3B82F6"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- 🔄 Barra de carregamento -->
+        <ProgressBar
+            android:id="@+id/progressBarFinanceiro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 📊 Cartões de Resumo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:dividerPadding="8dp">
+
+            <!-- Total de Vendas -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#E0F2FE"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total de Vendas"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#0C4A6E" />
+
+                <TextView
+                    android:id="@+id/tvTotalVendas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R$ 0,00"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#075985" />
+            </LinearLayout>
+
+            <!-- Custo Total -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FEF9C3"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custo Total"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#78350F" />
+
+                <TextView
+                    android:id="@+id/tvCustoTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R$ 0,00"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#92400E" />
+            </LinearLayout>
+
+            <!-- Lucro Bruto -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#DCFCE7"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lucro Bruto"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#14532D" />
+
+                <TextView
+                    android:id="@+id/tvLucroBruto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R$ 0,00"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#166534" />
+            </LinearLayout>
+
+            <!-- Ticket Médio -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#F3E8FF"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ticket Médio"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#581C87" />
+
+                <TextView
+                    android:id="@+id/tvTicketMedio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R$ 0,00"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#6B21A8" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ⚙️ Botões de ação -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btnGerarRelatorio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📤 Gerar Relatório"
+                android:textAllCaps="false"
+                android:backgroundTint="#10B981"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btnVoltar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="↩️ Voltar"
+                android:textAllCaps="false"
+                android:backgroundTint="#6B7280"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
