@@ -15,27 +15,29 @@ import java.io.File
 
 /**
  * 🔹 GerenciarAdapter
- * Exibe a lista de produtos cadastrados no estoque,
- * mostrando miniatura, nome, quantidade e valores.
- * Permite selecionar um item para edição.
+ * Adaptador responsável por exibir os produtos do estoque.
+ *
+ * Funcionalidades:
+ *  - Mostra miniatura do produto, nome, quantidade e preços.
+ *  - Reage a cliques no item ou no ícone de edição.
+ *  - Compatível com o modo "Excluir" da tela de Gerenciamento.
  */
 class GerenciarAdapter(
-    private val onEditar: (ProductEntity) -> Unit
-) : ListAdapter<ProductEntity, GerenciarAdapter.ViewHolder>(GerenciarAdapter.DiffCallback()) {
+    private val onProdutoSelecionado: (ProductEntity) -> Unit
+) : ListAdapter<ProductEntity, GerenciarAdapter.ViewHolder>(DiffCallback()) {
 
     /**
-     * 🎨 ViewHolder — representa um item da lista.
-     * Mapeia o layout item_produto_estoque.xml.
+     * 🎨 ViewHolder — representa cada item da lista (um produto).
      */
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imgThumb: ImageView = view.findViewById(R.id.imgThumb)
-        private val tvNome: TextView = view.findViewById(R.id.tvNome)
-        private val tvQtd: TextView = view.findViewById(R.id.tvQtd)
-        private val tvValores: TextView = view.findViewById(R.id.tvValores)
-        private val btnEditar: ImageView = view.findViewById(R.id.btnEditar)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imgThumb: ImageView = itemView.findViewById(R.id.imgThumb)
+        private val tvNome: TextView = itemView.findViewById(R.id.tvNome)
+        private val tvQtd: TextView = itemView.findViewById(R.id.tvQtd)
+        private val tvValores: TextView = itemView.findViewById(R.id.tvValores)
+        private val btnEditar: ImageView = itemView.findViewById(R.id.btnEditar)
 
         /**
-         * 🧩 Liga os dados do produto aos elementos visuais.
+         * 🧩 Vincula os dados do produto à interface do item.
          */
         fun bind(produto: ProductEntity) {
             tvNome.text = produto.nome
@@ -45,13 +47,13 @@ class GerenciarAdapter(
                 produto.valorRevenda ?: 0.0
             )
 
-            // 🖼️ Carrega imagem local (ou placeholder)
+            // 🖼️ Carrega imagem do produto, se existir
             val caminho = produto.caminhoImagem
             if (!caminho.isNullOrBlank()) {
-                val file = File(caminho)
-                if (file.exists()) {
-                    val bmp = BitmapFactory.decodeFile(file.absolutePath)
-                    imgThumb.setImageBitmap(bmp)
+                val arquivo = File(caminho)
+                if (arquivo.exists()) {
+                    val bitmap = BitmapFactory.decodeFile(arquivo.absolutePath)
+                    imgThumb.setImageBitmap(bitmap)
                 } else {
                     imgThumb.setImageResource(R.drawable.ic_placeholder)
                 }
@@ -59,32 +61,30 @@ class GerenciarAdapter(
                 imgThumb.setImageResource(R.drawable.ic_placeholder)
             }
 
-            // 🎯 Clique para editar
-            btnEditar.setOnClickListener { onEditar(produto) }
-            itemView.setOnClickListener { onEditar(produto) }
+            // 🎯 Define os eventos de clique (item e botão de edição)
+            itemView.setOnClickListener { onProdutoSelecionado(produto) }
+            btnEditar.setOnClickListener { onProdutoSelecionado(produto) }
         }
     }
 
     /**
-     * 🏗️ Cria o layout de cada item (ViewHolder)
+     * 🏗️ Cria a view de cada item da lista.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // ⚠️ Usar LayoutInflater.from(parent.context) diretamente
-        // garante que o compilador escolha o overload correto.
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_produto_estoque as Int, parent, false)
+        val view = inflater.inflate(R.layout.item_produto_estoque, parent, false)
         return ViewHolder(view)
     }
 
     /**
-     * 🔄 Vincula os dados do produto a um item da lista
+     * 🔄 Vincula os dados de um produto ao ViewHolder.
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
     /**
-     * ⚡ DiffUtil — otimiza atualizações da lista
+     * ⚡ DiffUtil — otimiza atualizações entre listas antigas e novas.
      */
     class DiffCallback : DiffUtil.ItemCallback<ProductEntity>() {
         override fun areItemsTheSame(oldItem: ProductEntity, newItem: ProductEntity): Boolean =

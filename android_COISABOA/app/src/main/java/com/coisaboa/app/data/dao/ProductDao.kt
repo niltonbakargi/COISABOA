@@ -8,38 +8,42 @@ import androidx.room.Query
 import com.coisaboa.app.data.entity.ProductEntity
 
 /**
- * 🔹 ProductDao
- * Interface de acesso ao banco de dados local (Room) para produtos.
- * Permite inserir, buscar, atualizar e excluir produtos do estoque.
+ * 🧩 ProductDao
+ * Interface de acesso ao banco de dados (Room) para a tabela de produtos.
+ * Permite inserir, buscar, atualizar quantidades e excluir registros.
  */
 @Dao
 interface ProductDao {
 
-    // ➕ Inserir ou atualizar produto (substitui se já existir com mesmo ID)
+    // ➕ Insere ou substitui um produto (Room substitui em caso de conflito de ID)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(product: ProductEntity): Long
+    suspend fun insert(produto: ProductEntity): Long
 
-    // 📋 Buscar todos os produtos cadastrados
+    // 📋 Retorna todos os produtos, ordenados por nome
     @Query("SELECT * FROM product ORDER BY nome ASC")
     suspend fun getAll(): List<ProductEntity>
 
-    // 🔍 Buscar produto pelo ID
+    // 🔍 Busca um produto pelo ID
     @Query("SELECT * FROM product WHERE id = :id LIMIT 1")
     suspend fun getById(id: Long): ProductEntity?
 
-    // 🔍 Buscar produto pelo nome (primeira ocorrência)
-    @Query("SELECT * FROM product WHERE nome = :nome LIMIT 1")
+    // 🔍 Busca um produto pelo nome (não diferencia maiúsculas/minúsculas)
+    @Query("SELECT * FROM product WHERE LOWER(nome) = LOWER(:nome) LIMIT 1")
     suspend fun getByName(nome: String): ProductEntity?
 
-    // 🔺 Aumentar a quantidade em estoque
+    // 🔺 Atualiza a quantidade de um produto diretamente
+    @Query("UPDATE product SET quantidade = :novaQtd WHERE id = :id")
+    suspend fun updateQuantidade(id: Long, novaQtd: Int)
+
+    // 🔺 Aumenta o estoque de um produto existente
     @Query("UPDATE product SET quantidade = quantidade + :quantity WHERE id = :productId")
     suspend fun increaseStock(productId: Long, quantity: Int)
 
-    // 🔻 Diminuir a quantidade em estoque (somente se houver o suficiente)
+    // 🔻 Diminui o estoque (somente se houver quantidade suficiente)
     @Query("UPDATE product SET quantidade = quantidade - :quantity WHERE id = :productId AND quantidade >= :quantity")
     suspend fun decreaseStock(productId: Long, quantity: Int)
 
-    // ❌ Excluir produto definitivamente
+    // ❌ Exclui definitivamente um produto
     @Delete
-    suspend fun delete(product: ProductEntity)
+    suspend fun delete(produto: ProductEntity)
 }

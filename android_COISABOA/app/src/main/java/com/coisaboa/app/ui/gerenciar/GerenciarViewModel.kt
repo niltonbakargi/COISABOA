@@ -11,35 +11,44 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * 🔹 GerenciarViewModel
- * Responsável por gerenciar o estado e as operações da tela de estoque.
- * Atua como ponte entre o banco de dados (Room) e a interface de usuário.
+ * ⚙️ GerenciarViewModel
+ * Camada de controle da tela de gerenciamento de estoque.
+ * Faz a ponte entre a Activity (UI) e o Repository (dados Room).
  */
 class GerenciarViewModel(
     private val repo: ProductRepository
 ) : ViewModel() {
 
-    // 🔸 Fluxo reativo que mantém a lista de produtos atualizada
+    // ============================================================
+    // 🔸 LISTA REATIVA DE PRODUTOS
+    // ============================================================
     private val _produtos = MutableStateFlow<List<ProductEntity>>(emptyList())
     val produtos: StateFlow<List<ProductEntity>> = _produtos
 
+    // ============================================================
+    // 📦 CARREGAMENTO INICIAL
+    // ============================================================
+
     /**
-     * 📦 Carrega todos os produtos do banco e atualiza o fluxo reativo.
+     * 📦 Carrega todos os produtos cadastrados no banco local.
      */
     fun carregar() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val lista = repo.getAll()
-                _produtos.update { lista }
+                _produtos.update { repo.getAll() }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
+    // ============================================================
+    // 💾 INSERÇÃO / ATUALIZAÇÃO
+    // ============================================================
+
     /**
-     * 💾 Insere ou atualiza um produto.
-     * Após a operação, atualiza o fluxo de dados e executa o callback.
+     * 💾 Insere um novo produto ou atualiza um existente.
+     * Após a operação, a lista reativa é atualizada.
      */
     fun salvar(
         produto: ProductEntity,
@@ -49,17 +58,21 @@ class GerenciarViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 repo.insertOrUpdate(produto)
-                val lista = repo.getAll()
-                _produtos.update { lista }
+                sincronizar()
                 onOk()
             } catch (e: Throwable) {
+                e.printStackTrace()
                 onErro(e)
             }
         }
     }
 
+    // ============================================================
+    // 🗑️ EXCLUSÃO TOTAL
+    // ============================================================
+
     /**
-     * 🗑️ Exclui um produto e atualiza o fluxo de dados.
+     * 🗑️ Remove um produto definitivamente do banco.
      */
     fun excluir(
         produto: ProductEntity,
@@ -69,19 +82,66 @@ class GerenciarViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 repo.delete(produto)
-                val lista = repo.getAll()
-                _produtos.update { lista }
+                sincronizar()
                 onOk()
             } catch (e: Throwable) {
+                e.printStackTrace()
+                onErro(e)
+            }
+        }
+    }
+
+    // ============================================================
+    // 🔺 AJUSTE DE ESTOQUE
+    // ============================================================
+
+    /**
+     * 🔺 Aumenta o estoque de um produto existente.
+     */
+    fun aumentarEstoque(
+        id: Long,
+        quantidade: Int,
+        onOk: () -> Unit = {},
+        onErro: (Throwable) -> Unit = {}
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repo.increaseStock(id, quantidade)
+                sincronizar()
+                onOk()
+            } catch (e: Throwable) {
+                e.printStackTrace()
                 onErro(e)
             }
         }
     }
 
     /**
-     * 🔄 Ajusta manualmente o estoque de um produto.
-     * @param id Long → ID do produto
-     * @param delta Int → quantidade (positivo = entrada, negativo = saída)
+     * 🔻 Diminui o estoque de um produto existente.
+     * Caso a quantidade informada exceda o estoque atual,
+     * o Repository/DAO garante que o valor não fique negativo.
+     */
+    fun diminuirEstoque(
+        id: Long,
+        quantidade: Int,
+        onOk: () -> Unit = {},
+        onErro: (Throwable) -> Unit = {}
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repo.decreaseStock(id, quantidade)
+                sincronizar()
+                onOk()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                onErro(e)
+            }
+        }
+    }
+
+    /**
+     * ⚖️ Ajusta o estoque dinamicamente.
+     * @param delta Quantidade positiva (entrada) ou negativa (saída)
      */
     fun ajustarEstoque(
         id: Long,
@@ -91,17 +151,31 @@ class GerenciarViewModel(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                if (delta > 0) {
-                    repo.increaseStock(id, delta)
-                } else {
-                    repo.decreaseStock(id, -delta)
-                }
-
-                val lista = repo.getAll()
-                _produtos.update { lista }
+                if (delta > 0) repo.increaseStock(id, delta)
+                else repo.decreaseStock(id, -delta)
+                sincronizar()
                 onOk()
             } catch (e: Throwable) {
+                e.printStackTrace()
                 onErro(e)
+            }
+        }
+    }
+
+    // ============================================================
+    // 🔄 SINCRONIZAÇÃO GERAL
+    // ============================================================
+
+    /**
+     * 🔄 Atualiza a lista reativa de produtos após qualquer operação.
+     */
+    private fun sincronizar() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val lista = repo.getAll()
+                _produtos.update { lista }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

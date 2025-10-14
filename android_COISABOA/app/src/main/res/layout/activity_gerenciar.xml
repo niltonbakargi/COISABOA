@@ -16,30 +16,52 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="#1E293B"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:paddingBottom="8dp" />
 
-    <!-- 🔹 Lista de produtos -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProdutos"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="8dp"
-        android:scrollbars="vertical"
-        android:background="#FFFFFF"
-        android:elevation="2dp"
-        android:clipToPadding="false" />
-
-    <!-- 🔹 Formulário de edição/criação -->
-    <ScrollView
+    <!-- 🔘 Alternador de modo (Incluir / Excluir) -->
+    <LinearLayout
+        android:id="@+id/layoutModo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
-        android:layout_marginTop="8dp">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="12dp">
+
+        <Button
+            android:id="@+id/btnModoIncluir"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="➕ Incluir"
+            android:textAllCaps="false"
+            android:backgroundTint="#16A34A"
+            android:textColor="#FFFFFF" />
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnModoExcluir"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="➖ Excluir"
+            android:textAllCaps="false"
+            android:backgroundTint="#DC2626"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <!-- 🔹 Conteúdo principal com rolagem -->
+    <ScrollView
+        android:id="@+id/scrollConteudo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/layoutDinamico"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -48,126 +70,163 @@
             android:elevation="3dp"
             android:clipToPadding="false">
 
-            <!-- Título do formulário -->
-            <TextView
-                android:id="@+id/tvFormTitulo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Adicionar / Editar Produto"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#334155"
-                android:paddingBottom="8dp"
-                android:gravity="center_horizontal" />
-
-            <!-- Imagem do produto -->
-            <ImageView
-                android:id="@+id/imgProduto"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="#E2E8F0"
-                android:scaleType="centerCrop"
-                android:contentDescription="Imagem do produto"
-                android:layout_marginBottom="8dp" />
-
-            <Button
-                android:id="@+id/btnSelecionarImagem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="📷 Selecionar Imagem"
-                android:textAllCaps="false"
-                android:backgroundTint="#0284C7"
-                android:textColor="#FFFFFF" />
-
-            <!-- Campos de dados -->
-            <EditText
-                android:id="@+id/etNome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Nome do Produto"
-                android:layout_marginTop="12dp"
-                android:inputType="textCapWords" />
-
-            <EditText
-                android:id="@+id/etQuantidade"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Quantidade em estoque"
-                android:inputType="number"
-                android:layout_marginTop="12dp" />
-
-            <EditText
-                android:id="@+id/etValorEstimado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Valor Estimado (custo) - R$"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="12dp" />
-
-            <EditText
-                android:id="@+id/etValorRevenda"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Valor de Revenda - R$"
-                android:inputType="numberDecimal"
-                android:layout_marginTop="12dp" />
-
-            <EditText
-                android:id="@+id/etObservacoes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Observações"
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:gravity="top"
-                android:layout_marginTop="12dp" />
-
-            <!-- Botões de ação -->
+            <!-- 🔹 Modo INCLUIR -->
             <LinearLayout
+                android:id="@+id/boxIncluir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="16dp">
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📦 Adicionar Produto ao Estoque"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#334155"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="12dp" />
+
+                <!-- Imagem do produto -->
+                <ImageView
+                    android:id="@+id/imgProduto"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="#E2E8F0"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Imagem do produto"
+                    android:layout_marginBottom="8dp" />
 
                 <Button
-                    android:id="@+id/btnSalvar"
-                    android:layout_width="0dp"
+                    android:id="@+id/btnSelecionarImagemProduto"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="💾 Salvar"
+                    android:text="📸 Selecionar Imagem do Produto"
                     android:textAllCaps="false"
-                    android:backgroundTint="#16A34A"
+                    android:backgroundTint="#0284C7"
                     android:textColor="#FFFFFF" />
 
-                <Space
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/btnExcluir"
-                    android:layout_width="0dp"
+                <!-- Campos de dados -->
+                <EditText
+                    android:id="@+id/etNomeProduto"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="🗑️ Excluir"
-                    android:textAllCaps="false"
-                    android:backgroundTint="#DC2626"
-                    android:textColor="#FFFFFF" />
+                    android:hint="Nome do Produto"
+                    android:inputType="textCapWords"
+                    android:layout_marginTop="12dp" />
 
-                <Space
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/btnLimpar"
-                    android:layout_width="0dp"
+                <EditText
+                    android:id="@+id/etQuantidade"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="🧽 Limpar"
-                    android:textAllCaps="false"
-                    android:backgroundTint="#94A3B8"
-                    android:textColor="#FFFFFF" />
+                    android:hint="Quantidade"
+                    android:inputType="number"
+                    android:layout_marginTop="12dp" />
+
+                <EditText
+                    android:id="@+id/etValorCusto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Valor Unitário (R$)"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="12dp" />
+
+                <EditText
+                    android:id="@+id/etValorRevenda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Valor de Revenda (R$)"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="12dp" />
+
+                <EditText
+                    android:id="@+id/etObsIncluir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Observações"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:gravity="top"
+                    android:layout_marginTop="12dp" />
             </LinearLayout>
+
+            <!-- 🔹 Modo EXCLUIR -->
+            <LinearLayout
+                android:id="@+id/boxExcluir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🗑️ Remover Produto do Estoque"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#991B1B"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="12dp" />
+
+                <Button
+                    android:id="@+id/btnSelecionarProduto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔍 Selecionar Produto"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#F97316"
+                    android:textColor="#FFFFFF" />
+
+                <ImageView
+                    android:id="@+id/imgProdutoExcluir"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="#E2E8F0"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Imagem do produto"
+                    android:layout_marginTop="12dp" />
+
+                <!-- 🧾 Exibição de estoque atual -->
+                <TextView
+                    android:id="@+id/tvEstoqueAtual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Estoque atual: —"
+                    android:textSize="16sp"
+                    android:textColor="#334155"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="4dp"
+                    android:gravity="center_horizontal" />
+
+                <EditText
+                    android:id="@+id/etQtdExcluir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Quantidade a remover"
+                    android:inputType="number"
+                    android:layout_marginTop="12dp" />
+
+                <EditText
+                    android:id="@+id/etObsExcluir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Motivo / Observações"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:gravity="top"
+                    android:layout_marginTop="12dp" />
+            </LinearLayout>
+
+            <!-- 🔘 Botão principal dinâmico -->
+            <Button
+                android:id="@+id/btnAcaoPrincipal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💾 Adicionar ao Estoque"
+                android:textAllCaps="false"
+                android:backgroundTint="#16A34A"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="20dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
