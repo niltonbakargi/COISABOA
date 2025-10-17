@@ -15,86 +15,97 @@ import kotlinx.coroutines.withContext
 
 /**
  * 📊 RelatóriosActivity
- * Exibe o resumo geral do sistema e permite acessar relatórios específicos:
- * - Total de produtos cadastrados
- * - Quantidade total de itens
- * - Valor total estimado e lucro potencial
- * - Acesso ao Relatório Financeiro detalhado
+ * Tela hub dos relatórios do sistema:
+ * - Exibe resumo geral de produtos, estoque e lucro potencial
+ * - Abre Relatório Financeiro
+ * - Abre Relatório de Vendas
+ * - Abre (futuro) Relatório de Estoque
  */
 class RelatoriosActivity : AppCompatActivity() {
 
+    // 🧱 Componentes da interface
     private lateinit var tvResumo: TextView
     private lateinit var btnVoltar: Button
-    private lateinit var btnRelatorioEstoque: Button
-    private lateinit var btnRelatorioVendas: Button
     private lateinit var btnRelatorioFinanceiro: Button
+    private lateinit var btnRelatorioVendas: Button
+    private lateinit var btnRelatorioEstoque: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_relatorios)
         supportActionBar?.title = "Relatórios do Sistema"
 
-        // 🔗 Vincula elementos da interface
+        inicializarComponentes()
+        configurarEventos()
+        carregarResumo()
+    }
+
+    /** 🔧 Vincula os elementos da interface */
+    private fun inicializarComponentes() {
         tvResumo = findViewById(R.id.tvResumo)
         btnVoltar = findViewById(R.id.btnVoltar)
-        btnRelatorioEstoque = findViewById(R.id.btnRelatorioEstoque)
+        btnRelatorioFinanceiro = findViewById(R.id.btnGerarRelatorio)  // já existente no layout
         btnRelatorioVendas = findViewById(R.id.btnRelatorioVendas)
-        btnRelatorioFinanceiro = findViewById(R.id.btnGerarRelatorio)
-
-        // 📈 Carrega o resumo geral ao abrir
-        carregarResumo()
-
-        // ⚙️ Eventos dos botões
-        configurarEventos()
+        btnRelatorioEstoque = findViewById(R.id.btnRelatorioEstoque)
     }
 
-    /** 🔧 Configura todos os botões da tela */
+    /** ⚙️ Configura os botões e suas ações */
     private fun configurarEventos() {
-        // ↩️ Voltar ao painel
+
+        // 🔙 Voltar para o dashboard
         btnVoltar.setOnClickListener { finish() }
 
-        // 💰 Abre o Relatório Financeiro detalhado
+        // 💰 Abre o Relatório Financeiro
         btnRelatorioFinanceiro.setOnClickListener {
-            val intent = Intent(this, FinanceiroActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, FinanceiroActivity::class.java))
         }
 
-        // 📦 Em breve: Relatório de Estoque detalhado
-        btnRelatorioEstoque.setOnClickListener {
-            tvResumo.text = "📦 Em breve: relatório detalhado de estoque."
-        }
-
-        // 🧾 Em breve: Relatório de Vendas detalhado
+        // 📈 Abre o Relatório de Vendas
         btnRelatorioVendas.setOnClickListener {
-            tvResumo.text = "🧾 Em breve: relatório detalhado de vendas."
+            startActivity(Intent(this, VendasActivity::class.java))
+        }
+
+        // 📦 Relatório de Estoque (placeholder)
+        btnRelatorioEstoque.setOnClickListener {
+            tvResumo.text = """
+                📦 Em breve: Relatório detalhado de estoque.
+                Aqui serão exibidos produtos com quantidades e valorização.
+            """.trimIndent()
         }
     }
 
-    /** 🧮 Consulta o banco e calcula o resumo geral */
+    /** 🧮 Calcula e exibe o resumo geral do sistema */
     private fun carregarResumo() {
         lifecycleScope.launch(Dispatchers.IO) {
-            val db = DatabaseProvider.get(this@RelatoriosActivity)
-            val repo = ProductRepository(db.productDao())
-            val produtos = repo.getAll()
+            try {
+                val db = DatabaseProvider.get(this@RelatoriosActivity)
+                val repo = ProductRepository(db.productDao())
+                val produtos = repo.getAll()
 
-            val totalProdutos = produtos.size
-            val totalItens = produtos.sumOf { it.quantidade }
-            val valorTotal = produtos.sumOf { (it.valorEstimado ?: 0.0) * it.quantidade }
-            val lucroPotencial = produtos.sumOf {
-                val venda = it.valorRevenda ?: 0.0
-                val custo = it.valorEstimado ?: 0.0
-                (venda - custo) * it.quantidade
-            }
+                val totalProdutos = produtos.size
+                val totalItens = produtos.sumOf { it.quantidade }
+                val valorTotal = produtos.sumOf { (it.valorEstimado ?: 0.0) * it.quantidade }
+                val lucroPotencial = produtos.sumOf {
+                    val venda = it.valorRevenda ?: 0.0
+                    val custo = it.valorEstimado ?: 0.0
+                    (venda - custo) * it.quantidade
+                }
 
-            withContext(Dispatchers.Main) {
-                tvResumo.text = """
-                    📊 Resumo Geral do Sistema
-                    
-                    • Produtos cadastrados: $totalProdutos
-                    • Itens em estoque: $totalItens
-                    • Valor total em estoque: R$ %.2f
-                    • Lucro potencial: R$ %.2f
-                """.trimIndent().format(valorTotal, lucroPotencial)
+                withContext(Dispatchers.Main) {
+                    tvResumo.text = """
+                        📊 Resumo Geral do Sistema
+                        
+                        • Produtos cadastrados: $totalProdutos
+                        • Itens em estoque: $totalItens
+                        • Valor total em estoque: R$ %.2f
+                        • Lucro potencial: R$ %.2f
+                    """.trimIndent().format(valorTotal, lucroPotencial)
+                }
+
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    tvResumo.text = "⚠️ Erro ao carregar resumo: ${e.message}"
+                }
             }
         }
     }

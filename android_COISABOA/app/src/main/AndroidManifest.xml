@@ -65,11 +65,19 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <!-- 💰 Relatório Financeiro (nova tela) -->
+        <!-- 💰 Relatório Financeiro -->
         <activity
             android:name=".ui.relatorios.FinanceiroActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.COISABOA" />
+
+        <!-- 📈 Relatório de Vendas (nova tela) -->
+        <activity
+            android:name=".ui.relatorios.VendasActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:label="Relatório de Vendas"
             android:theme="@style/Theme.COISABOA" />
 
         <!-- ☁️ Tela de Backup -->
@@ -84,5 +92,4 @@
             android:value="coisaboa.db" />
 
     </application>
-
 </manifest>
