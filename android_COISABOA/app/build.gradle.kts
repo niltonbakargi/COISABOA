@@ -1,7 +1,7 @@
-plugins {
+﻿plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt") // ✅ Necessário para o Room
+    id("kotlin-kapt") // âœ… NecessÃ¡rio para o Room
 }
 
 android {
@@ -26,37 +26,38 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true // ✅ Habilita o ViewBinding
+        viewBinding = true // âœ… Habilita o ViewBinding
     }
 }
 
 dependencies {
-    // 🧩 Banco de Dados Local (Room ORM)
+    // ðŸ§© Banco de Dados Local (Room ORM)
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
-    // 🧠 MVVM e Ciclo de Vida (ViewModel + LiveData)
+    // ðŸ§  MVVM e Ciclo de Vida (ViewModel + LiveData)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.4")
 
-    // ⚙️ Activity KTX (para usar 'by viewModels()' nas Activities)
+    // âš™ï¸ Activity KTX (para usar 'by viewModels()' nas Activities)
     implementation("androidx.activity:activity-ktx:1.9.2")
 
-    // 🔄 Coroutines (execução assíncrona)
+    // ðŸ”„ Coroutines (execuÃ§Ã£o assÃ­ncrona)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
-    // 💾 Gson (serialização JSON, usado no VendaStorage)
+    // ðŸ’¾ Gson (serializaÃ§Ã£o JSON, usado no VendaStorage)
     implementation("com.google.code.gson:gson:2.11.0")
 
-    // 🎨 Componentes básicos do Android
+    // ðŸŽ¨ Componentes bÃ¡sicos do Android
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
 
-    // 🧪 Testes
+    // ðŸ§ª Testes
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }
+

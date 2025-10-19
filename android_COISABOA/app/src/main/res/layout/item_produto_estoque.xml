@@ -11,7 +11,7 @@
     android:clickable="true"
     android:focusable="true">
 
-    <!-- 🖼️ Imagem do produto -->
+    <!--  Imagem do produto -->
     <ImageView
         android:id="@+id/imgThumb"
         android:layout_width="90dp"
@@ -23,7 +23,7 @@
         android:contentDescription="Imagem do produto"
         android:elevation="1dp" />
 
-    <!-- 📋 Informações -->
+    <!--  Informaes -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -64,7 +64,7 @@
             android:textSize="13sp" />
     </LinearLayout>
 
-    <!-- ✏️ Botão de ação -->
+    <!--  Boto de ao -->
     <ImageView
         android:id="@+id/btnEditar"
         android:layout_width="40dp"
@@ -78,3 +78,4 @@
         android:clickable="true" />
 
 </LinearLayout>
+

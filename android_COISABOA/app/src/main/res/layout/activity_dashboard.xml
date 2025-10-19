@@ -52,7 +52,7 @@
             android:id="@+id/btnRelatorios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Relatórios"
+            android:text="Relatrios"
             android:backgroundTint="#6A1B9A"
             android:textColor="#FFF"
             android:layout_marginBottom="12dp" />
@@ -76,3 +76,4 @@
 
     </LinearLayout>
 </ScrollView>
+

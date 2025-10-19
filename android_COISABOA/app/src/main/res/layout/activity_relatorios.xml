@@ -11,17 +11,17 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <!-- 🧭 Título principal -->
+        <!--  Ttulo principal -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📊 Relatórios do Sistema"
+            android:text=" Relatrios do Sistema"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#1E293B"
             android:paddingBottom="20dp" />
 
-        <!-- 🔹 Subtítulo -->
+        <!--  Subttulo -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,53 +31,54 @@
             android:textColor="#37474F"
             android:paddingBottom="8dp" />
 
-        <!-- 📈 Campo de resumo dinâmico -->
+        <!--  Campo de resumo dinmico -->
         <TextView
             android:id="@+id/tvResumo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="• Total de produtos: 0\n• Itens em estoque: 0\n• Lucro estimado: R$ 0,00"
+            android:text=" Total de produtos: 0\n Itens em estoque: 0\n Lucro estimado: R$ 0,00"
             android:textSize="15sp"
             android:textColor="#444"
             android:paddingBottom="24dp" />
 
-        <!-- 💰 Relatório Financeiro -->
+        <!--  Relatrio Financeiro -->
         <Button
             android:id="@+id/btnGerarRelatorio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="💰 Relatório Financeiro"
+            android:text=" Relatrio Financeiro"
             android:backgroundTint="#6366F1"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="12dp" />
 
-        <!-- 📈 Relatório de Vendas -->
+        <!--  Relatrio de Vendas -->
         <Button
             android:id="@+id/btnRelatorioVendas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="📈 Relatório de Vendas"
+            android:text=" Relatrio de Vendas"
             android:backgroundTint="#F59E0B"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="12dp" />
 
-        <!-- 📦 Relatório de Estoque -->
+        <!--  Relatrio de Estoque -->
         <Button
             android:id="@+id/btnRelatorioEstoque"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="📦 Relatório de Estoque"
+            android:text=" Relatrio de Estoque"
             android:backgroundTint="#10B981"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="12dp" />
 
-        <!-- 🔙 Voltar -->
+        <!--  Voltar -->
         <Button
             android:id="@+id/btnVoltar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="⬅️ Voltar"
+            android:text=" Voltar"
             android:backgroundTint="#9CA3AF"
             android:textColor="#FFFFFF" />
     </LinearLayout>
 </ScrollView>
+

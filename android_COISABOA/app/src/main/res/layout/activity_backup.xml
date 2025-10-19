@@ -3,35 +3,145 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center_horizontal"
-    android:background="#F8F9FA">
+    android:padding="16dp"
+    android:background="#f5f5f5">
 
     <TextView
-        android:id="@+id/tvStatus"
+        android:id="@+id/tvTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Clique abaixo para criar o backup manual"
-        android:textSize="16sp"
+        android:text="Backup de Dados"
+        android:textSize="24sp"
+        android:textStyle="bold"
         android:textColor="#333333"
         android:gravity="center"
-        android:paddingBottom="24dp" />
+        android:layout_marginBottom="24dp" />
 
-    <Button
-        android:id="@+id/btnBackup"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fazer Backup"
-        android:backgroundTint="#0288D1"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="20dp" />
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status do Sistema"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/tvBackupInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Carregando status..."
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Acoes"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/tvBackupStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pronto para backup"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:padding="8dp"
+            android:background="#e8f5e8" />
+
+        <Button
+            android:id="@+id/btnFazerBackup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fazer Backup Agora"
+            android:textSize="16sp"
+            android:background="#4CAF50"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="12dp"
+            android:padding="12dp" />
+
+        <Button
+            android:id="@+id/btnRestaurarBackup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Restaurar Backup"
+            android:textSize="16sp"
+            android:background="#2196F3"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="12dp"
+            android:padding="12dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:padding="16dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Informacoes"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Backup salvo em: Documents/COISABOA/"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sao mantidas 2 versoes de backup"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dados incluidos: Produtos e Vendas"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/btnVoltar"
-        android:layout_width="match_parent"
+        android:id="@+id/btnVoltarBackup"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Voltar"
-        android:backgroundTint="#E53935"
-        android:textColor="#FFFFFF" />
+        android:layout_gravity="start"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="24dp" />
 
 </LinearLayout>

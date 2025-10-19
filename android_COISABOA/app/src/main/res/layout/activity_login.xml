@@ -10,7 +10,7 @@
         android:id="@+id/etUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Usuário"
+        android:hint="Usurio"
         android:inputType="text"
         android:background="@android:color/white"
         android:padding="12dp"
@@ -45,3 +45,4 @@
         android:backgroundTint="#388E3C"
         android:textColor="@android:color/white" />
 </LinearLayout>
+

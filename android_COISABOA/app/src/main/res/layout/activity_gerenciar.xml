@@ -7,7 +7,7 @@
     android:background="#F8F9FA"
     android:padding="16dp">
 
-    <!-- 🔹 Título principal -->
+    <!--  Ttulo principal -->
     <TextView
         android:id="@+id/tvTitulo"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         android:gravity="center"
         android:paddingBottom="8dp" />
 
-    <!-- 🔘 Alternador de modo (Incluir / Excluir) -->
+    <!--  Alternador de modo (Incluir / Excluir) -->
     <LinearLayout
         android:id="@+id/layoutModo"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="➕ Incluir"
+            android:text=" Incluir"
             android:textAllCaps="false"
             android:backgroundTint="#16A34A"
             android:textColor="#FFFFFF" />
@@ -47,13 +47,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="➖ Excluir"
+            android:text=" Excluir"
             android:textAllCaps="false"
             android:backgroundTint="#DC2626"
             android:textColor="#FFFFFF" />
     </LinearLayout>
 
-    <!-- 🔹 Conteúdo principal com rolagem -->
+    <!--  Contedo principal com rolagem -->
     <ScrollView
         android:id="@+id/scrollConteudo"
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
             android:elevation="3dp"
             android:clipToPadding="false">
 
-            <!-- 🔹 Modo INCLUIR -->
+            <!--  Modo INCLUIR -->
             <LinearLayout
                 android:id="@+id/boxIncluir"
                 android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="📦 Adicionar Produto ao Estoque"
+                    android:text=" Adicionar Produto ao Estoque"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#334155"
@@ -101,7 +101,7 @@
                     android:id="@+id/btnSelecionarImagemProduto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="📸 Selecionar Imagem do Produto"
+                    android:text=" Selecionar Imagem do Produto"
                     android:textAllCaps="false"
                     android:backgroundTint="#0284C7"
                     android:textColor="#FFFFFF" />
@@ -127,7 +127,7 @@
                     android:id="@+id/etValorCusto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Valor Unitário (R$)"
+                    android:hint="Valor Unitrio (R$)"
                     android:inputType="numberDecimal"
                     android:layout_marginTop="12dp" />
 
@@ -143,14 +143,14 @@
                     android:id="@+id/etObsIncluir"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Observações"
+                    android:hint="Observaes"
                     android:inputType="textMultiLine"
                     android:minLines="3"
                     android:gravity="top"
                     android:layout_marginTop="12dp" />
             </LinearLayout>
 
-            <!-- 🔹 Modo EXCLUIR -->
+            <!--  Modo EXCLUIR -->
             <LinearLayout
                 android:id="@+id/boxExcluir"
                 android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="🗑️ Remover Produto do Estoque"
+                    android:text=" Remover Produto do Estoque"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#991B1B"
@@ -172,7 +172,7 @@
                     android:id="@+id/btnSelecionarProduto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="🔍 Selecionar Produto"
+                    android:text=" Selecionar Produto"
                     android:textAllCaps="false"
                     android:backgroundTint="#F97316"
                     android:textColor="#FFFFFF" />
@@ -186,12 +186,12 @@
                     android:contentDescription="Imagem do produto"
                     android:layout_marginTop="12dp" />
 
-                <!-- 🧾 Exibição de estoque atual -->
+                <!--  Exibio de estoque atual -->
                 <TextView
                     android:id="@+id/tvEstoqueAtual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Estoque atual: —"
+                    android:text="Estoque atual: "
                     android:textSize="16sp"
                     android:textColor="#334155"
                     android:paddingTop="8dp"
@@ -210,19 +210,19 @@
                     android:id="@+id/etObsExcluir"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Motivo / Observações"
+                    android:hint="Motivo / Observaes"
                     android:inputType="textMultiLine"
                     android:minLines="3"
                     android:gravity="top"
                     android:layout_marginTop="12dp" />
             </LinearLayout>
 
-            <!-- 🔘 Botão principal dinâmico -->
+            <!--  Boto principal dinmico -->
             <Button
                 android:id="@+id/btnAcaoPrincipal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="💾 Adicionar ao Estoque"
+                android:text=" Adicionar ao Estoque"
                 android:textAllCaps="false"
                 android:backgroundTint="#16A34A"
                 android:textColor="#FFFFFF"
@@ -230,3 +230,4 @@
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
+

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- 🔹 Título -->
+        <!--  Ttulo -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp" />
 
-        <!-- 🔹 Campos de entrada -->
+        <!--  Campos de entrada -->
         <EditText
             android:id="@+id/etProduto"
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:id="@+id/etValorUnitario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Valor Unitário (R$)"
+            android:hint="Valor Unitrio (R$)"
             android:inputType="numberDecimal"
             android:layout_marginTop="12dp" />
 
@@ -53,7 +53,7 @@
             android:inputType="numberDecimal"
             android:layout_marginTop="12dp" />
 
-        <!-- 🔹 Valor total -->
+        <!--  Valor total -->
         <TextView
             android:id="@+id/tvValorTotal"
             android:layout_width="match_parent"
@@ -65,14 +65,14 @@
             android:textColor="#388E3C"
             android:layout_marginTop="16dp" />
 
-        <!-- 🔹 Forma de pagamento -->
+        <!--  Forma de pagamento -->
         <Spinner
             android:id="@+id/spPagamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp" />
 
-        <!-- 🔹 Botões para tirar fotos -->
+        <!--  Botes para tirar fotos -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 android:id="@+id/btnFotoProduto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📸 Produto"
+                android:text=" Produto"
                 android:backgroundTint="#1976D2"
                 android:textColor="@android:color/white"
                 android:layout_marginEnd="12dp" />
@@ -93,12 +93,12 @@
                 android:id="@+id/btnFotoVendedor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🧑‍🌾 Vendedor"
+                android:text=" Vendedor"
                 android:backgroundTint="#009688"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
-        <!-- 🔹 Previews lado a lado -->
+        <!--  Previews lado a lado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -159,12 +159,12 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 🔹 Botão salvar -->
+        <!--  Boto salvar -->
         <Button
             android:id="@+id/btnSalvarCompra"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="💾 Salvar Compra"
+            android:text=" Salvar Compra"
             android:textColor="@android:color/white"
             android:backgroundTint="#4CAF50"
             android:layout_marginTop="24dp"
@@ -173,3 +173,4 @@
             android:elevation="2dp" />
     </LinearLayout>
 </ScrollView>
+

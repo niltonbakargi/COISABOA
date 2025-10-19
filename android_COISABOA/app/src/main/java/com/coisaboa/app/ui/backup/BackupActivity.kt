@@ -1,98 +1,110 @@
-package com.coisaboa.app.ui.backup
+﻿package com.coisaboa.app.ui.backup
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.coisaboa.app.databinding.ActivityBackupBinding
-import java.io.File
-import java.io.FileOutputStream
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
+import androidx.lifecycle.lifecycleScope
+import com.coisaboa.app.R
+import com.coisaboa.app.data.backup.BackupDataManager
+import kotlinx.coroutines.launch
 
 class BackupActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityBackupBinding
+    private lateinit var backupManager: BackupDataManager
+    private lateinit var btnFazerBackup: Button
+    private lateinit var btnRestaurarBackup: Button
+    private lateinit var btnVoltar: Button
+    private lateinit var tvStatus: TextView
+    private lateinit var tvBackupInfo: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityBackupBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_backup)
+        supportActionBar?.title = "Backup de Dados"
 
-        supportActionBar?.title = "Backup Manual"
+        // Inicializar backup manager
+        backupManager = BackupDataManager(this)
 
-        // 🟦 Quando clicar em "Fazer Backup"
-        binding.btnBackup.setOnClickListener {
-            try {
-                val backupDir = File(getExternalFilesDir(null), "backups")
-                if (!backupDir.exists()) backupDir.mkdirs()
+        // Inicializar views manualmente
+        btnFazerBackup = findViewById(R.id.btnFazerBackup)
+        btnRestaurarBackup = findViewById(R.id.btnRestaurarBackup)
+        btnVoltar = findViewById(R.id.btnVoltarBackup)
+        tvStatus = findViewById(R.id.tvBackupStatus)
+        tvBackupInfo = findViewById(R.id.tvBackupInfo)
 
-                val backupName = "COISABOA_BACKUP_${System.currentTimeMillis()}.zip"
-                val backupPath = File(backupDir, backupName)
+        configurarEventos()
+        atualizarStatus()
+    }
 
-                binding.tvStatus.text = "⏳ Gerando backup..."
-                criarBackupZip(backupPath)
-
-                binding.tvStatus.text = "✅ Backup criado com sucesso!\n${backupPath.absolutePath}"
-                Toast.makeText(this, "Backup concluído!", Toast.LENGTH_SHORT).show()
-
-            } catch (e: Exception) {
-                binding.tvStatus.text = "❌ Erro ao criar backup: ${e.message}"
-                Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
-            }
+    private fun configurarEventos() {
+        btnFazerBackup.setOnClickListener {
+            fazerBackup()
         }
 
-        // 🔙 Botão Voltar
-        binding.btnVoltar.setOnClickListener {
+        btnRestaurarBackup.setOnClickListener {
+            restaurarBackup()
+        }
+
+        btnVoltar.setOnClickListener {
             finish()
         }
     }
 
-    /**
-     * Função para criar um arquivo ZIP simulando o backup
-     */
-    private fun criarBackupZip(destino: File) {
-        val zipOut = ZipOutputStream(FileOutputStream(destino))
+    private fun fazerBackup() {
+        lifecycleScope.launch {
+            btnFazerBackup.isEnabled = false
+            tvStatus.text = "Criando backup..."
 
-        // Simula o backup de um "banco de dados"
-        val bancoSimulado = File(getExternalFilesDir(null), "coisaboa.db")
-        bancoSimulado.writeText("DADOS SIMULADOS DO BANCO DE DADOS COISABOA")
-        adicionarArquivoZip(zipOut, bancoSimulado, "banco/coisaboa.db")
+            try {
+                val success = backupManager.fazerBackupCompleto()
 
-        // Simula uma pasta de imagens
-        val imagensDir = File(getExternalFilesDir(null), "uploads")
-        if (!imagensDir.exists()) imagensDir.mkdirs()
-
-        val imagemExemplo = File(imagensDir, "exemplo.txt")
-        imagemExemplo.writeText("imagem_fake")
-        adicionarArquivoZip(zipOut, imagemExemplo, "uploads/exemplo.txt")
-
-        // Adiciona informações do backup
-        val info = """
-            Backup do sistema COISABOA
-            Data: ${java.util.Date()}
-            Itens incluídos:
-            - Banco de dados (simulado)
-            - Pasta uploads (simulada)
-        """.trimIndent()
-        val infoFile = File(getExternalFilesDir(null), "info_backup.txt")
-        infoFile.writeText(info)
-        adicionarArquivoZip(zipOut, infoFile, "info/info_backup.txt")
-
-        zipOut.close()
+                if (success) {
+                    tvStatus.text = "Backup concluido!"
+                    Toast.makeText(this@BackupActivity, "Backup criado com sucesso!", Toast.LENGTH_LONG).show()
+                } else {
+                    tvStatus.text = "Falha ao criar backup"
+                    Toast.makeText(this@BackupActivity, "Erro ao criar backup", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                tvStatus.text = "Erro: ${e.message}"
+                Toast.makeText(this@BackupActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+            } finally {
+                btnFazerBackup.isEnabled = true
+                atualizarStatus()
+            }
+        }
     }
 
-    /**
-     * Adiciona um arquivo ao ZIP
-     */
-    private fun adicionarArquivoZip(zipOut: ZipOutputStream, arquivo: File, nome: String) {
-        val buffer = ByteArray(1024)
-        val inputStream = arquivo.inputStream()
-        zipOut.putNextEntry(ZipEntry(nome))
-        var length: Int
-        while (inputStream.read(buffer).also { length = it } > 0) {
-            zipOut.write(buffer, 0, length)
+    private fun restaurarBackup() {
+        if (!backupManager.existeBackupDisponivel()) {
+            Toast.makeText(this, "Nenhum backup disponivel para restaurar", Toast.LENGTH_LONG).show()
+            return
         }
-        zipOut.closeEntry()
-        inputStream.close()
+        Toast.makeText(this, "Funcionalidade de restauracao em desenvolvimento", Toast.LENGTH_LONG).show()
+    }
+
+    private fun atualizarStatus() {
+        val existeBackup = backupManager.existeBackupDisponivel()
+        val backupInfo = backupManager.getBackupInfo()
+        
+        if (existeBackup) {
+            tvBackupInfo.text = """
+                Status do Backup:
+                • Backup disponivel: SIM
+                • Informacao: $backupInfo
+                • Pronto para restaurar: SIM
+            """.trimIndent()
+            btnRestaurarBackup.isEnabled = true
+        } else {
+            tvBackupInfo.text = """
+                Status do Backup:
+                • Backup disponivel: NAO
+                • Informacao: $backupInfo
+                • Recomendacao: Faca seu primeiro backup!
+            """.trimIndent()
+            btnRestaurarBackup.isEnabled = false
+        }
     }
 }

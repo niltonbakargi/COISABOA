@@ -11,19 +11,19 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <!-- 🏷️ Título -->
+        <!--  Ttulo -->
         <TextView
             android:id="@+id/tvTituloVendas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Relatório de Vendas"
+            android:text="Relatrio de Vendas"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#1E293B"
             android:gravity="center"
             android:paddingBottom="16dp" />
 
-        <!-- 🗓️ Filtros de Data -->
+        <!--  Filtros de Data -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="📅 Data Início"
+                android:text=" Data Incio"
                 android:textAllCaps="false"
                 android:backgroundTint="#3B82F6"
                 android:textColor="#FFFFFF"
@@ -47,13 +47,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="📅 Data Fim"
+                android:text=" Data Fim"
                 android:textAllCaps="false"
                 android:backgroundTint="#3B82F6"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
 
-        <!-- 🔄 Barra de Progresso -->
+        <!--  Barra de Progresso -->
         <ProgressBar
             android:id="@+id/progressBarVendas"
             android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
             android:visibility="gone"
             android:layout_marginBottom="20dp" />
 
-        <!-- 📊 Cartões de Resumo -->
+        <!--  Cartes de Resumo -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
                     android:textColor="#92400E" />
             </LinearLayout>
 
-            <!-- Ticket Médio -->
+            <!-- Ticket Mdio -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ticket Médio"
+                    android:text="Ticket Mdio"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="#581C87" />
@@ -181,7 +181,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- ⚙️ Botões -->
+        <!--  Botes -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -194,7 +194,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="📤 Gerar Relatório"
+                android:text=" Gerar Relatrio"
                 android:textAllCaps="false"
                 android:backgroundTint="#10B981"
                 android:textColor="#FFFFFF"
@@ -205,7 +205,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="↩️ Voltar"
+                android:text=" Voltar"
                 android:textAllCaps="false"
                 android:backgroundTint="#6B7280"
                 android:textColor="#FFFFFF" />
@@ -213,3 +213,4 @@
 
     </LinearLayout>
 </ScrollView>
+

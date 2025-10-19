@@ -11,7 +11,7 @@
         android:padding="24dp"
         android:gravity="center_horizontal">
 
-        <!-- 👋 Saudação -->
+        <!--  Saudao -->
         <TextView
             android:id="@+id/tvHello"
             android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:gravity="center"
             android:paddingBottom="24dp" />
 
-        <!-- 🧾 Descrição -->
+        <!--  Descrio -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:gravity="center"
             android:paddingBottom="30dp" />
 
-        <!-- 🔐 Botão de Entrar -->
+        <!--  Boto de Entrar -->
         <Button
             android:id="@+id/btnEntrar"
             android:layout_width="match_parent"
@@ -45,7 +45,7 @@
             android:padding="14dp"
             android:layout_marginBottom="20dp" />
 
-        <!-- 🚪 Botão de Sair -->
+        <!--  Boto de Sair -->
         <Button
             android:id="@+id/btnSair"
             android:layout_width="match_parent"
@@ -58,3 +58,4 @@
 
     </LinearLayout>
 </ScrollView>
+

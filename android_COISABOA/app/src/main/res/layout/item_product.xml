@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <!-- 🏷️ Nome do produto -->
+        <!--  Nome do produto -->
         <TextView
             android:id="@+id/tvNome"
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:textColor="@android:color/black"
             android:layout_marginBottom="4dp" />
 
-        <!-- 💰 Preço de revenda -->
+        <!--  Preo de revenda -->
         <TextView
             android:id="@+id/tvPreco"
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:textSize="14sp"
             android:layout_marginBottom="4dp" />
 
-        <!-- 📦 Quantidade em estoque -->
+        <!--  Quantidade em estoque -->
         <TextView
             android:id="@+id/tvQuantidade"
             android:layout_width="match_parent"
@@ -46,3 +46,4 @@
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+
