@@ -1,13 +1,11 @@
 ﻿package com.coisaboa.app.data.backup
 
 import android.content.Context
+import android.os.Environment
 import android.util.Log
-import androidx.lifecycle.lifecycleScope
 import com.coisaboa.app.config.DatabaseProvider
 import com.coisaboa.app.data.entity.ProductEntity
 import com.coisaboa.app.data.entity.SaleEntity
-import com.coisaboa.app.data.repository.ProductRepository
-import com.coisaboa.app.data.repository.SaleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -16,188 +14,178 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
-/**
- * Gerenciador de backup usando JSONObject nativo
- */
 class BackupDataManager(private val context: Context) {
 
-    companion object {
-        private const val TAG = "BackupDataManager"
-        private const val BACKUP_FOLDER = "COISABOA"
-        private const val CURRENT_BACKUP_FILE = "backup_data.json"
-        private const val PREVIOUS_BACKUP_FILE = "backup_data_previous.json"
-    }
+    private val TAG = "BackupDataManager"
 
-    /**
-     * Faz backup completo dos dados com rotação
-     */
-    suspend fun fazerBackupCompleto(): Boolean {
-        return try {
-            Log.d(TAG, "Iniciando backup completo...")
-
-            // 1. Rotacionar backup anterior se existir
-            rotacionarBackupAnterior()
-
-            // 2. Coletar dados atuais
-            val backupData = coletarDadosAtuais()
-
-            // 3. Salvar novo backup
-            val success = salvarBackup(backupData, CURRENT_BACKUP_FILE)
-
-            if (success) {
-                Log.d(TAG, "Backup concluído com sucesso")
-                true
-            } else {
-                Log.e(TAG, "Falha ao salvar backup")
-                false
-            }
-
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro durante backup: ${e.message}", e)
-            false
-        }
-    }
-
-    /**
-     * Rotaciona backup atual para anterior
-     */
-    private fun rotacionarBackupAnterior() {
+    suspend fun fazerBackup(): Boolean = withContext(Dispatchers.IO) {
         try {
-            val backupDir = getBackupDirectory()
-            val currentFile = File(backupDir, CURRENT_BACKUP_FILE)
-            val previousFile = File(backupDir, PREVIOUS_BACKUP_FILE)
-
-            if (currentFile.exists()) {
-                if (previousFile.exists()) {
-                    previousFile.delete()
-                }
-                currentFile.renameTo(previousFile)
-                Log.d(TAG, "Backup anterior rotacionado")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao rotacionar backup anterior: ${e.message}")
-        }
-    }
-
-    /**
-     * Coleta todos os dados atuais do banco
-     */
-    private suspend fun coletarDadosAtuais(): JSONObject {
-        return withContext(Dispatchers.IO) {
             val database = DatabaseProvider.get(context)
-            val productRepository = ProductRepository(database.productDao())
-            val saleRepository = SaleRepository(database.saleDao(), productRepository)
+            val productDao = database.productDao()
+            val saleDao = database.saleDao()
 
-            val products = productRepository.getAll()
-            val sales = saleRepository.getAll()
-
-            Log.d(TAG, "Dados coletados: ${products.size} produtos, ${sales.size} vendas")
-
-            val jsonObject = JSONObject()
-            
-            // Metadata
-            jsonObject.put("timestamp", SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).format(Date()))
-            jsonObject.put("appVersion", "1.0.0")
-            jsonObject.put("recordCounts", JSONObject().apply {
-                put("products", products.size)
-                put("sales", sales.size)
-            })
-            
-            // Products array
-            val productsArray = JSONArray()
-            products.forEach { product ->
-                val productJson = JSONObject()
-                productJson.put("id", product.id)
-                productJson.put("nome", product.nome)
-                productJson.put("quantidade", product.quantidade)
-                product.valorEstimado?.let { productJson.put("valorEstimado", it) }
-                product.valorRevenda?.let { productJson.put("valorRevenda", it) }
-                product.caminhoImagem?.let { productJson.put("caminhoImagem", it) }
-                product.observacoes?.let { productJson.put("observacoes", it) }
-                productsArray.put(productJson)
+            val json = JSONObject().apply {
+                put("timestamp", System.currentTimeMillis())
+                put("appVersion", "1.0")
+                
+                // Produtos
+                put("products", JSONArray().apply {
+                    productDao.getAll().forEach { product ->
+                        put(JSONObject().apply {
+                            put("nome", product.nome)
+                            put("quantidade", product.quantidade)
+                            put("valorEstimado", product.valorEstimado ?: 0.0)
+                            put("valorRevenda", product.valorRevenda ?: 0.0)
+                            put("caminhoImagem", product.caminhoImagem ?: "")
+                            put("observacoes", product.observacoes ?: "")
+                        })
+                    }
+                })
+                
+                // Vendas
+                put("sales", JSONArray().apply {
+                    saleDao.getAll().forEach { sale ->
+                        put(JSONObject().apply {
+                            put("produtoNome", sale.produtoNome)
+                            put("quantidade", sale.quantidade)
+                            put("valorUnitario", sale.valorUnitario)
+                            put("valorTotal", sale.valorTotal)
+                            put("valorEstimado", sale.valorEstimado ?: 0.0)
+                            put("formaPagamento", sale.formaPagamento ?: "")
+                            put("observacoes", sale.observacoes ?: "")
+                            put("dataVenda", sale.dataVenda?.time ?: System.currentTimeMillis())
+                        })
+                    }
+                })
             }
-            jsonObject.put("products", productsArray)
-            
-            // Sales array
-            val salesArray = JSONArray()
-            sales.forEach { sale ->
-                val saleJson = JSONObject()
-                saleJson.put("id", sale.id)
-                saleJson.put("produtoNome", sale.produtoNome)
-                saleJson.put("quantidade", sale.quantidade)
-                saleJson.put("valorUnitario", sale.valorUnitario)
-                saleJson.put("valorTotal", sale.valorTotal)
-                sale.valorEstimado?.let { saleJson.put("valorEstimado", it) }
-                sale.formaPagamento?.let { saleJson.put("formaPagamento", it) }
-                sale.observacoes?.let { saleJson.put("observacoes", it) }
-                sale.dataVenda?.let { saleJson.put("dataVenda", it.time) }
-                salesArray.put(saleJson)
-            }
-            jsonObject.put("sales", salesArray)
 
-            jsonObject
-        }
-    }
-
-    /**
-     * Salva dados em arquivo JSON
-     */
-    private fun salvarBackup(backupData: JSONObject, fileName: String): Boolean {
-        return try {
+            // Criar pasta com data
             val backupDir = getBackupDirectory()
+            Log.d(TAG, "📁 Salvando backup em: ${backupDir.absolutePath}")
+            
             if (!backupDir.exists()) {
                 backupDir.mkdirs()
+                Log.d(TAG, "✅ Diretório criado: ${backupDir.exists()}")
             }
 
-            val backupFile = File(backupDir, fileName)
-            val jsonString = backupData.toString(2) // indentação de 2 espaços
+            // Nome do arquivo com data e hora
+            val fileDateFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")
+            val timestamp = fileDateFormat.format(Date())
+            val backupFileName = "backup_$timestamp.json"
+            val backupFile = File(backupDir, backupFileName)
 
-            FileOutputStream(backupFile).use { output ->
-                output.write(jsonString.toByteArray())
+            FileOutputStream(backupFile).use { 
+                it.write(json.toString(2).toByteArray()) 
             }
 
-            Log.d(TAG, "Backup salvo: ${backupFile.absolutePath}")
-            Log.d(TAG, "Tamanho do backup: ${jsonString.length} bytes")
+            Log.d(TAG, "✅ Backup salvo com sucesso!")
+            Log.d(TAG, "📊 Arquivo: ${backupFile.name}")
+            Log.d(TAG, "📁 Caminho: ${backupFile.absolutePath}")
+            
             true
-
         } catch (e: Exception) {
-            Log.e(TAG, "Erro ao salvar backup: ${e.message}")
+            Log.e(TAG, "❌ Erro no backup: ${e.message}", e)
+            false
+        }
+    }
+
+    suspend fun restaurarBackup(): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val database = DatabaseProvider.get(context)
+            val productDao = database.productDao()
+            val saleDao = database.saleDao()
+
+            val backupDir = getBackupDirectory()
+            val backupFiles = backupDir.listFiles { file -> file.name.endsWith(".json") }
+            val backupFile = backupFiles?.maxByOrNull { it.lastModified() }
+
+            if (backupFile == null || !backupFile.exists()) {
+                Log.e(TAG, "❌ Arquivo de backup não encontrado")
+                return@withContext false
+            }
+
+            val jsonString = backupFile.readText()
+            val json = JSONObject(jsonString)
+
+            // Restaurar produtos (com IDs zerados)
+            json.getJSONArray("products").let { products ->
+                for (i in 0 until products.length()) {
+                    val p = products.getJSONObject(i)
+                    productDao.insert(ProductEntity(
+                        id = 0,
+                        nome = p.getString("nome"),
+                        quantidade = p.getInt("quantidade"),
+                        valorEstimado = p.getDouble("valorEstimado"),
+                        valorRevenda = p.getDouble("valorRevenda"),
+                        caminhoImagem = p.getString("caminhoImagem"),
+                        observacoes = p.getString("observacoes")
+                    ))
+                }
+            }
+
+            // Restaurar vendas (com IDs zerados)
+            json.getJSONArray("sales").let { sales ->
+                for (i in 0 until sales.length()) {
+                    val s = sales.getJSONObject(i)
+                    saleDao.insert(SaleEntity(
+                        id = 0,
+                        produtoNome = s.getString("produtoNome"),
+                        quantidade = s.getInt("quantidade"),
+                        valorUnitario = s.getDouble("valorUnitario"),
+                        valorTotal = s.getDouble("valorTotal"),
+                        valorEstimado = s.getDouble("valorEstimado"),
+                        formaPagamento = s.getString("formaPagamento"),
+                        observacoes = s.getString("observacoes"),
+                        dataVenda = Date(s.getLong("dataVenda"))
+                    ))
+                }
+            }
+
+            Log.d(TAG, "✅ Restauração concluída do arquivo: ${backupFile.name}")
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro na restauração: ${e.message}", e)
             false
         }
     }
 
     /**
-     * Obtém diretório de backup
+     * CAMINHO COM DATA - Salva em Documents/COISABOA_AAAA-MM-DD/
      */
     private fun getBackupDirectory(): File {
-        return File(context.getExternalFilesDir(null), BACKUP_FOLDER)
+        // Formatar data atual: COISABOA_2024-01-19
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val dataAtual = dateFormat.format(Date())
+        val nomePasta = "COISABOA_$dataAtual"
+        
+        // Salva em Documents/COISABOA_AAAA-MM-DD/
+        val docsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val coisaboaDir = File(docsDir, nomePasta)
+        
+        Log.d(TAG, "📁 Diretório de backup: ${coisaboaDir.absolutePath}")
+        
+        return coisaboaDir
     }
 
-    /**
-     * Verifica se existe backup disponível
-     */
-    fun existeBackupDisponivel(): Boolean {
+    fun backupExiste(): Boolean {
         val backupDir = getBackupDirectory()
-        val currentFile = File(backupDir, CURRENT_BACKUP_FILE)
-        val previousFile = File(backupDir, PREVIOUS_BACKUP_FILE)
-
-        return currentFile.exists() || previousFile.exists()
+        return backupDir.exists() && backupDir.listFiles { file -> file.name.endsWith(".json") }?.isNotEmpty() == true
     }
 
-    /**
-     * Obtém informações sobre os backups
-     */
+    fun getBackupPath(): String {
+        val backupDir = getBackupDirectory()
+        val backupFile = backupDir.listFiles { file -> file.name.endsWith(".json") }?.maxByOrNull { it.lastModified() }
+        return backupFile?.absolutePath ?: "Nenhum backup encontrado"
+    }
+
     fun getBackupInfo(): String {
         val backupDir = getBackupDirectory()
-        val currentFile = File(backupDir, CURRENT_BACKUP_FILE)
-        val previousFile = File(backupDir, PREVIOUS_BACKUP_FILE)
-
-        return when {
-            currentFile.exists() -> "Backup atual disponivel"
-            previousFile.exists() -> "Backup anterior disponivel"
-            else -> "Nenhum backup disponivel"
+        val backupFile = backupDir.listFiles { file -> file.name.endsWith(".json") }?.maxByOrNull { it.lastModified() }
+        return if (backupFile != null && backupFile.exists()) {
+            "Backup: ${backupFile.name}"
+        } else {
+            "Sem backup"
         }
     }
 }

@@ -58,7 +58,7 @@ class BackupActivity : AppCompatActivity() {
             tvStatus.text = "Criando backup..."
 
             try {
-                val success = backupManager.fazerBackupCompleto()
+                val success = backupManager.fazerBackup()
 
                 if (success) {
                     tvStatus.text = "Backup concluido!"
@@ -78,7 +78,7 @@ class BackupActivity : AppCompatActivity() {
     }
 
     private fun restaurarBackup() {
-        if (!backupManager.existeBackupDisponivel()) {
+        if (!backupManager.backupExiste()) {
             Toast.makeText(this, "Nenhum backup disponivel para restaurar", Toast.LENGTH_LONG).show()
             return
         }
@@ -86,7 +86,7 @@ class BackupActivity : AppCompatActivity() {
     }
 
     private fun atualizarStatus() {
-        val existeBackup = backupManager.existeBackupDisponivel()
+        val existeBackup = backupManager.backupExiste()
         val backupInfo = backupManager.getBackupInfo()
         
         if (existeBackup) {
@@ -108,3 +108,7 @@ class BackupActivity : AppCompatActivity() {
         }
     }
 }
+
+
+
+
