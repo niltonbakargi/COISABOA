@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Environment
 import android.util.Log
 import com.coisaboa.app.config.DatabaseProvider
+import com.coisaboa.app.data.dao.ProductDao
 import com.coisaboa.app.data.entity.ProductEntity
 import com.coisaboa.app.data.entity.SaleEntity
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,98 @@ import java.util.Date
 class BackupDataManager(private val context: Context) {
 
     private val TAG = "BackupDataManager"
+
+    /**
+     * Copia imagens dos produtos para a pasta de backup
+     */
+    private suspend fun copiarImagensParaBackup(backupDir: File, productDao: ProductDao): Int {
+        var imagensCopiadas = 0
+        try {
+            val imagensDir = File(backupDir, "imagens")
+            if (!imagensDir.exists()) {
+                imagensDir.mkdirs()
+            }
+
+            val produtos = withContext(Dispatchers.IO) { productDao.getAll() }
+            produtos.forEach { produto ->
+                produto.caminhoImagem?.let { caminhoImagem ->
+                    if (caminhoImagem.isNotEmpty()) {
+                        val arquivoOriginal = File(caminhoImagem)
+                        if (arquivoOriginal.exists()) {
+                            val extensao = arquivoOriginal.extension
+                            val nomeArquivo = "produto_${produto.id}.$extensao"
+                            val arquivoBackup = File(imagensDir, nomeArquivo)
+                            
+                            arquivoOriginal.copyTo(arquivoBackup, overwrite = true)
+                            imagensCopiadas++
+                            Log.d(TAG, "📸 Imagem copiada: $nomeArquivo")
+                        } else {
+                            Log.w(TAG, "⚠️ Imagem não encontrada: $caminhoImagem")
+                        }
+                    }
+                }
+            }
+            Log.d(TAG, "✅ $imagensCopiadas imagens copiadas para backup")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao copiar imagens: ${e.message}")
+        }
+        return imagensCopiadas
+    }
+
+    /**
+     * Restaura imagens do backup para o dispositivo
+     */
+    private suspend fun restaurarImagens(backupDir: File, productDao: ProductDao): Int {
+        var imagensRestauradas = 0
+        try {
+            val imagensDir = File(backupDir, "imagens")
+            if (!imagensDir.exists()) {
+                Log.d(TAG, "📁 Nenhuma pasta de imagens encontrada no backup")
+                return 0
+            }
+
+            val produtos = withContext(Dispatchers.IO) { productDao.getAll() }
+            val arquivosImagem = imagensDir.listFiles { file -> 
+                file.extension in listOf("jpg", "jpeg", "png", "webp")
+            }
+
+            arquivosImagem?.forEach { arquivoBackup ->
+                try {
+                    // Extrair ID do produto do nome do arquivo: produto_123.jpg → 123
+                    val nome = arquivoBackup.nameWithoutExtension
+                    val idProduto = nome.removePrefix("produto_").toLongOrNull()
+                    
+                    idProduto?.let { id ->
+                        val produto = produtos.find { it.id == id }
+                        produto?.let { p ->
+                            // Criar diretório de imagens do app se não existir
+                            val picsDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "COISABOA")
+                            if (!picsDir.exists()) {
+                                picsDir.mkdirs()
+                            }
+                            
+                            val novoCaminho = File(picsDir, "produto_${p.id}.${arquivoBackup.extension}")
+                            arquivoBackup.copyTo(novoCaminho, overwrite = true)
+                            
+                            // Atualizar caminho da imagem no produto
+                            val produtoAtualizado = p.copy(caminhoImagem = novoCaminho.absolutePath)
+                            productDao.insert(produtoAtualizado)
+                            
+                            imagensRestauradas++
+                            Log.d(TAG, "📸 Imagem restaurada: ${novoCaminho.name}")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "❌ Erro ao restaurar imagem ${arquivoBackup.name}: ${e.message}")
+                }
+            }
+            
+            Log.d(TAG, "✅ $imagensRestauradas imagens restauradas")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erro ao restaurar imagens: ${e.message}")
+        }
+        return imagensRestauradas
+    }
 
     suspend fun fazerBackup(): Boolean = withContext(Dispatchers.IO) {
         try {
@@ -83,6 +176,10 @@ class BackupDataManager(private val context: Context) {
             Log.d(TAG, "📊 Arquivo: ${backupFile.name}")
             Log.d(TAG, "📁 Caminho: ${backupFile.absolutePath}")
             
+            // Copiar imagens para o backup
+            val imagensCopiadas = copiarImagensParaBackup(backupDir, productDao)
+            Log.d(TAG, "📸 $imagensCopiadas imagens incluídas no backup")
+            
             true
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro no backup: ${e.message}", e)
@@ -143,6 +240,11 @@ class BackupDataManager(private val context: Context) {
             }
 
             Log.d(TAG, "✅ Restauração concluída do arquivo: ${backupFile.name}")
+            
+            // Restaurar imagens do backup
+            val imagensRestauradas = restaurarImagens(backupDir, productDao)
+            Log.d(TAG, "📸 $imagensRestauradas imagens restauradas")
+            
             true
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erro na restauração: ${e.message}", e)
@@ -189,3 +291,4 @@ class BackupDataManager(private val context: Context) {
         }
     }
 }
+
