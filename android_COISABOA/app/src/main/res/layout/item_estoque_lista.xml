@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="@drawable/bg_card_produto"
+    android:layout_margin="4dp">
+
+    <!-- Imagem do Produto -->
+    <ImageView
+        android:id="@+id/ivProduto"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_placeholder"
+        android:layout_marginEnd="12dp" />
+
+    <!-- Informações do Produto -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvNomeProduto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome do Produto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tvQuantidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quantidade: 0"
+            android:textSize="14sp"
+            android:layout_marginBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tvValorCusto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Custo: R$ 0,00"
+            android:textSize="14sp"
+            android:layout_marginBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tvValorRevenda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Revenda: R$ 0,00"
+            android:textSize="14sp"
+            android:layout_marginBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tvObservacoes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Observações"
+            android:textSize="12sp"
+            android:textColor="#666"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</LinearLayout>

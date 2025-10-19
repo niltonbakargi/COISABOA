@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * 📊 RelatóriosActivity
+ * 📊 RelatoriosActivity
  * Tela hub dos relatórios do sistema:
  * - Exibe resumo geral de produtos, estoque e lucro potencial
  * - Abre Relatório Financeiro
  * - Abre Relatório de Vendas
- * - Abre (futuro) Relatório de Estoque
+ * - Abre Relatório de Estoque
  */
 class RelatoriosActivity : AppCompatActivity() {
 
@@ -65,12 +65,10 @@ class RelatoriosActivity : AppCompatActivity() {
             startActivity(Intent(this, VendasActivity::class.java))
         }
 
-        // 📦 Relatório de Estoque (placeholder)
+        // 📦 Abre o Relatório de Estoque (AGORA FUNCIONAL)
         btnRelatorioEstoque.setOnClickListener {
-            tvResumo.text = """
-                📦 Em breve: Relatório detalhado de estoque.
-                Aqui serão exibidos produtos com quantidades e valorização.
-            """.trimIndent()
+            val intent = Intent(this, EstoqueListaActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -80,6 +80,14 @@
             android:label="Relatório de Vendas"
             android:theme="@style/Theme.COISABOA" />
 
+        <!-- 📦 RELATÓRIO DE ESTOQUE (NOVA - ADICIONADA AGORA) -->
+        <activity
+            android:name=".ui.relatorios.EstoqueListaActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:label="Relatório de Estoque"
+            android:theme="@style/Theme.COISABOA" />
+
         <!-- ☁️ Tela de Backup -->
         <activity
             android:name=".ui.backup.BackupActivity"
