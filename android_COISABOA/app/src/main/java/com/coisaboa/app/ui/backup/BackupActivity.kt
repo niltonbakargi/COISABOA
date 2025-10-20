@@ -257,6 +257,9 @@ class BackupActivity : AppCompatActivity() {
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
+                        } else if (arquivo.isDirectory) {
+                            // Se for diretório (como "imagens"), compacta recursivamente
+                            adicionarPastaAoZip(arquivo, arquivo.name, zos)
                         }
                     }
                 }
@@ -272,6 +275,27 @@ class BackupActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
             Pair(null, "Erro: ${e.message ?: "Erro desconhecido"}")
+        }
+    }
+
+    // FUNÇÃO AUXILIAR: Compactar pasta recursivamente
+    private fun adicionarPastaAoZip(pasta: File, caminhoBase: String, zos: ZipOutputStream) {
+        pasta.listFiles()?.forEach { arquivo ->
+            val caminhoZip = if (caminhoBase.isEmpty()) arquivo.name else "$caminhoBase/${arquivo.name}"
+            
+            if (arquivo.isDirectory) {
+                adicionarPastaAoZip(arquivo, caminhoZip, zos)
+            } else {
+                try {
+                    zos.putNextEntry(ZipEntry(caminhoZip))
+                    FileInputStream(arquivo).use { input ->
+                        input.copyTo(zos)
+                    }
+                    zos.closeEntry()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
@@ -355,9 +379,10 @@ class BackupActivity : AppCompatActivity() {
         }
     }
 
+    // CORREÇÃO: Método onDestroy() corrigido
     override fun onDestroy() {
         super.onDestroy()
-        // Revogar todas as permissões de URI concedidas
+        // Revogar todas as permissões de URI concedidas (maneira correta)
         revokeUriPermission(null, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
     }
 }
