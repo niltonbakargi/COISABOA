@@ -4,10 +4,11 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,12 +25,12 @@ import java.io.File
 import java.util.*
 
 /**
- * 🛒 VenderActivity
- * Registra vendas com seletor de produtos filtrável, fechamento automático e imagem exibida.
+ * 🛒 VenderActivity (versão revisada e compatível)
+ * Registra vendas de forma segura, sem movimentar estoque antes do clique em “Salvar”.
  */
 class VenderActivity : AppCompatActivity() {
 
-    // 🔹 Elementos da interface
+    // 🔹 Componentes da interface
     private lateinit var etProduto: EditText
     private lateinit var etQuantidade: EditText
     private lateinit var etValorUnitario: EditText
@@ -47,17 +48,25 @@ class VenderActivity : AppCompatActivity() {
 
     // 🔹 Estado
     private var produtoSelecionado: ProductEntity? = null
+    private var bloqueioMovimentacao = false // ✅ impede duplo clique ou acionamento indevido
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vender)
         supportActionBar?.title = "Nova Venda"
 
+        // ✅ Inicializa repositórios (sem Context extra)
         val db = DatabaseProvider.get(this)
         productRepo = ProductRepository(db.productDao())
         saleRepo = SaleRepository(db.saleDao(), productRepo)
 
-        // Vincula elementos de interface
+        inicializarComponentes()
+        configurarSpinnerPagamento()
+        configurarEventos()
+    }
+
+    /** 🔧 Vincula elementos da tela */
+    private fun inicializarComponentes() {
         etProduto = findViewById(R.id.etProduto)
         etQuantidade = findViewById(R.id.etQuantidade)
         etValorUnitario = findViewById(R.id.etValorUnitario)
@@ -68,22 +77,23 @@ class VenderActivity : AppCompatActivity() {
         btnSalvar = findViewById(R.id.btnSalvarVenda)
         btnSelecionarProduto = findViewById(R.id.btnSelecionarProduto)
         imgProduto = findViewById(R.id.imgProduto)
-
-        configurarSpinnerPagamento()
-        configurarEventos()
+        imgProduto.isClickable = false
+        imgProduto.isFocusable = false
     }
 
-    /** 💳 Preenche o Spinner de formas de pagamento */
+    /** 💳 Preenche o Spinner com formas de pagamento */
     private fun configurarSpinnerPagamento() {
         val formasPagamento = arrayOf(
             "Dinheiro", "PIX", "Cartão de Crédito", "Cartão de Débito", "Transferência", "Outro"
         )
         spPagamento.adapter = ArrayAdapter(
-            this, android.R.layout.simple_spinner_dropdown_item, formasPagamento
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            formasPagamento
         )
     }
 
-    /** 🔧 Configura eventos de texto e cliques */
+    /** ⚙️ Configura eventos de campos e botões */
     private fun configurarEventos() {
         val atualizarTotal = {
             val qtd = etQuantidade.text.toString().toIntOrNull() ?: 0
@@ -100,18 +110,18 @@ class VenderActivity : AppCompatActivity() {
         etQuantidade.addTextChangedListener(watcher)
         etValorUnitario.addTextChangedListener(watcher)
 
-        btnSelecionarProduto.setOnClickListener { abrirDialogoProdutosFiltravel() }
+        btnSelecionarProduto.setOnClickListener { abrirDialogoProdutos() }
         btnSalvar.setOnClickListener { salvarVenda() }
     }
 
-    /** 🔍 Diálogo filtrável de produtos (fecha automaticamente após seleção) */
-    private fun abrirDialogoProdutosFiltravel() {
+    /** 🔍 Diálogo de seleção de produtos com busca dinâmica */
+    private fun abrirDialogoProdutos() {
         lifecycleScope.launch(Dispatchers.IO) {
             val produtos = productRepo.getAll().filter { it.quantidade > 0 }
 
             withContext(Dispatchers.Main) {
                 if (produtos.isEmpty()) {
-                    Toast.makeText(this@VenderActivity, "Nenhum produto disponível no estoque!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@VenderActivity, "Nenhum produto disponível no estoque.", Toast.LENGTH_SHORT).show()
                     return@withContext
                 }
 
@@ -121,18 +131,16 @@ class VenderActivity : AppCompatActivity() {
                 val rvProdutos = view.findViewById<RecyclerView>(R.id.rvListaProdutos)
                 val tvEmpty = view.findViewById<TextView>(R.id.tvSemResultados)
 
-                // Cria o diálogo primeiro para poder fechá-lo dentro do adapter
                 val dialog = AlertDialog.Builder(this@VenderActivity)
                     .setTitle("Selecionar produto")
                     .setView(view)
                     .setNegativeButton("Cancelar", null)
                     .create()
 
-                // Adapter com fechamento automático e feedback
                 val adapter = ProdutoDialogAdapter { produto ->
                     preencherCamposProduto(produto)
                     Toast.makeText(this@VenderActivity, "✅ Produto selecionado: ${produto.nome}", Toast.LENGTH_SHORT).show()
-                    dialog.dismiss() // ✅ Fecha o diálogo ao selecionar
+                    dialog.dismiss()
                 }
 
                 rvProdutos.layoutManager = LinearLayoutManager(this@VenderActivity)
@@ -156,13 +164,12 @@ class VenderActivity : AppCompatActivity() {
         }
     }
 
-    /** 🧾 Preenche campos da tela após selecionar produto */
+    /** 🧾 Preenche campos e imagem após selecionar produto */
     private fun preencherCamposProduto(p: ProductEntity) {
         produtoSelecionado = p
         etProduto.setText(p.nome)
         tvValorEstimado.text = "Valor estimado: R$ %.2f".format(p.valorEstimado ?: 0.0)
 
-        // 💲 Define valor unitário com prioridade para valorRevenda
         val preco = when {
             (p.valorRevenda ?: 0.0) > 0.0 -> p.valorRevenda!!
             (p.valorEstimado ?: 0.0) > 0.0 -> p.valorEstimado!!
@@ -170,7 +177,6 @@ class VenderActivity : AppCompatActivity() {
         }
         etValorUnitario.setText("%.2f".format(preco))
 
-        // 🖼️ Exibe imagem do produto
         val caminho = p.caminhoImagem
         if (!caminho.isNullOrEmpty()) {
             val arquivo = File(caminho)
@@ -183,10 +189,15 @@ class VenderActivity : AppCompatActivity() {
         } else {
             imgProduto.setImageResource(R.drawable.ic_placeholder)
         }
+
+        Log.d("VENDER", "Produto '${p.nome}' selecionado. Nenhuma movimentação ainda.")
     }
 
-    /** 💾 Valida e registra nova venda */
+    /** 💾 Registra venda no banco (somente após clique em “Salvar”) */
     private fun salvarVenda() {
+        if (bloqueioMovimentacao) return
+        bloqueioMovimentacao = true
+
         val produto = produtoSelecionado
         val qtd = etQuantidade.text.toString().toIntOrNull() ?: 0
         val valor = etValorUnitario.text.toString().toDoubleOrNull() ?: 0.0
@@ -195,16 +206,20 @@ class VenderActivity : AppCompatActivity() {
 
         when {
             produto == null -> {
-                Toast.makeText(this, "Selecione um produto.", Toast.LENGTH_SHORT).show(); return
+                Toast.makeText(this, "Selecione um produto.", Toast.LENGTH_SHORT).show()
+                bloqueioMovimentacao = false; return
             }
             qtd <= 0 -> {
-                Toast.makeText(this, "Informe uma quantidade válida.", Toast.LENGTH_SHORT).show(); return
+                Toast.makeText(this, "Informe uma quantidade válida.", Toast.LENGTH_SHORT).show()
+                bloqueioMovimentacao = false; return
             }
             valor <= 0.0 -> {
-                Toast.makeText(this, "Informe um valor unitário válido.", Toast.LENGTH_SHORT).show(); return
+                Toast.makeText(this, "Informe um valor unitário válido.", Toast.LENGTH_SHORT).show()
+                bloqueioMovimentacao = false; return
             }
             qtd > produto.quantidade -> {
-                Toast.makeText(this, "Estoque insuficiente: disponível ${produto.quantidade}.", Toast.LENGTH_LONG).show(); return
+                Toast.makeText(this, "Estoque insuficiente: disponível ${produto.quantidade}.", Toast.LENGTH_LONG).show()
+                bloqueioMovimentacao = false; return
             }
         }
 
@@ -221,16 +236,19 @@ class VenderActivity : AppCompatActivity() {
                     dataVenda = Date()
                 )
 
-                saleRepo.insert(venda)
-                productRepo.decreaseStock(produto.id, qtd)
+                saleRepo.insert(venda) // ✅ sem reduzir estoque duplicado
+                Log.d("VENDER", "Venda registrada no banco: ${venda.produtoNome}")
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@VenderActivity, "✅ Venda registrada com sucesso!", Toast.LENGTH_LONG).show()
+                    bloqueioMovimentacao = false
                     finish()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@VenderActivity, "Erro ao salvar venda: ${e.message}", Toast.LENGTH_LONG).show()
+                    bloqueioMovimentacao = false
+                    Toast.makeText(this@VenderActivity, "Erro ao registrar venda: ${e.message}", Toast.LENGTH_LONG).show()
+                    Log.e("VENDER", "Erro ao salvar venda", e)
                 }
             }
         }

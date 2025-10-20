@@ -2,6 +2,7 @@ package com.coisaboa.app.ui.relatorios
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -17,9 +18,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * 📈 VendasActivity
- * Exibe o relatório de vendas com filtro por período:
- * - Total de vendas
+ * 📈 VendasActivity (versão padronizada)
+ * Exibe o relatório de vendas filtrado por período, incluindo:
+ * - Número total de vendas
  * - Quantidade total de itens vendidos
  * - Valor total vendido
  * - Ticket médio
@@ -37,12 +38,12 @@ class VendasActivity : AppCompatActivity() {
     private lateinit var btnVoltar: Button
     private lateinit var progressBar: ProgressBar
 
-    // 📅 Datas
+    // 📅 Controle de datas
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private var dataInicio: Date? = null
     private var dataFim: Date? = null
 
-    // 🗃️ Banco e repositórios
+    // 🗃️ Repositórios
     private lateinit var productRepo: ProductRepository
     private lateinit var saleRepo: SaleRepository
 
@@ -62,7 +63,10 @@ class VendasActivity : AppCompatActivity() {
         carregarRelatorio()
     }
 
-    /** 🔧 Inicializa os componentes da interface */
+    // ============================================================
+    // 🔧 Inicialização e configuração de eventos
+    // ============================================================
+
     private fun inicializarComponentes() {
         tvTotalVendas = findViewById(R.id.tvTotalVendas)
         tvItensVendidos = findViewById(R.id.tvItensVendidos)
@@ -75,18 +79,18 @@ class VendasActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBarVendas)
     }
 
-    /** ⚙️ Configura os eventos dos botões */
     private fun configurarEventos() {
         btnDataInicio.setOnClickListener { selecionarData(true) }
         btnDataFim.setOnClickListener { selecionarData(false) }
+        btnGerarRelatorio.setOnClickListener { carregarRelatorio() }
         btnVoltar.setOnClickListener { finish() }
-
-        btnGerarRelatorio.setOnClickListener {
-            carregarRelatorio()
-        }
     }
 
-    /** 📆 Define o período padrão como o mês atual */
+    // ============================================================
+    // 📆 Controle de datas
+    // ============================================================
+
+    /** Define o período padrão como o mês atual */
     private fun definirPeriodoPadrao() {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_MONTH, 1)
@@ -98,13 +102,14 @@ class VendasActivity : AppCompatActivity() {
         atualizarRotuloDatas()
     }
 
-    /** 🗓️ Mostra o seletor de data */
+    /** Abre o seletor de datas */
     private fun selecionarData(isInicio: Boolean) {
         val calendar = Calendar.getInstance()
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             calendar.set(year, month, day)
             if (isInicio) dataInicio = calendar.time else dataFim = calendar.time
             atualizarRotuloDatas()
+            carregarRelatorio()
         }
 
         DatePickerDialog(
@@ -115,18 +120,21 @@ class VendasActivity : AppCompatActivity() {
         ).show()
     }
 
-    /** 🔁 Atualiza o texto dos botões de data */
+    /** Atualiza rótulo dos botões de data */
     private fun atualizarRotuloDatas() {
         btnDataInicio.text = "📅 Início: ${dataInicio?.let { dateFormat.format(it) } ?: "--/--/----"}"
         btnDataFim.text = "📅 Fim: ${dataFim?.let { dateFormat.format(it) } ?: "--/--/----"}"
     }
 
-    /** 📊 Carrega o relatório de vendas filtrado */
+    // ============================================================
+    // 📊 Processamento e cálculo de métricas
+    // ============================================================
+
     private fun carregarRelatorio() {
         val inicio = dataInicio ?: return
         val fim = dataFim ?: return
 
-        progressBar.visibility = ProgressBar.VISIBLE
+        progressBar.visibility = View.VISIBLE
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -134,30 +142,30 @@ class VendasActivity : AppCompatActivity() {
 
                 if (vendas.isEmpty()) {
                     withContext(Dispatchers.Main) {
-                        atualizarUI(0, 0.0, 0.0, 0.0)
+                        progressBar.visibility = View.GONE
+                        atualizarUI(0, 0.0, 0.0, 0)
                         Toast.makeText(
                             this@VendasActivity,
                             "Nenhuma venda encontrada no período selecionado.",
                             Toast.LENGTH_SHORT
                         ).show()
-                        progressBar.visibility = ProgressBar.GONE
                     }
                     return@launch
                 }
 
                 val totalVendas = vendas.size
-                val totalItens = vendas.sumOf { it.quantidade }
-                val valorTotal = vendas.sumOf { it.valorTotal }
+                val totalItens = vendas.sumOf { it.quantidade ?: 0 }
+                val valorTotal = vendas.sumOf { it.valorTotal ?: 0.0 }
                 val ticketMedio = if (totalVendas > 0) valorTotal / totalVendas else 0.0
 
                 withContext(Dispatchers.Main) {
-                    atualizarUI(totalItens, valorTotal, ticketMedio, totalVendas.toDouble())
-                    progressBar.visibility = ProgressBar.GONE
+                    atualizarUI(totalItens, valorTotal, ticketMedio, totalVendas)
+                    progressBar.visibility = View.GONE
                 }
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    progressBar.visibility = ProgressBar.GONE
+                    progressBar.visibility = View.GONE
                     Toast.makeText(
                         this@VendasActivity,
                         "Erro ao carregar relatório: ${e.message}",
@@ -168,15 +176,15 @@ class VendasActivity : AppCompatActivity() {
         }
     }
 
-    /** 💰 Atualiza os valores exibidos na tela */
+    /** Atualiza a interface com os resultados */
     private fun atualizarUI(
         totalItens: Int,
         valorTotal: Double,
         ticketMedio: Double,
-        totalVendas: Double
+        totalVendas: Int
     ) {
         val formato = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
-        tvTotalVendas.text = totalVendas.toInt().toString()
+        tvTotalVendas.text = totalVendas.toString()
         tvItensVendidos.text = totalItens.toString()
         tvValorTotal.text = formato.format(valorTotal)
         tvTicketMedio.text = formato.format(ticketMedio)

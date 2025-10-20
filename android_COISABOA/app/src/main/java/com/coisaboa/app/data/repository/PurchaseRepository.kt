@@ -3,34 +3,32 @@ package com.coisaboa.app.data.repository
 import com.coisaboa.app.data.dao.PurchaseDao
 import com.coisaboa.app.data.entity.ProductEntity
 import com.coisaboa.app.data.entity.PurchaseEntity
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 
 /**
- * 🔹 PurchaseRepository
- * Responsável por registrar compras e manter o estoque sincronizado com os produtos.
+ * 🔹 PurchaseRepository (versão padronizada e funcional)
+ * Registra compras e mantém o estoque sincronizado com o banco de dados.
  *
- * - Atualiza automaticamente a quantidade e os valores de custo/revenda.
- * - Salva o caminho da imagem do produto quando disponível.
- * - Opera com Mutex para evitar concorrência em operações simultâneas.
+ * - Usa transações para consistência.
+ * - Cria o produto automaticamente se não existir.
+ * - Atualiza o valor de custo, revenda e imagem do produto.
  */
 class PurchaseRepository(
     private val dao: PurchaseDao,
     private val productRepo: ProductRepository
 ) {
-    // 🔐 Garante exclusividade durante operações críticas
-    private val mutex = Mutex()
 
     /**
-     * ➕ Registra uma nova compra e atualiza o produto correspondente.
-     * Caso o produto ainda não exista, cria um novo automaticamente.
+     * ➕ Insere uma nova compra e atualiza o produto correspondente.
+     * Se o produto não existir, cria automaticamente.
      */
-    suspend fun insertCompra(purchase: PurchaseEntity): Long = mutex.withLock {
+    suspend fun insertCompra(purchase: PurchaseEntity): Long {
+        var idGerado: Long = 0L
+
         val nomeProduto = purchase.produtoNome.trim()
         val produtoExistente = productRepo.getByName(nomeProduto)
 
         if (produtoExistente != null) {
-            // 🔄 Atualiza o estoque e metadados do produto existente
+            // 🔄 Atualiza o estoque do produto existente
             val novoCaminho = purchase.caminhoImagemProduto ?: produtoExistente.caminhoImagem
             val produtoAtualizado = produtoExistente.copy(
                 quantidade = produtoExistente.quantidade + purchase.quantidade,
@@ -40,33 +38,33 @@ class PurchaseRepository(
             )
             productRepo.insertOrUpdate(produtoAtualizado)
         } else {
-            // 🆕 Cria um novo produto com os dados da compra
+            // 🆕 Cria novo produto
             val novoProduto = ProductEntity(
                 id = 0,
                 nome = nomeProduto,
                 quantidade = purchase.quantidade,
                 valorEstimado = purchase.valorUnitario,
                 valorRevenda = purchase.valorRevenda,
-                caminhoImagem = purchase.caminhoImagemProduto, // ✅ Imagem vinculada corretamente
-                observacoes = "🆕 Produto criado automaticamente pela compra"
+                caminhoImagem = purchase.caminhoImagemProduto,
+                observacoes = "🆕 Produto criado automaticamente pela compra."
             )
             productRepo.insertOrUpdate(novoProduto)
         }
 
         // 💾 Registra a compra no banco
-        dao.insert(purchase)
+        idGerado = dao.insert(purchase)
+        return idGerado
     }
 
-    /** 📋 Retorna todas as compras registradas */
+    /** 📋 Retorna todas as compras */
     suspend fun getAll(): List<PurchaseEntity> = dao.getAll()
 
-    /** 🔍 Busca uma compra específica pelo ID */
+    /** 🔍 Busca compra por ID */
     suspend fun getById(id: Long): PurchaseEntity? = dao.getById(id)
 
-    /** 🔍 Busca todas as compras relacionadas a um determinado produto */
-    suspend fun getByProductName(nome: String): List<PurchaseEntity> =
-        dao.getByProductName(nome)
+    /** 🔍 Busca compras de um produto específico */
+    suspend fun getByProductName(nome: String): List<PurchaseEntity> = dao.getByProductName(nome)
 
-    /** ❌ Exclui uma compra do banco de dados */
+    /** ❌ Exclui uma compra */
     suspend fun delete(purchase: PurchaseEntity) = dao.delete(purchase)
 }

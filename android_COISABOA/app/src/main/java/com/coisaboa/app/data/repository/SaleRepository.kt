@@ -5,8 +5,8 @@ import com.coisaboa.app.data.entity.SaleEntity
 import java.util.Date
 
 /**
- * 💼 SaleRepository
- * Repositório de vendas — intermedia entre o banco de dados e a camada de interface.
+ * 💼 SaleRepository (versão padronizada)
+ * Gerencia as operações de venda e sincroniza o estoque.
  */
 class SaleRepository(
     private val dao: SaleDao,
@@ -14,35 +14,28 @@ class SaleRepository(
 ) {
 
     /**
-     * 💾 Insere uma nova venda e atualiza o estoque do produto correspondente.
+     * 💾 Insere uma nova venda e atualiza o estoque.
      */
     suspend fun insert(venda: SaleEntity) {
         dao.insert(venda)
 
-        // Reduz o estoque do produto vendido, se existir
+        // Reduz o estoque do produto vendido
         val produto = productRepo.getByName(venda.produtoNome)
         if (produto != null) {
-            val novaQtd = (produto.quantidade ?: 0) - venda.quantidade
+            val novaQtd = (produto.quantidade ?: 0) - (venda.quantidade ?: 0)
             if (novaQtd >= 0) {
-                productRepo.decreaseStock(produto.id, venda.quantidade)
+                productRepo.decreaseStock(produto.id, venda.quantidade ?: 0)
             }
         }
     }
 
-    /**
-     * 📋 Retorna todas as vendas registradas.
-     */
+    /** 📋 Retorna todas as vendas */
     suspend fun getAll(): List<SaleEntity> = dao.getAll()
 
-    /**
-     * 💰 Retorna o valor total de todas as vendas.
-     */
+    /** 💰 Retorna o valor total de vendas */
     suspend fun getTotalSalesValue(): Double = dao.getTotalSalesValue() ?: 0.0
 
-    /**
-     * 📆 Retorna as vendas realizadas entre duas datas específicas.
-     * Usa a propriedade `dataVenda` da entidade `SaleEntity`.
-     */
+    /** 📆 Retorna vendas entre duas datas */
     suspend fun getSalesBetween(inicio: Date, fim: Date): List<SaleEntity> {
         val todas = dao.getAll()
         return todas.filter { venda ->

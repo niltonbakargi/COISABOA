@@ -18,9 +18,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * 💰 FinanceiroActivity
- * Exibe o relatório financeiro com filtros por período e indicadores:
- * Total de Vendas, Custo, Lucro Bruto e Ticket Médio.
+ * 💰 FinanceiroActivity (versão padronizada)
+ * Exibe relatórios financeiros com filtros por período e cálculo de:
+ * total de vendas, custo, lucro bruto e ticket médio.
  */
 class FinanceiroActivity : AppCompatActivity() {
 
@@ -41,24 +41,27 @@ class FinanceiroActivity : AppCompatActivity() {
     private var dataFim: Date? = null
 
     // 🗃️ Repositórios
-    private val db by lazy { DatabaseProvider.get(this) }
-    private val productRepo by lazy { ProductRepository(db.productDao()) }
-    private val saleRepo by lazy { SaleRepository(db.saleDao(), productRepo) }
+    private lateinit var productRepo: ProductRepository
+    private lateinit var saleRepo: SaleRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_financeiro)
         supportActionBar?.title = "Relatório Financeiro"
 
+        // ✅ Inicialização correta dos repositórios
+        val db = DatabaseProvider.get(this)
+        productRepo = ProductRepository(db.productDao())
+        saleRepo = SaleRepository(db.saleDao(), productRepo)
+
         inicializarComponentes()
         configurarEventos()
-
         definirPeriodoPadrao()
         atualizarRelatorio()
     }
 
     // ============================================================
-    // 🔹 Inicialização e configuração de eventos
+    // 🔹 Inicialização e configuração
     // ============================================================
 
     private fun inicializarComponentes() {
@@ -74,10 +77,7 @@ class FinanceiroActivity : AppCompatActivity() {
     }
 
     private fun configurarEventos() {
-        btnGerarRelatorio.setOnClickListener {
-            Toast.makeText(this, "📤 Exportação em PDF em desenvolvimento.", Toast.LENGTH_SHORT).show()
-        }
-
+        btnGerarRelatorio.setOnClickListener { atualizarRelatorio() }
         btnVoltar.setOnClickListener { finish() }
 
         btnDataInicio.setOnClickListener { selecionarData(true) }
@@ -88,7 +88,7 @@ class FinanceiroActivity : AppCompatActivity() {
     // 📆 Controle de período
     // ============================================================
 
-    /** Define o período padrão como o mês atual. */
+    /** Define o período padrão como o mês atual */
     private fun definirPeriodoPadrao() {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_MONTH, 1)
@@ -100,7 +100,7 @@ class FinanceiroActivity : AppCompatActivity() {
         atualizarRotuloDatas()
     }
 
-    /** Mostra o seletor de data. */
+    /** Mostra o seletor de data */
     private fun selecionarData(isInicio: Boolean) {
         val calendar = Calendar.getInstance()
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
@@ -118,14 +118,14 @@ class FinanceiroActivity : AppCompatActivity() {
         ).show()
     }
 
-    /** Atualiza os textos dos botões com as datas selecionadas. */
+    /** Atualiza os textos dos botões com as datas */
     private fun atualizarRotuloDatas() {
         btnDataInicio.text = "📅 Início: ${dataInicio?.let { dateFormat.format(it) } ?: "--/--/----"}"
         btnDataFim.text = "📅 Fim: ${dataFim?.let { dateFormat.format(it) } ?: "--/--/----"}"
     }
 
     // ============================================================
-    // 📊 Processamento dos dados e atualização da interface
+    // 📊 Processamento e atualização
     // ============================================================
 
     private fun atualizarRelatorio() {
@@ -152,12 +152,10 @@ class FinanceiroActivity : AppCompatActivity() {
                 }
 
                 val totalVendas = vendas.sumOf { it.valorTotal ?: 0.0 }
-
                 val custoTotal = vendas.sumOf { venda ->
                     val produto = productRepo.getByName(venda.produtoNome)
                     ((produto?.valorEstimado ?: 0.0) * (venda.quantidade ?: 0))
                 }
-
                 val lucroBruto = totalVendas - custoTotal
                 val ticketMedio = if (vendas.isNotEmpty()) totalVendas / vendas.size else 0.0
 
@@ -179,7 +177,7 @@ class FinanceiroActivity : AppCompatActivity() {
         }
     }
 
-    /** Atualiza os textos dos indicadores financeiros. */
+    /** Atualiza os valores na interface */
     private fun atualizarUI(
         totalVendas: Double,
         custoTotal: Double,
