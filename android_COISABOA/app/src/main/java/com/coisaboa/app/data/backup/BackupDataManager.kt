@@ -6,6 +6,7 @@ import android.util.Log
 import com.coisaboa.app.config.DatabaseProvider
 import com.coisaboa.app.data.dao.ProductDao
 import com.coisaboa.app.data.entity.ProductEntity
+import com.coisaboa.app.data.entity.PurchaseEntity
 import com.coisaboa.app.data.entity.SaleEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,7 +15,7 @@ import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 import java.util.Locale
 
 class BackupDataManager(private val context: Context) {
@@ -42,32 +43,55 @@ class BackupDataManager(private val context: Context) {
     }
 
     /**
-     * Copia imagens dos produtos para o backup
+     * Copia TODAS as imagens para o backup (produtos + compras)
      */
-    private suspend fun copiarImagensParaBackup(backupDir: File, productDao: ProductDao): BackupImagensResult {
+    private suspend fun copiarTodasImagensParaBackup(
+        backupDir: File, 
+        productDao: ProductDao, 
+        purchaseDao: com.coisaboa.app.data.dao.PurchaseDao
+    ): BackupImagensResult {
         var sucessos = 0
         var falhas = 0
         
         return try {
-            val imagensBackupDir = File(backupDir, "imagens").apply { mkdirs() }
-            val produtos = withContext(Dispatchers.IO) { productDao.getAll() }
+            val imagensDir = File(backupDir, "imagens").apply { mkdirs() }
 
+            // 1. Copiar imagens dos produtos (ProductEntity)
+            val produtos = withContext(Dispatchers.IO) { productDao.getAll() }
             produtos.forEach { produto ->
                 produto.caminhoImagem?.takeIf { it.isNotBlank() }?.let { caminhoImagem ->
-                    try {
-                        val arquivoOriginal = File(caminhoImagem)
-                        if (arquivoOriginal.exists() && arquivoOriginal.isFile) {
-                            val arquivoBackup = File(imagensBackupDir, arquivoOriginal.name)
-                            arquivoOriginal.copyTo(arquivoBackup, overwrite = true)
-                            sucessos++
-                            Log.d(TAG, "✅ Imagem copiada: ${arquivoOriginal.name}")
-                        } else {
-                            falhas++
-                            Log.w(TAG, "⚠️ Imagem não encontrada: $caminhoImagem")
-                        }
-                    } catch (e: Exception) {
+                    if (copiarArquivoUnico(File(caminhoImagem), imagensDir)) {
+                        sucessos++
+                        Log.d(TAG, "✅ Imagem produto copiada: ${File(caminhoImagem).name}")
+                    } else {
                         falhas++
-                        Log.e(TAG, "❌ Erro ao copiar imagem: ${e.message}")
+                        Log.w(TAG, "⚠️ Imagem produto não encontrada: $caminhoImagem")
+                    }
+                }
+            }
+
+            // 2. Copiar imagens das compras (PurchaseEntity - produto + vendedor)
+            val compras = withContext(Dispatchers.IO) { purchaseDao.getAll() }
+            compras.forEach { compra ->
+                // Imagem do produto da compra
+                compra.caminhoImagemProduto?.takeIf { it.isNotBlank() }?.let { caminhoImagem ->
+                    if (copiarArquivoUnico(File(caminhoImagem), imagensDir)) {
+                        sucessos++
+                        Log.d(TAG, "✅ Imagem produto compra copiada: ${File(caminhoImagem).name}")
+                    } else {
+                        falhas++
+                        Log.w(TAG, "⚠️ Imagem produto compra não encontrada: $caminhoImagem")
+                    }
+                }
+
+                // Imagem do vendedor/nota da compra
+                compra.caminhoImagemNota?.takeIf { it.isNotBlank() }?.let { caminhoImagem ->
+                    if (copiarArquivoUnico(File(caminhoImagem), imagensDir)) {
+                        sucessos++
+                        Log.d(TAG, "✅ Imagem vendedor/nota copiada: ${File(caminhoImagem).name}")
+                    } else {
+                        falhas++
+                        Log.w(TAG, "⚠️ Imagem vendedor/nota não encontrada: $caminhoImagem")
                     }
                 }
             }
@@ -80,42 +104,90 @@ class BackupDataManager(private val context: Context) {
     }
 
     /**
-     * Restaura imagens do backup
+     * Método auxiliar para copiar arquivo único (evita duplicação)
      */
-    private suspend fun restaurarImagens(backupDir: File, productDao: ProductDao): BackupImagensResult {
+    private fun copiarArquivoUnico(arquivoOriginal: File, destinoDir: File): Boolean {
+        return try {
+            if (arquivoOriginal.exists() && arquivoOriginal.isFile) {
+                val arquivoBackup = File(destinoDir, arquivoOriginal.name)
+                // Só copia se o arquivo ainda não existe no backup (evita sobrescrever)
+                if (!arquivoBackup.exists()) {
+                    arquivoOriginal.copyTo(arquivoBackup, overwrite = false)
+                }
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    /**
+     * Restaura TODAS as imagens do backup
+     */
+    private suspend fun restaurarTodasImagens(
+        backupDir: File, 
+        productDao: ProductDao, 
+        purchaseDao: com.coisaboa.app.data.dao.PurchaseDao
+    ): BackupImagensResult {
         var sucessos = 0
         var falhas = 0
         
         return try {
-            val imagensBackupDir = File(backupDir, "imagens")
-            if (!imagensBackupDir.exists()) {
+            val imagensDir = File(backupDir, "imagens")
+            if (!imagensDir.exists()) {
                 Log.d(TAG, "📁 Nenhuma pasta de imagens no backup")
                 return BackupImagensResult(0, 0)
             }
 
             val produtos = withContext(Dispatchers.IO) { productDao.getAll() }
-            val arquivosImagem = imagensBackupDir.listFiles { file -> 
-                file.isFile && file.extension.lowercase() in listOf("jpg", "jpeg", "png", "gif", "bmp", "webp")
+            val compras = withContext(Dispatchers.IO) { purchaseDao.getAll() }
+            val arquivosImagem = imagensDir.listFiles { file -> 
+                file.isFile && isArquivoImagem(file)
             }
 
             arquivosImagem?.forEach { arquivoBackup ->
                 try {
+                    // Tentar encontrar em produtos primeiro
                     val produtoCorrespondente = produtos.find { produto ->
                         produto.caminhoImagem?.contains(arquivoBackup.name) == true
                     }
                     
                     if (produtoCorrespondente != null) {
+                        // Restaurar imagem de produto
                         produtoCorrespondente.caminhoImagem?.let { caminhoOriginal ->
-                            val arquivoOriginal = File(caminhoOriginal)
-                            arquivoOriginal.parentFile?.mkdirs()
-                            arquivoBackup.copyTo(arquivoOriginal, overwrite = true)
-                            sucessos++
-                            Log.d(TAG, "✅ Imagem restaurada: ${arquivoBackup.name}")
-                        } ?: run {
-                            falhas++
-                        }
+                            if (restaurarArquivoUnico(arquivoBackup, File(caminhoOriginal))) {
+                                sucessos++
+                                Log.d(TAG, "✅ Imagem produto restaurada: ${arquivoBackup.name}")
+                            } else {
+                                falhas++
+                            }
+                        } ?: run { falhas++ }
                     } else {
-                        falhas++
+                        // Tentar encontrar em compras
+                        val compraCorrespondente = compras.find { compra ->
+                            compra.caminhoImagemProduto?.contains(arquivoBackup.name) == true ||
+                            compra.caminhoImagemNota?.contains(arquivoBackup.name) == true
+                        }
+                        
+                        compraCorrespondente?.let { compra ->
+                            val caminhoOriginal = when {
+                                compra.caminhoImagemProduto?.contains(arquivoBackup.name) == true -> compra.caminhoImagemProduto
+                                compra.caminhoImagemNota?.contains(arquivoBackup.name) == true -> compra.caminhoImagemNota
+                                else -> null
+                            }
+                            
+                            caminhoOriginal?.let { caminho ->
+                                if (restaurarArquivoUnico(arquivoBackup, File(caminho))) {
+                                    sucessos++
+                                    val tipo = if (compra.caminhoImagemProduto?.contains(arquivoBackup.name) == true) "produto compra" else "vendedor/nota"
+                                    Log.d(TAG, "✅ Imagem $tipo restaurada: ${arquivoBackup.name}")
+                                } else {
+                                    falhas++
+                                }
+                            } ?: run { falhas++ }
+                        } ?: run { falhas++ }
                     }
                 } catch (e: Exception) {
                     falhas++
@@ -130,9 +202,34 @@ class BackupDataManager(private val context: Context) {
     }
 
     /**
+     * Método auxiliar para restaurar arquivo único
+     */
+    private fun restaurarArquivoUnico(arquivoBackup: File, arquivoOriginal: File): Boolean {
+        return try {
+            arquivoOriginal.parentFile?.mkdirs()
+            arquivoBackup.copyTo(arquivoOriginal, overwrite = true)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    /**
+     * Verifica se o arquivo é uma imagem
+     */
+    private fun isArquivoImagem(arquivo: File): Boolean {
+        val extensoesImagem = arrayOf("jpg", "jpeg", "png", "gif", "bmp", "webp")
+        return extensoesImagem.any { arquivo.extension.lowercase() == it }
+    }
+
+    /**
      * Cria JSON com dados do backup
      */
-    private suspend fun criarJsonBackup(productDao: ProductDao, saleDao: com.coisaboa.app.data.dao.SaleDao): JSONObject {
+    private suspend fun criarJsonBackup(
+        productDao: ProductDao, 
+        saleDao: com.coisaboa.app.data.dao.SaleDao,
+        purchaseDao: com.coisaboa.app.data.dao.PurchaseDao
+    ): JSONObject {
         return JSONObject().apply {
             put("timestamp", System.currentTimeMillis())
             put("dataBackup", displayDateFormat.format(Date()))
@@ -170,6 +267,24 @@ class BackupDataManager(private val context: Context) {
                     })
                 }
             })
+            
+            // Compras
+            put("purchases", JSONArray().apply {
+                purchaseDao.getAll().forEach { purchase ->
+                    put(JSONObject().apply {
+                        put("id", purchase.id)
+                        put("produtoNome", purchase.produtoNome)
+                        put("quantidade", purchase.quantidade)
+                        put("valorUnitario", purchase.valorUnitario)
+                        put("valorTotal", purchase.valorTotal)
+                        put("valorRevenda", purchase.valorRevenda ?: 0.0)
+                        put("formaPagamento", purchase.formaPagamento ?: "")
+                        put("caminhoImagemProduto", purchase.caminhoImagemProduto ?: "")
+                        put("caminhoImagemNota", purchase.caminhoImagemNota ?: "")
+                        put("dataCompra", purchase.dataCompra.time)
+                    })
+                }
+            })
         }
     }
 
@@ -181,9 +296,10 @@ class BackupDataManager(private val context: Context) {
             val database = DatabaseProvider.get(context)
             val productDao = database.productDao()
             val saleDao = database.saleDao()
+            val purchaseDao = database.purchaseDao()
 
             val backupDir = criarDiretorioBackup()
-            val json = criarJsonBackup(productDao, saleDao)
+            val json = criarJsonBackup(productDao, saleDao, purchaseDao)
 
             // Salvar JSON
             val backupFile = File(backupDir, "backup_dados.json")
@@ -191,8 +307,8 @@ class BackupDataManager(private val context: Context) {
                 it.write(json.toString(2).toByteArray()) 
             }
 
-            // Copiar imagens
-            val resultadoImagens = copiarImagensParaBackup(backupDir, productDao)
+            // Copiar TODAS as imagens (produtos + compras)
+            val resultadoImagens = copiarTodasImagensParaBackup(backupDir, productDao, purchaseDao)
 
             // Log resumido
             Log.d(TAG, buildString {
@@ -200,7 +316,8 @@ class BackupDataManager(private val context: Context) {
                 append("📁 Local: ${backupDir.name}\n")
                 append("📦 Produtos: ${json.getJSONArray("products").length()}\n")
                 append("💰 Vendas: ${json.getJSONArray("sales").length()}\n")
-                append("📸 Imagens: ${resultadoImagens.sucessos} copiadas\n")
+                append("🛒 Compras: ${json.getJSONArray("purchases").length()}\n")
+                append("📸 Total imagens: ${resultadoImagens.sucessos}\n")
                 if (resultadoImagens.falhas > 0) {
                     append("⚠️ Falhas: ${resultadoImagens.falhas} imagens\n")
                 }
@@ -214,48 +331,14 @@ class BackupDataManager(private val context: Context) {
     }
 
     /**
-     * Limpa dados existentes usando métodos disponíveis
-     */
-    private suspend fun limparDadosExistentes(productDao: ProductDao, saleDao: com.coisaboa.app.data.dao.SaleDao) {
-        try {
-            // Para ProductDao: usar delete() em cada produto
-            val produtosExistentes = productDao.getAll()
-            produtosExistentes.forEach { produto ->
-                productDao.delete(produto)
-            }
-            Log.d(TAG, "✅ ${produtosExistentes.size} produtos removidos")
-
-            // Para SaleDao: não temos método delete, então usamos abordagem alternativa
-            // Como não podemos deletar vendas individualmente, vamos usar sobrescrita
-            Log.d(TAG, "ℹ️  Vendas antigas serão mantidas (backup aditivo)")
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erro ao limpar dados: ${e.message}")
-        }
-    }
-
-    /**
-     * Versão alternativa: limpar todas as vendas usando SQL direto
-     */
-    private suspend fun limparVendasComSQL(saleDao: com.coisaboa.app.data.dao.SaleDao) {
-        try {
-            // Tentativa de limpar vendas - se não funcionar, manteremos como backup aditivo
-            Log.d(TAG, "ℹ️  Tentando limpar vendas...")
-            // Como não temos método delete no SaleDao, não podemos limpar vendas
-            // Isso é intencional - mantém o histórico de vendas seguro
-        } catch (e: Exception) {
-            Log.w(TAG, "⚠️  Não foi possível limpar vendas: ${e.message}")
-        }
-    }
-
-    /**
-     * Restaura backup completo - VERSÃO CORRIGIDA
+     * Restaura backup completo
      */
     suspend fun restaurarBackup(): Boolean = withContext(Dispatchers.IO) {
         return@withContext try {
             val database = DatabaseProvider.get(context)
             val productDao = database.productDao()
             val saleDao = database.saleDao()
+            val purchaseDao = database.purchaseDao()
 
             val backupDir = getBackupDirectoryMaisRecente()
             val backupFile = File(backupDir, "backup_dados.json")
@@ -267,8 +350,7 @@ class BackupDataManager(private val context: Context) {
 
             val json = JSONObject(backupFile.readText())
 
-            // CORREÇÃO: Limpar apenas produtos (que temos método delete)
-            // Manter vendas antigas por segurança
+            // Limpar dados existentes
             try {
                 val produtosExistentes = productDao.getAll()
                 produtosExistentes.forEach { produto ->
@@ -276,17 +358,17 @@ class BackupDataManager(private val context: Context) {
                 }
                 Log.d(TAG, "✅ ${produtosExistentes.size} produtos antigos removidos")
             } catch (e: Exception) {
-                Log.w(TAG, "⚠️  Não foi possível limpar produtos: ${e.message}")
+                Log.w(TAG, "⚠️ Não foi possível limpar produtos: ${e.message}")
             }
 
-            // Restaurar produtos (com ID=0 para auto-generate)
+            // Restaurar produtos
             val produtosArray = json.getJSONArray("products")
             var produtosRestaurados = 0
             for (i in 0 until produtosArray.length()) {
                 val p = produtosArray.getJSONObject(i)
                 try {
                     productDao.insert(ProductEntity(
-                        id = 0, // Room vai gerar novo ID automaticamente
+                        id = 0,
                         nome = p.getString("nome"),
                         quantidade = p.getInt("quantidade"),
                         valorEstimado = p.getDouble("valorEstimado"),
@@ -300,15 +382,14 @@ class BackupDataManager(private val context: Context) {
                 }
             }
 
-            // Restaurar vendas (com ID=0 para auto-generate)
-            // Vendas antigas são mantidas por segurança
+            // Restaurar vendas
             val vendasArray = json.getJSONArray("sales")
             var vendasRestauradas = 0
             for (i in 0 until vendasArray.length()) {
                 val s = vendasArray.getJSONObject(i)
                 try {
                     saleDao.insert(SaleEntity(
-                        id = 0, // Room vai gerar novo ID automaticamente
+                        id = 0,
                         produtoNome = s.getString("produtoNome"),
                         quantidade = s.getInt("quantidade"),
                         valorUnitario = s.getDouble("valorUnitario"),
@@ -324,18 +405,44 @@ class BackupDataManager(private val context: Context) {
                 }
             }
 
-            // Restaurar imagens
-            val resultadoImagens = restaurarImagens(backupDir, productDao)
+            // Restaurar compras
+            val comprasArray = json.optJSONArray("purchases")
+            var comprasRestauradas = 0
+            if (comprasArray != null) {
+                for (i in 0 until comprasArray.length()) {
+                    val c = comprasArray.getJSONObject(i)
+                    try {
+                        purchaseDao.insert(PurchaseEntity(
+                            id = 0,
+                            produtoNome = c.getString("produtoNome"),
+                            quantidade = c.getInt("quantidade"),
+                            valorUnitario = c.getDouble("valorUnitario"),
+                            valorTotal = c.getDouble("valorTotal"),
+                            valorRevenda = c.optDouble("valorRevenda", 0.0),
+                            formaPagamento = c.optString("formaPagamento", ""),
+                            caminhoImagemProduto = c.optString("caminhoImagemProduto", ""),
+                            caminhoImagemNota = c.optString("caminhoImagemNota", ""),
+                            dataCompra = Date(c.getLong("dataCompra"))
+                        ))
+                        comprasRestauradas++
+                    } catch (e: Exception) {
+                        Log.e(TAG, "❌ Erro ao restaurar compra ${c.getString("produtoNome")}: ${e.message}")
+                    }
+                }
+            }
+
+            // Restaurar TODAS as imagens
+            val resultadoImagens = restaurarTodasImagens(backupDir, productDao, purchaseDao)
 
             Log.d(TAG, buildString {
                 append("✅ RESTAURAÇÃO CONCLUÍDA\n")
                 append("📦 Produtos restaurados: $produtosRestaurados/${produtosArray.length()}\n")
                 append("💰 Vendas restauradas: $vendasRestauradas/${vendasArray.length()}\n")
+                append("🛒 Compras restauradas: $comprasRestauradas/${comprasArray?.length() ?: 0}\n")
                 append("📸 Imagens restauradas: ${resultadoImagens.sucessos}\n")
                 if (resultadoImagens.falhas > 0) {
                     append("⚠️ Falhas em imagens: ${resultadoImagens.falhas}\n")
                 }
-                append("💡 Nota: Vendas antigas mantidas por segurança")
             })
 
             true
