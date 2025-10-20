@@ -95,6 +95,29 @@
             android:layout_marginBottom="12dp"
             android:padding="12dp" />
 
+        <!-- NOVOS BOTÕES -->
+        <Button
+            android:id="@+id/btnSalvarBackup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="💾 Salvar Backup no Aparelho"
+            android:textSize="16sp"
+            android:background="#FF9800"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="12dp"
+            android:padding="12dp" />
+
+        <Button
+            android:id="@+id/btnCompartilharBackup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="☁️ Compartilhar Backup"
+            android:textSize="16sp"
+            android:background="#9C27B0"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="12dp"
+            android:padding="12dp" />
+
     </LinearLayout>
 
     <LinearLayout
