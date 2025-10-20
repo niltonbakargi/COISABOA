@@ -13,10 +13,13 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Locale
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 
 class BackupDataManager(private val context: Context) {
 
@@ -453,21 +456,75 @@ class BackupDataManager(private val context: Context) {
     }
 
     /**
-     * Encontra backup mais recente
+     * 🔥 ATUALIZADO: Encontra backup mais recente (Documents → Downloads)
      */
     private fun getBackupDirectoryMaisRecente(): File {
+        // 1. PRIMEIRO: Tenta backup em Documents/
         val docsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        val backupDirs = docsDir.listFiles { file -> 
+        val backupDirsDocs = docsDir.listFiles { file -> 
             file.isDirectory && file.name.startsWith("COISABOA_")
         }
         
-        return backupDirs?.maxByOrNull { it.lastModified() } ?: run {
-            File(docsDir, "COISABOA_${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())}")
+        val backupDocs = backupDirsDocs?.maxByOrNull { it.lastModified() }
+        if (backupDocs != null && File(backupDocs, "backup_dados.json").exists()) {
+            Log.d(TAG, "✅ Backup local encontrado: ${backupDocs.name}")
+            return backupDocs
         }
+        
+        // 2. SEGUNDO: Se não achou, busca ZIP em Downloads/COISABOA/
+        Log.d(TAG, "🔍 Procurando backup em Downloads...")
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val coisaboaDir = File(downloadsDir, "COISABOA")
+        
+        if (coisaboaDir.exists() && coisaboaDir.isDirectory) {
+            val zipFiles = coisaboaDir.listFiles { file -> 
+                file.isFile && file.name.startsWith("COISABOA_Backup_") && file.name.endsWith(".zip")
+            }
+            
+            val zipMaisRecente = zipFiles?.maxByOrNull { it.lastModified() }
+            if (zipMaisRecente != null) {
+                Log.d(TAG, "✅ Backup ZIP encontrado: ${zipMaisRecente.name}")
+                return extrairZipParaTemp(zipMaisRecente)
+            }
+        }
+        
+        // 3. Se não achou nada, retorna fallback
+        Log.d(TAG, "❌ Nenhum backup encontrado")
+        return File(docsDir, "COISABOA_${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())}")
     }
 
     /**
-     * Verifica se existe backup
+     * 🔥 NOVO: Extrai ZIP para pasta temporária
+     */
+    private fun extrairZipParaTemp(zipFile: File): File {
+        val timestamp = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(Date())
+        val tempDir = File(context.filesDir, "backup_restaurado_$timestamp")
+        tempDir.mkdirs()
+        
+        Log.d(TAG, "📦 Extraindo ZIP: ${zipFile.name}")
+        
+        ZipInputStream(FileInputStream(zipFile)).use { zis ->
+            var entry: ZipEntry?
+            while (zis.nextEntry.also { entry = it } != null) {
+                val entryFile = File(tempDir, entry!!.name)
+                if (entry!!.isDirectory) {
+                    entryFile.mkdirs()
+                } else {
+                    entryFile.parentFile?.mkdirs()
+                    FileOutputStream(entryFile).use { fos ->
+                        zis.copyTo(fos)
+                    }
+                }
+                zis.closeEntry()
+            }
+        }
+        
+        Log.d(TAG, "✅ ZIP extraído: ${tempDir.listFiles()?.size} arquivos")
+        return tempDir
+    }
+
+    /**
+     * 🔥 ATUALIZADO: Verifica se existe backup (local ou ZIP)
      */
     fun backupExiste(): Boolean {
         return try {
@@ -479,17 +536,20 @@ class BackupDataManager(private val context: Context) {
     }
 
     /**
-     * Obtém informações do backup
+     * 🔥 ATUALIZADO: Obtém informações do backup (local ou cloud)
      */
     fun getBackupInfo(): String {
         return try {
             val backupDir = getBackupDirectoryMaisRecente()
-            val backupFile = File(backupDir, "backup_dados.json")
-            
-            if (backupFile.exists()) {
+            if (File(backupDir, "backup_dados.json").exists()) {
                 val imagensDir = File(backupDir, "imagens")
                 val totalImagens = imagensDir.listFiles()?.size ?: 0
-                "Backup: ${backupDir.name} ($totalImagens imagens)"
+                
+                if (backupDir.absolutePath.contains("backup_restaurado_")) {
+                    "Backup Cloud (${backupDir.name})"
+                } else {
+                    "Backup: ${backupDir.name} ($totalImagens imagens)"
+                }
             } else {
                 "Nenhum backup encontrado"
             }
