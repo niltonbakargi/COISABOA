@@ -3,15 +3,20 @@
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.coisaboa.app.R
 import com.coisaboa.app.data.backup.BackupDataManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -30,15 +35,15 @@ class BackupActivity : AppCompatActivity() {
     private lateinit var tvStatus: TextView
     private lateinit var tvBackupInfo: TextView
 
+    private val fileProviderAuthority = "com.coisaboa.app.fileprovider"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_backup)
         supportActionBar?.title = "Backup de Dados"
 
-        // Inicializar backup manager
         backupManager = BackupDataManager(this)
 
-        // Inicializar views manualmente
         btnFazerBackup = findViewById(R.id.btnFazerBackup)
         btnRestaurarBackup = findViewById(R.id.btnRestaurarBackup)
         btnSalvarBackup = findViewById(R.id.btnSalvarBackup)
@@ -82,8 +87,9 @@ class BackupActivity : AppCompatActivity() {
                 val success = backupManager.fazerBackup()
 
                 if (success) {
-                    tvStatus.text = "Backup concluido!"
+                    tvStatus.text = "Backup concluído!"
                     Toast.makeText(this@BackupActivity, "Backup criado com sucesso!", Toast.LENGTH_LONG).show()
+                    atualizarStatus()
                 } else {
                     tvStatus.text = "Falha ao criar backup"
                     Toast.makeText(this@BackupActivity, "Erro ao criar backup", Toast.LENGTH_LONG).show()
@@ -93,84 +99,134 @@ class BackupActivity : AppCompatActivity() {
                 Toast.makeText(this@BackupActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
             } finally {
                 btnFazerBackup.isEnabled = true
-                atualizarStatus()
             }
         }
     }
 
     private fun restaurarBackup() {
         if (!backupManager.backupExiste()) {
-            Toast.makeText(this, "Nenhum backup disponivel para restaurar", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Nenhum backup disponível para restaurar", Toast.LENGTH_LONG).show()
             return
         }
-        Toast.makeText(this, "Funcionalidade de restauracao em desenvolvimento", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Funcionalidade de restauração em desenvolvimento", Toast.LENGTH_LONG).show()
     }
 
-    // NOVA FUNÇÃO: Salvar backup compactado no aparelho
+    // FUNÇÃO CORRIGIDA: Salvar Backup no Aparelho
     private fun salvarBackupNoAparelho() {
         if (!backupManager.backupExiste()) {
-            Toast.makeText(this, "Faça um backup primeiro", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Faça um backup primeiro antes de salvar", Toast.LENGTH_LONG).show()
             return
         }
 
         lifecycleScope.launch {
             btnSalvarBackup.isEnabled = false
-            tvStatus.text = "Compactando backup..."
+            tvStatus.text = "Salvando backup no aparelho..."
 
             try {
-                val zipFile = criarBackupCompactado()
+                val resultado = withContext(Dispatchers.IO) {
+                    criarBackupCompactado()
+                }
 
-                if (zipFile != null) {
-                    tvStatus.text = "Backup salvo!"
-                    Toast.makeText(this@BackupActivity, "Backup salvo: ${zipFile.name}", Toast.LENGTH_LONG).show()
+                if (resultado.first != null) {
+                    tvStatus.text = "Backup salvo com sucesso!"
+                    Toast.makeText(
+                        this@BackupActivity, 
+                        "Backup salvo: ${resultado.second}", 
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
-                    tvStatus.text = "Erro ao salvar"
-                    Toast.makeText(this@BackupActivity, "Erro ao salvar backup", Toast.LENGTH_LONG).show()
+                    tvStatus.text = "Erro ao salvar backup"
+                    Toast.makeText(
+                        this@BackupActivity, 
+                        "Erro: ${resultado.second}", 
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } catch (e: Exception) {
-                tvStatus.text = "Erro: ${e.message}"
-                Toast.makeText(this@BackupActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                tvStatus.text = "Erro ao salvar"
+                Toast.makeText(
+                    this@BackupActivity, 
+                    "Erro: ${e.message}", 
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
             } finally {
                 btnSalvarBackup.isEnabled = true
             }
         }
     }
 
-    // NOVA FUNÇÃO: Compartilhar backup
+    // FUNÇÃO CORRIGIDA: Compartilhar Backup
     private fun compartilharBackup() {
         if (!backupManager.backupExiste()) {
-            Toast.makeText(this, "Faça um backup primeiro", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Faça um backup primeiro antes de compartilhar", Toast.LENGTH_LONG).show()
             return
         }
 
         lifecycleScope.launch {
             btnCompartilharBackup.isEnabled = false
-            tvStatus.text = "Preparando compartilhamento..."
+            tvStatus.text = "Preparando backup para compartilhamento..."
 
             try {
-                val zipFile = criarBackupCompactado()
-                if (zipFile != null) {
-                    compartilharArquivo(zipFile)
-                    tvStatus.text = "Pronto para compartilhar!"
+                val resultado = withContext(Dispatchers.IO) {
+                    criarBackupCompactado()
+                }
+
+                if (resultado.first != null) {
+                    compartilharArquivo(resultado.first!!)
+                    tvStatus.text = "Backup pronto para compartilhar!"
                 } else {
                     tvStatus.text = "Erro ao preparar"
-                    Toast.makeText(this@BackupActivity, "Erro ao preparar backup", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@BackupActivity, 
+                        "Erro ao preparar backup: ${resultado.second}", 
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } catch (e: Exception) {
-                tvStatus.text = "Erro: ${e.message}"
-                Toast.makeText(this@BackupActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                tvStatus.text = "Erro ao compartilhar"
+                Toast.makeText(
+                    this@BackupActivity, 
+                    "Erro: ${e.message}", 
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
             } finally {
                 btnCompartilharBackup.isEnabled = true
             }
         }
     }
 
-    // FUNÇÃO CORRIGIDA: Agora retorna File? em vez de Boolean
-    private fun criarBackupCompactado(): File? {
+    // FUNÇÃO CORRIGIDA: Buscar diretório de backup correto
+    private fun getBackupDirectory(): File? {
         return try {
-            val backupDir = File(filesDir, "backup")
-            if (!backupDir.exists() || backupDir.listFiles()?.isEmpty() != false) {
-                return null
+            // Primeiro tenta o diretório padrão do BackupDataManager (Documents/COISABOA_...)
+            val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            val coisaboaDirs = documentsDir.listFiles { file -> 
+                file.isDirectory && file.name.startsWith("COISABOA_")
+            }
+            
+            // Pega o diretório mais recente
+            coisaboaDirs?.maxByOrNull { it.lastModified() }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    // FUNÇÃO CORRIGIDA: Criar backup compactado
+    private fun criarBackupCompactado(): Pair<File?, String> {
+        return try {
+            // Buscar o diretório de backup correto
+            val backupDir = getBackupDirectory()
+            
+            if (backupDir == null || !backupDir.exists()) {
+                return Pair(null, "Diretório de backup não encontrado")
+            }
+
+            val arquivos = backupDir.listFiles()
+            if (arquivos == null || arquivos.isEmpty()) {
+                return Pair(null, "Nenhum arquivo de backup encontrado no diretório")
             }
 
             // Criar nome com timestamp
@@ -178,58 +234,87 @@ class BackupActivity : AppCompatActivity() {
             val zipFileName = "COISABOA_Backup_$timestamp.zip"
             
             // Salvar na pasta Downloads
-            val downloadsDir = getExternalFilesDir(null) ?: filesDir
-            val zipFile = File(downloadsDir, zipFileName)
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val coisaboaDir = File(downloadsDir, "COISABOA")
+            
+            if (!coisaboaDir.exists()) {
+                coisaboaDir.mkdirs()
+            }
 
-            // Criar ZIP
+            val zipFile = File(coisaboaDir, zipFileName)
+
+            // Criar arquivo ZIP
             FileOutputStream(zipFile).use { fos ->
                 ZipOutputStream(fos).use { zos ->
-                    adicionarPastaAoZip(backupDir, "", zos)
+                    arquivos.forEach { arquivo ->
+                        if (arquivo.isFile) {
+                            try {
+                                zos.putNextEntry(ZipEntry(arquivo.name))
+                                FileInputStream(arquivo).use { input ->
+                                    input.copyTo(zos)
+                                }
+                                zos.closeEntry()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
                 }
             }
 
-            zipFile // Retorna o arquivo criado
+            // Verificar se o arquivo foi criado com sucesso
+            if (zipFile.exists() && zipFile.length() > 0) {
+                Pair(zipFile, zipFile.absolutePath)
+            } else {
+                if (zipFile.exists()) zipFile.delete()
+                Pair(null, "Falha ao criar arquivo ZIP")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            Pair(null, "Erro: ${e.message ?: "Erro desconhecido"}")
         }
     }
 
-    private fun adicionarPastaAoZip(pasta: File, caminhoBase: String, zos: ZipOutputStream) {
-        pasta.listFiles()?.forEach { arquivo ->
-            val caminhoZip = if (caminhoBase.isEmpty()) arquivo.name else "$caminhoBase/${arquivo.name}"
-            
-            if (arquivo.isDirectory) {
-                adicionarPastaAoZip(arquivo, caminhoZip, zos)
-            } else {
-                try {
-                    zos.putNextEntry(ZipEntry(caminhoZip))
-                    arquivo.inputStream().use { it.copyTo(zos) }
-                    zos.closeEntry()
-                } catch (e: Exception) {
-                    // Ignorar erro em arquivo individual
-                }
-            }
-        }
-    }
-
+    // FUNÇÃO CORRIGIDA: Compartilhar arquivo
     private fun compartilharArquivo(arquivo: File) {
         try {
-            val uri = Uri.fromFile(arquivo)
+            // Verificar se o arquivo existe
+            if (!arquivo.exists()) {
+                Toast.makeText(this, "Arquivo de backup não encontrado", Toast.LENGTH_LONG).show()
+                return
+            }
+
+            // Usar FileProvider para compartilhar o arquivo de forma segura
+            val uri: Uri = FileProvider.getUriForFile(
+                this,
+                fileProviderAuthority,
+                arquivo
+            )
             
             val shareIntent = Intent().apply {
                 action = Intent.ACTION_SEND
                 type = "application/zip"
                 putExtra(Intent.EXTRA_STREAM, uri)
-                putExtra(Intent.EXTRA_SUBJECT, "Backup COISABOA")
-                putExtra(Intent.EXTRA_TEXT, "Backup do aplicativo COISABOA - ${Date()}")
+                putExtra(Intent.EXTRA_SUBJECT, "Backup COISABOA - ${SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date())}")
+                putExtra(Intent.EXTRA_TEXT, "Backup do aplicativo COISABOA contendo dados de produtos e vendas.")
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             
-            startActivity(Intent.createChooser(shareIntent, "Compartilhar Backup COISABOA"))
+            // Criar chooser para selecionar app de compartilhamento
+            val chooserIntent = Intent.createChooser(shareIntent, "Compartilhar Backup COISABOA")
+            
+            // Garantir permissões para apps específicos
+            val resInfoList = packageManager.queryIntentActivities(chooserIntent, 0)
+            for (resolveInfo in resInfoList) {
+                val packageName = resolveInfo.activityInfo.packageName
+                grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            
+            startActivity(chooserIntent)
             
         } catch (e: Exception) {
-            Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Erro ao compartilhar: ${e.message}", Toast.LENGTH_LONG).show()
+            e.printStackTrace()
         }
     }
 
@@ -237,26 +322,42 @@ class BackupActivity : AppCompatActivity() {
         val existeBackup = backupManager.backupExiste()
         val backupInfo = backupManager.getBackupInfo()
         
-        if (existeBackup) {
+        // Verificar também se o diretório de backup existe
+        val backupDir = getBackupDirectory()
+        val backupFiles = backupDir?.listFiles()?.isNotEmpty() ?: false
+        
+        if (existeBackup && backupFiles) {
             tvBackupInfo.text = """
                 Status do Backup:
-                • Backup disponivel: SIM
-                • Informacao: $backupInfo
-                • Pronto para restaurar: SIM
+                • Backup disponível: SIM
+                • Informação: $backupInfo
+                • Diretório: ${backupDir?.name ?: "Não encontrado"}
+                • Arquivos: ${backupDir?.listFiles()?.size ?: 0}
+                • Pronto para salvar/compartilhar: SIM
             """.trimIndent()
+            tvStatus.text = "Backup disponível"
             btnRestaurarBackup.isEnabled = true
             btnSalvarBackup.isEnabled = true
             btnCompartilharBackup.isEnabled = true
         } else {
             tvBackupInfo.text = """
                 Status do Backup:
-                • Backup disponivel: NAO
-                • Informacao: $backupInfo
-                • Recomendacao: Faca seu primeiro backup!
+                • Backup disponível: ${if (existeBackup) "SIM" else "NÃO"}
+                • Informação: $backupInfo
+                • Diretório encontrado: ${if (backupDir != null) "SIM" else "NÃO"}
+                • Arquivos: ${backupDir?.listFiles()?.size ?: 0}
+                • Recomendação: Faça seu primeiro backup!
             """.trimIndent()
+            tvStatus.text = "Nenhum backup disponível"
             btnRestaurarBackup.isEnabled = false
             btnSalvarBackup.isEnabled = false
             btnCompartilharBackup.isEnabled = false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Revogar todas as permissões de URI concedidas
+        revokeUriPermission(null, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
     }
 }
