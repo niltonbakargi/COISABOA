@@ -6,7 +6,7 @@
 
 // Verificar se o usuário está logado
 session_start();
-if (!isset($_SESSION['usuario_id'])) {
+if (!isset($_SESSION['usuario'])) {
     header('Location: login.php');
     exit;
 }
@@ -17,7 +17,7 @@ require_once 'config/database.php';
 // Buscar dados do usuário
 $pdo = getDB();
 $usuario_stmt = $pdo->prepare("SELECT nome, email FROM usuarios WHERE id = ?");
-$usuario_stmt->execute([$_SESSION['usuario_id']]);
+$usuario_stmt->execute([$_SESSION['usuario']['id']]);
 $usuario = $usuario_stmt->fetch();
 
 // Buscar estatísticas
@@ -420,7 +420,7 @@ $ultimas_vendas = $ultimas_vendas_stmt->fetchAll();
         <section class="section fade-in">
             <div class="section-header">
                 <h3 class="section-title">🛒 Últimas Compras</h3>
-                <a href="compras.php" class="section-action">Ver Todas</a>
+                <a href="comprar.php" class="section-action">Ver Todas</a>
             </div>
             <div class="section-content">
                 <?php if (empty($ultimas_compras)): ?>
@@ -447,7 +447,7 @@ $ultimas_vendas = $ultimas_vendas_stmt->fetchAll();
         <section class="section fade-in">
             <div class="section-header">
                 <h3 class="section-title">🏷️ Últimas Vendas</h3>
-                <a href="vendas.php" class="section-action">Ver Todas</a>
+                <a href="vender.php" class="section-action">Ver Todas</a>
             </div>
             <div class="section-content">
                 <?php if (empty($ultimas_vendas)): ?>
@@ -477,11 +477,11 @@ $ultimas_vendas = $ultimas_vendas_stmt->fetchAll();
             <span class="nav-icon">📊</span>
             <span class="nav-label">Dashboard</span>
         </a>
-        <a href="compras.php" class="nav-item">
+        <a href="comprar.php" class="nav-item">
             <span class="nav-icon">🛒</span>
             <span class="nav-label">Compras</span>
         </a>
-        <a href="vendas.php" class="nav-item">
+        <a href="vender.php" class="nav-item">
             <span class="nav-icon">🏷️</span>
             <span class="nav-label">Vendas</span>
         </a>

@@ -8,18 +8,34 @@ if (!isset($_SESSION['usuario'])) {
 require_once 'config/database.php';
 
 $mensagem = '';
+if (isset($_SESSION['flash_sucesso'])) {
+    $mensagem = '✅ ' . $_SESSION['flash_sucesso'];
+    unset($_SESSION['flash_sucesso']);
+}
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 if ($_POST['action'] ?? '' === 'vender') {
     try {
+        if (empty($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+            throw new Exception("Erro de segurança. Recarregue a página e tente novamente.");
+        }
+
         $pdo = getDB();
-        
-        $produto = $_POST['produto'];
-        $quantidade = $_POST['quantidade'];
-        $valor_vendido = $_POST['valor_vendido'];
+
+        $produto = trim($_POST['produto'] ?? '');
+        $quantidade = (int)($_POST['quantidade'] ?? 0);
+        $valor_vendido = (float)($_POST['valor_vendido'] ?? 0);
         $valor_total = $quantidade * $valor_vendido;
-        $forma_pagamento = $_POST['forma_pagamento'] ?? '';
-        $observacoes = $_POST['observacoes'] ?? '';
+        $forma_pagamento = trim($_POST['forma_pagamento'] ?? '');
+        $observacoes = trim($_POST['observacoes'] ?? '');
         $data_venda = $_POST['data_venda'] ?? date('Y-m-d H:i:s');
+
+        if (empty($produto)) throw new Exception("Nome do produto é obrigatório.");
+        if ($quantidade <= 0) throw new Exception("Quantidade deve ser maior que zero.");
+        if ($valor_vendido < 0) throw new Exception("Valor vendido não pode ser negativo.");
         
         // 1. Primeiro inserir na tabela VENDAS (sem imagem ainda)
         $stmt = $pdo->prepare("
@@ -41,17 +57,25 @@ if ($_POST['action'] ?? '' === 'vender') {
         // Upload da imagem do comprador
         $caminho_imagem_comprador = '';
         if (!empty($_FILES['imagem_comprador']['name']) && $_FILES['imagem_comprador']['error'] === 0) {
-            $pasta_comprador = "uploads/compradores/$venda_id";
-            if (!file_exists($pasta_comprador)) {
-                mkdir($pasta_comprador, 0755, true);
-            }
-            
-            $extensao_comprador = pathinfo($_FILES['imagem_comprador']['name'], PATHINFO_EXTENSION);
-            $nome_arquivo_comprador = "comprador." . $extensao_comprador;
-            $destino_comprador = "$pasta_comprador/$nome_arquivo_comprador";
-            
-            if (move_uploaded_file($_FILES['imagem_comprador']['tmp_name'], $destino_comprador)) {
-                $caminho_imagem_comprador = $pasta_comprador;
+            $extensao_comprador = strtolower(pathinfo($_FILES['imagem_comprador']['name'], PATHINFO_EXTENSION));
+            $allowed_ext  = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $allowed_mime = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $finfo         = finfo_open(FILEINFO_MIME_TYPE);
+            $mime_comprador = finfo_file($finfo, $_FILES['imagem_comprador']['tmp_name']);
+            finfo_close($finfo);
+
+            if (in_array($extensao_comprador, $allowed_ext) && in_array($mime_comprador, $allowed_mime)) {
+                $pasta_comprador = "uploads/compradores/$venda_id";
+                if (!file_exists($pasta_comprador)) {
+                    mkdir($pasta_comprador, 0755, true);
+                }
+
+                $nome_arquivo_comprador = "comprador." . $extensao_comprador;
+                $destino_comprador = "$pasta_comprador/$nome_arquivo_comprador";
+
+                if (move_uploaded_file($_FILES['imagem_comprador']['tmp_name'], $destino_comprador)) {
+                    $caminho_imagem_comprador = $pasta_comprador;
+                }
             }
         }
         
@@ -79,23 +103,14 @@ if ($_POST['action'] ?? '' === 'vender') {
             }
         }
         
-        $mensagem = "✅ Venda registrada com sucesso!";
-        $mensagem .= "<br><strong>ID da Venda:</strong> $venda_id";
-        $mensagem .= "<br><strong>Produto:</strong> $produto";
-        $mensagem .= "<br><strong>Quantidade:</strong> $quantidade";
-        $mensagem .= "<br><strong>Itens removidos do estoque:</strong> $produtos_removidos";
-        $mensagem .= "<br><strong>Valor Vendido:</strong> R$ " . number_format($valor_vendido, 2, ',', '.');
-        $mensagem .= "<br><strong>Valor Total:</strong> R$ " . number_format($valor_total, 2, ',', '.');
-        $mensagem .= "<br><strong>Forma de Pagamento:</strong> " . ($forma_pagamento ?: 'Não informada');
-        
+        $msg = "Venda #{$venda_id} registrada! {$produto} × {$quantidade} — R$ " . number_format($valor_total, 2, ',', '.') . ".";
         if ($produtos_removidos < $quantidade) {
-            $mensagem .= "<br><strong>⚠️ Atenção:</strong> Apenas $produtos_removidos itens foram encontrados no estoque";
+            $msg .= " ⚠️ Apenas {$produtos_removidos}/{$quantidade} item(ns) removido(s) do estoque.";
         }
-        
-        if ($caminho_imagem_comprador) {
-            $mensagem .= "<br><strong>Foto do comprador:</strong> Salva com sucesso";
-        }
-        
+        $_SESSION['flash_sucesso'] = $msg;
+        header('Location: vender.php');
+        exit;
+
     } catch (Exception $e) {
         $mensagem = "❌ Erro: " . $e->getMessage();
     }
@@ -104,9 +119,10 @@ if ($_POST['action'] ?? '' === 'vender') {
 // Buscar produtos disponíveis no estoque para sugestões
 $pdo = getDB();
 $produtos_estoque = $pdo->query("
-    SELECT DISTINCT produto, valor_revenda 
-    FROM estoque 
-    WHERE quantidade > 0 
+    SELECT produto, valor_revenda, SUM(quantidade) as disponivel
+    FROM estoque
+    WHERE quantidade > 0
+    GROUP BY produto, valor_revenda
     ORDER BY produto
 ")->fetchAll();
 ?>
@@ -517,15 +533,19 @@ $produtos_estoque = $pdo->query("
         <div class="form-container fade-in">
             <form method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="vender">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
                 
                 <?php if (!empty($produtos_estoque)): ?>
                 <div class="estoque-box">
                     <strong>📦 Produtos Disponíveis no Estoque</strong>
                     <div style="margin-top: 10px; max-height: 150px; overflow-y: auto;">
                         <?php foreach ($produtos_estoque as $prod): ?>
-                            <div class="produto-item" onclick="document.getElementById('produto').value = '<?= htmlspecialchars($prod['produto']) ?>'; document.getElementById('valor_vendido').value = '<?= $prod['valor_revenda'] ?>'; calcularValorTotal();">
+                            <div class="produto-item" onclick="document.getElementById('produto').value = '<?= htmlspecialchars($prod['produto'], ENT_QUOTES) ?>'; document.getElementById('valor_vendido').value = '<?= $prod['valor_revenda'] ?>'; calcularValorTotal(); verificarEstoque();">
                                 <div class="produto-nome"><?= htmlspecialchars($prod['produto']) ?></div>
-                                <div class="produto-valor">R$ <?= number_format($prod['valor_revenda'], 2, ',', '.') ?></div>
+                                <div style="display:flex;justify-content:space-between;align-items:center;">
+                                    <span class="produto-valor">R$ <?= number_format($prod['valor_revenda'], 2, ',', '.') ?></span>
+                                    <span style="font-size:0.8rem;color:var(--gray);"><?= (int)$prod['disponivel'] ?> un.</span>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -547,8 +567,9 @@ $produtos_estoque = $pdo->query("
                         <?php endforeach; ?>
                     </datalist>
                     <div class="info-text">Digite o nome exato do produto do estoque</div>
+                    <div id="aviso-estoque" style="display:none; margin-top:8px; padding:10px 14px; border-radius:10px; font-size:0.88rem; font-weight:500;"></div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label class="required">Quantidade</label>
@@ -615,11 +636,11 @@ $produtos_estoque = $pdo->query("
             <span class="nav-icon">📊</span>
             <span class="nav-label">Dashboard</span>
         </a>
-        <a href="compras.php" class="nav-item">
+        <a href="comprar.php" class="nav-item">
             <span class="nav-icon">🛒</span>
             <span class="nav-label">Compras</span>
         </a>
-        <a href="vendas.php" class="nav-item ativo">
+        <a href="vender.php" class="nav-item ativo">
             <span class="nav-icon">🏷️</span>
             <span class="nav-label">Vendas</span>
         </a>
@@ -630,6 +651,30 @@ $produtos_estoque = $pdo->query("
     </nav>
 
     <script>
+        // Mapa de estoque disponível por produto
+        const estoqueDisponivel = <?= json_encode(array_column($produtos_estoque, 'disponivel', 'produto')) ?>;
+
+        function verificarEstoque() {
+            const nome = document.getElementById('produto').value.trim();
+            const qtd  = parseInt(document.querySelector('input[name="quantidade"]').value) || 0;
+            const aviso = document.getElementById('aviso-estoque');
+            if (!aviso) return;
+
+            if (!nome || !(nome in estoqueDisponivel)) {
+                aviso.style.display = 'none';
+                return;
+            }
+
+            const disponivel = parseInt(estoqueDisponivel[nome]);
+            if (qtd > disponivel) {
+                aviso.textContent = '⚠️ Estoque insuficiente: apenas ' + disponivel + ' unidade(s) disponível(s).';
+                aviso.style.cssText = 'display:block;background:#fee2e2;color:#991b1b;border:1px solid #fecaca;margin-top:8px;padding:10px 14px;border-radius:10px;font-size:0.88rem;font-weight:500;';
+            } else {
+                aviso.textContent = '✅ ' + disponivel + ' unidade(s) disponível(s).';
+                aviso.style.cssText = 'display:block;background:#d1fae5;color:#065f46;border:1px solid #a7f3d0;margin-top:8px;padding:10px 14px;border-radius:10px;font-size:0.88rem;font-weight:500;';
+            }
+        }
+
         // Cálculo automático do valor total
         document.addEventListener('DOMContentLoaded', function() {
             const quantidade = document.querySelector('input[name="quantidade"]');
@@ -655,7 +700,21 @@ $produtos_estoque = $pdo->query("
             
             quantidade.addEventListener('input', calcularValorTotal);
             valorVendido.addEventListener('input', calcularValorTotal);
-            
+
+            // Verificar estoque ao alterar produto ou quantidade
+            document.getElementById('produto').addEventListener('input', verificarEstoque);
+            document.getElementById('produto').addEventListener('change', verificarEstoque);
+            quantidade.addEventListener('input', verificarEstoque);
+
+            // Desabilitar botão no submit para evitar duplo envio
+            document.querySelector('form').addEventListener('submit', function() {
+                const btn = this.querySelector('.btn-submit:not([disabled])');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+                }
+            });
+
             // Preview da imagem
             document.getElementById('imagemComprador').addEventListener('change', function(e) {
                 const preview = document.getElementById('previewComprador');

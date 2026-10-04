@@ -1,22 +1,25 @@
 <?php
 /**
- * COISABOA - Configuração Simplificada
- * Gerado automaticamente em 03/10/2025 19:46:56
+ * FEIRAVERDE - Configuração de Banco de Dados
+ * Adaptado para servidor Hostinger
  */
- 
-// Configurações do Banco de Dados
+
+// ==================== CONFIGURAÇÕES DO BANCO DE DADOS ====================
+
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'coisaboa_app');  
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_NAME', 'b62a4147_coisaboa_app');   // nome completo do banco na Hostinger
+define('DB_USER', 'b62a4147_coisaboa_user');  // usuário completo da Hostinger
+define('DB_PASS', 'SUA_SENHA_AQUI');          // senha criada no painel
 define('DB_PORT', '3306');
 
-// Configurações do Sistema
-define('SITE_NAME', 'COISABOA App');
+// ==================== CONFIGURAÇÕES DO SISTEMA ====================
+
+define('SITE_NAME', 'Feira Verde');
 define('UPLOAD_DIR', 'uploads/');
 define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
 
-// Função de conexão com o banco
+// ==================== FUNÇÃO DE CONEXÃO COM O BANCO ====================
+
 function getDB() {
     try {
         $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';port=' . DB_PORT . ';charset=utf8mb4';
@@ -30,11 +33,12 @@ function getDB() {
     } catch (PDOException $e) {
         error_log('Erro de conexão: ' . $e->getMessage());
         http_response_code(500);
-        die('Erro de conexão com o banco de dados. Tente novamente.');
+        die('❌ Erro de conexão com o banco de dados. Verifique as credenciais ou contate o suporte.');
     }
 }
 
-// Função de redirecionamento mobile-friendly
+// ==================== OUTRAS FUNÇÕES ÚTEIS ====================
+
 function redirect($url) {
     if (!headers_sent()) {
         header('Location: ' . $url);
@@ -45,7 +49,6 @@ function redirect($url) {
     }
 }
 
-// Função de sanitização
 function sanitize($data) {
     if (is_array($data)) {
         return array_map('sanitize', $data);

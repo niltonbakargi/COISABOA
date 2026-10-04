@@ -8,19 +8,36 @@ if (!isset($_SESSION['usuario'])) {
 require_once 'config/database.php';
 
 $mensagem = '';
+if (isset($_SESSION['flash_sucesso'])) {
+    $mensagem = '✅ ' . $_SESSION['flash_sucesso'];
+    unset($_SESSION['flash_sucesso']);
+}
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 if ($_POST['action'] ?? '' === 'comprar') {
     try {
+        if (empty($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+            throw new Exception("Erro de segurança. Recarregue a página e tente novamente.");
+        }
+
         $pdo = getDB();
-        
-        $produto = $_POST['produto'];
-        $quantidade = $_POST['quantidade'];
-        $valor_unitario = $_POST['valor_unitario'];
+
+        $produto = trim($_POST['produto'] ?? '');
+        $quantidade = (int)($_POST['quantidade'] ?? 0);
+        $valor_unitario = (float)($_POST['valor_unitario'] ?? 0);
         $valor_total = $quantidade * $valor_unitario;
-        $valor_revenda = $_POST['valor_revenda'];
-        $forma_pagamento = $_POST['forma_pagamento'] ?? '';
-        $observacoes = $_POST['observacoes'] ?? '';
+        $valor_revenda = (float)($_POST['valor_revenda'] ?? 0);
+        $forma_pagamento = trim($_POST['forma_pagamento'] ?? '');
+        $observacoes = trim($_POST['observacoes'] ?? '');
         $data_compra = $_POST['data_compra'] ?? date('Y-m-d H:i:s');
+
+        if (empty($produto)) throw new Exception("Nome do produto é obrigatório.");
+        if ($quantidade <= 0) throw new Exception("Quantidade deve ser maior que zero.");
+        if ($valor_unitario < 0) throw new Exception("Valor unitário não pode ser negativo.");
+        if ($valor_revenda < 0) throw new Exception("Valor de revenda não pode ser negativo.");
         
         // 1. Primeiro inserir na tabela COMPRAS (sem imagens ainda)
         $stmt = $pdo->prepare("
@@ -53,10 +70,20 @@ if ($_POST['action'] ?? '' === 'comprar') {
         if (!empty($_FILES['imagens']['name'][0])) {
             foreach ($_FILES['imagens']['tmp_name'] as $key => $tmp_name) {
                 if ($_FILES['imagens']['error'][$key] === 0) {
-                    $extensao = pathinfo($_FILES['imagens']['name'][$key], PATHINFO_EXTENSION);
+                    $extensao = strtolower(pathinfo($_FILES['imagens']['name'][$key], PATHINFO_EXTENSION));
+                    $allowed_ext  = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                    $allowed_mime = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                    $finfo     = finfo_open(FILEINFO_MIME_TYPE);
+                    $mime_type = finfo_file($finfo, $tmp_name);
+                    finfo_close($finfo);
+
+                    if (!in_array($extensao, $allowed_ext) || !in_array($mime_type, $allowed_mime)) {
+                        continue;
+                    }
+
                     $nome_arquivo = "foto_" . ($key + 1) . "." . $extensao;
                     $destino = "$pasta_produto/$nome_arquivo";
-                    
+
                     if (move_uploaded_file($tmp_name, $destino)) {
                         $imagens_salvas[] = $nome_arquivo;
                     }
@@ -68,17 +95,25 @@ if ($_POST['action'] ?? '' === 'comprar') {
         // Upload da imagem do vendedor
         $caminho_imagem_vendedor = '';
         if (!empty($_FILES['imagem_vendedor']['name']) && $_FILES['imagem_vendedor']['error'] === 0) {
-            $pasta_vendedor = "uploads/vendedores/$compra_id";
-            if (!file_exists($pasta_vendedor)) {
-                mkdir($pasta_vendedor, 0755, true);
-            }
-            
-            $extensao_vendedor = pathinfo($_FILES['imagem_vendedor']['name'], PATHINFO_EXTENSION);
-            $nome_arquivo_vendedor = "vendedor." . $extensao_vendedor;
-            $destino_vendedor = "$pasta_vendedor/$nome_arquivo_vendedor";
-            
-            if (move_uploaded_file($_FILES['imagem_vendedor']['tmp_name'], $destino_vendedor)) {
-                $caminho_imagem_vendedor = $pasta_vendedor;
+            $extensao_vendedor = strtolower(pathinfo($_FILES['imagem_vendedor']['name'], PATHINFO_EXTENSION));
+            $allowed_ext  = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $allowed_mime = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $finfo        = finfo_open(FILEINFO_MIME_TYPE);
+            $mime_vendedor = finfo_file($finfo, $_FILES['imagem_vendedor']['tmp_name']);
+            finfo_close($finfo);
+
+            if (in_array($extensao_vendedor, $allowed_ext) && in_array($mime_vendedor, $allowed_mime)) {
+                $pasta_vendedor = "uploads/vendedores/$compra_id";
+                if (!file_exists($pasta_vendedor)) {
+                    mkdir($pasta_vendedor, 0755, true);
+                }
+
+                $nome_arquivo_vendedor = "vendedor." . $extensao_vendedor;
+                $destino_vendedor = "$pasta_vendedor/$nome_arquivo_vendedor";
+
+                if (move_uploaded_file($_FILES['imagem_vendedor']['tmp_name'], $destino_vendedor)) {
+                    $caminho_imagem_vendedor = $pasta_vendedor;
+                }
             }
         }
         
@@ -121,27 +156,10 @@ if ($_POST['action'] ?? '' === 'comprar') {
             }
         }
         
-        $mensagem = "✅ Compra registrada com sucesso!";
-        $mensagem .= "<br><strong>ID da Compra:</strong> $compra_id";
-        $mensagem .= "<br><strong>Produto:</strong> $produto";
-        $mensagem .= "<br><strong>Quantidade:</strong> $quantidade";
-        $mensagem .= "<br><strong>Itens criados no estoque:</strong> $produtos_inseridos";
-        $mensagem .= "<br><strong>Valor Unitário:</strong> R$ " . number_format($valor_unitario, 2, ',', '.');
-        $mensagem .= "<br><strong>Valor Total:</strong> R$ " . number_format($valor_total, 2, ',', '.');
-        $mensagem .= "<br><strong>Valor Revenda:</strong> R$ " . number_format($valor_revenda, 2, ',', '.');
-        $mensagem .= "<br><strong>Forma de Pagamento:</strong> " . ($forma_pagamento ?: 'Não informada');
-        
-        if ($quantidade > 1) {
-            $mensagem .= "<br><strong>💡 Observação:</strong> $quantidade itens individuais criados no estoque";
-        }
-        
-        if ($imagens_salvas) {
-            $mensagem .= "<br><strong>Fotos do produto:</strong> " . count($imagens_salvas) . " imagem(ns) salvas";
-        }
-        if ($caminho_imagem_vendedor) {
-            $mensagem .= "<br><strong>Foto do vendedor:</strong> Salva com sucesso";
-        }
-        
+        $_SESSION['flash_sucesso'] = "Compra #{$compra_id} registrada! {$produto} × {$quantidade} — R$ " . number_format($valor_total, 2, ',', '.') . ". {$produtos_inseridos} item(ns) adicionado(s) ao estoque.";
+        header('Location: comprar.php');
+        exit;
+
     } catch (Exception $e) {
         $mensagem = "❌ Erro: " . $e->getMessage();
     }
@@ -504,6 +522,7 @@ if ($_POST['action'] ?? '' === 'comprar') {
         <div class="form-container fade-in">
             <form method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="comprar">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
                 
                 <div class="form-group">
                     <label class="required">Nome do Produto</label>
@@ -598,11 +617,11 @@ if ($_POST['action'] ?? '' === 'comprar') {
             <span class="nav-icon">📊</span>
             <span class="nav-label">Dashboard</span>
         </a>
-        <a href="compras.php" class="nav-item ativo">
+        <a href="comprar.php" class="nav-item ativo">
             <span class="nav-icon">🛒</span>
             <span class="nav-label">Compras</span>
         </a>
-        <a href="vendas.php" class="nav-item">
+        <a href="vender.php" class="nav-item">
             <span class="nav-icon">🏷️</span>
             <span class="nav-label">Vendas</span>
         </a>
@@ -690,7 +709,16 @@ if ($_POST['action'] ?? '' === 'comprar') {
             
             // Calcular inicialmente
             calcularValorTotal();
-            
+
+            // Desabilitar botão no submit para evitar duplo envio
+            document.querySelector('form').addEventListener('submit', function() {
+                const btn = this.querySelector('.btn-submit');
+                if (btn && !btn.disabled) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+                }
+            });
+
             // Feedback tátil para elementos interativos
             const interactiveElements = document.querySelectorAll('input, select, textarea, button');
             

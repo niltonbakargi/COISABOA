@@ -11,6 +11,10 @@ $mensagem = '';
 $acao = $_POST['acao'] ?? '';
 $produto_id = $_POST['produto_id'] ?? '';
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Buscar produtos em estoque
 try {
     $pdo = getDB();
@@ -24,6 +28,10 @@ try {
 // Processar ações
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($acao) && !empty($produto_id)) {
     try {
+        if (empty($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+            throw new Exception("Erro de segurança. Recarregue a página e tente novamente.");
+        }
+
         $pdo = getDB();
         
         // Buscar informações do produto
@@ -701,6 +709,7 @@ try {
                 <form method="POST">
                     <input type="hidden" name="acao" value="ajustar_estoque">
                     <input type="hidden" name="produto_id" id="produto_id_ajustar">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
                     
                     <div class="form-group">
                         <label class="required">Nova Quantidade em Estoque</label>
@@ -732,6 +741,7 @@ try {
                 <form method="POST">
                     <input type="hidden" name="acao" value="corrigir_precos">
                     <input type="hidden" name="produto_id" id="produto_id_precos">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
                     
                     <div class="form-grid">
                         <div class="form-group">
@@ -774,6 +784,7 @@ try {
                 <form method="POST" onsubmit="return confirmarExclusao()">
                     <input type="hidden" name="acao" value="excluir_produto">
                     <input type="hidden" name="produto_id" id="produto_id_excluir">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
                     
                     <div class="form-group">
                         <label class="required">Digite CONFIRMAR para prosseguir</label>
@@ -867,11 +878,11 @@ try {
             <span class="nav-icon">📊</span>
             <span class="nav-label">Dashboard</span>
         </a>
-        <a href="compras.php" class="nav-item">
+        <a href="comprar.php" class="nav-item">
             <span class="nav-icon">🛒</span>
             <span class="nav-label">Compras</span>
         </a>
-        <a href="vendas.php" class="nav-item">
+        <a href="vender.php" class="nav-item">
             <span class="nav-icon">🏷️</span>
             <span class="nav-label">Vendas</span>
         </a>

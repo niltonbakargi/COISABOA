@@ -527,11 +527,11 @@ try {
             <span class="nav-icon">📊</span>
             <span class="nav-label">Dashboard</span>
         </a>
-        <a href="compras.php" class="nav-item">
+        <a href="comprar.php" class="nav-item">
             <span class="nav-icon">🛒</span>
             <span class="nav-label">Compras</span>
         </a>
-        <a href="vendas.php" class="nav-item">
+        <a href="vender.php" class="nav-item">
             <span class="nav-icon">🏷️</span>
             <span class="nav-label">Vendas</span>
         </a>

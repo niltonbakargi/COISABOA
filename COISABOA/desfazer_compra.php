@@ -596,7 +596,7 @@ try {
                 <i class="fas fa-shopping-cart"></i>
                 <h3>Nenhuma compra encontrada</h3>
                 <p>Não há compras registradas no sistema.</p>
-                <a href="compras.php" class="btn" style="margin-top: 20px;">
+                <a href="comprar.php" class="btn" style="margin-top: 20px;">
                     <i class="fas fa-plus"></i>
                     Fazer Primeira Compra
                 </a>
@@ -623,11 +623,11 @@ try {
             <span class="nav-icon">📊</span>
             <span class="nav-label">Dashboard</span>
         </a>
-        <a href="compras.php" class="nav-item">
+        <a href="comprar.php" class="nav-item">
             <span class="nav-icon">🛒</span>
             <span class="nav-label">Compras</span>
         </a>
-        <a href="vendas.php" class="nav-item">
+        <a href="vender.php" class="nav-item">
             <span class="nav-icon">🏷️</span>
             <span class="nav-label">Vendas</span>
         </a>

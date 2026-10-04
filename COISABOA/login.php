@@ -42,7 +42,8 @@ if ($_POST['action'] ?? '' === 'login') {
             $erro = "Email ou senha incorretos!";
         }
     } catch (PDOException $e) {
-        $erro = "Erro ao conectar com o banco de dados: " . $e->getMessage();
+        error_log("Erro de login: " . $e->getMessage());
+        $erro = "Erro interno. Tente novamente mais tarde.";
     }
 }
 
@@ -70,7 +71,8 @@ if ($_POST['action'] ?? '' === 'cadastrar') {
             $sucesso = "Usuário cadastrado com sucesso! Faça login.";
         }
     } catch (PDOException $e) {
-        $erro = "Erro ao cadastrar usuário: " . $e->getMessage();
+        error_log("Erro ao cadastrar usuário: " . $e->getMessage());
+        $erro = "Erro interno. Tente novamente mais tarde.";
     }
 }
 
@@ -332,9 +334,8 @@ $modo_cadastro = $_GET['cadastro'] ?? false;
                     
                     <div class="form-group">
                         <label class="form-label">🔒 Senha</label>
-                        <input type="password" name="senha" class="form-control" 
-                               placeholder="Sua senha" required
-                               value="123456">
+                        <input type="password" name="senha" class="form-control"
+                               placeholder="Sua senha" required>
                     </div>
                     
                     <button type="submit" class="btn btn-primary">
